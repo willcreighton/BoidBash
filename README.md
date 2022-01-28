@@ -4,6 +4,7 @@
 _This README contains basic information about the project and its artifacts. If kept up to date, it will act as a primary dashboard for the project._
 
 ## Team Members
+- Will Creighton
 - Brian
 - MEMBER2
 - MEMBER3
