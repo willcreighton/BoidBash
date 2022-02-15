@@ -36,6 +36,7 @@ namespace BoidBash
         
         // Fonts
         SpriteFont primaryFont;
+        SpriteFont headerFont;
 
         // Colors
         Color backgroundColor = new Color(20, 20, 20);
@@ -66,6 +67,7 @@ namespace BoidBash
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
+            headerFont = Content.Load<SpriteFont>("HeaderFont");
         }
 
         protected override void Update(GameTime gameTime)
@@ -112,6 +114,14 @@ namespace BoidBash
             switch (currentState)
             {
                 case GameState.MainMenu:
+                    // State display
+                    _spriteBatch.DrawString(
+                        headerFont,
+                        "Main Menu",
+                        new Vector2(20, 15),
+                        Color.White
+                        );
+
                     // Options Menu prompt
                     _spriteBatch.DrawString(
                         primaryFont,
@@ -129,10 +139,18 @@ namespace BoidBash
                         );
                     break;
                 case GameState.Game:
+                    // State display
+                    _spriteBatch.DrawString(
+                        headerFont,
+                        "Game",
+                        new Vector2(20, 15),
+                        Color.White
+                        );
+
                     // Main Menu prompt
                     _spriteBatch.DrawString(
                         primaryFont,
-                        "Press 'M' to access the Main Menu.",
+                        "Press 'M' to return to the Main Menu.",
                         new Vector2(20, screenHeight - 40),
                         Color.White
                         );
@@ -146,6 +164,14 @@ namespace BoidBash
                         );
                     break;
                 case GameState.OptionsMenu:
+                    // State display
+                    _spriteBatch.DrawString(
+                        headerFont,
+                        "Options Menu",
+                        new Vector2(20, 15),
+                        Color.White
+                        );
+
                     // Main Menu prompt
                     _spriteBatch.DrawString(
                         primaryFont,
@@ -155,6 +181,14 @@ namespace BoidBash
                         );
                     break;
                 case GameState.PauseMenu:
+                    // State display
+                    _spriteBatch.DrawString(
+                        headerFont,
+                        "Pause Menu",
+                        new Vector2(20, 15),
+                        Color.White
+                        );
+
                     // Main Menu Prompt
                     _spriteBatch.DrawString(
                         primaryFont,
@@ -249,9 +283,9 @@ namespace BoidBash
             {
                 currentState = GameState.Game;
             }
-            else if (IsSingleKeyPress(Keys.P))
+            else if (IsSingleKeyPress(Keys.M))
             {
-                currentState = GameState.PauseMenu;
+                currentState = GameState.MainMenu;
             }
         }
     }
