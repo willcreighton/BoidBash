@@ -44,7 +44,7 @@ namespace PredatorBuild
                 Exit();
 
             // TODO: Add your update logic here
-            predator.Update(gameTi);
+            predator.Update(gameTime);
 
             base.Update(gameTime);
         }
