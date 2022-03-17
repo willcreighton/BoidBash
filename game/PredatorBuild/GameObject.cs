@@ -21,6 +21,11 @@ namespace PredatorBuild
             get { return position; }
         }
 
+        public Texture2D Texture
+        {
+            get { return texture; }
+        }
+
         // Protected Constructor
         /// <summary>
         /// Protected constructor (Takes in Texture2D and Rectangle)
