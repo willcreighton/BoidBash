@@ -13,7 +13,8 @@ namespace PredatorBuild
         public Predator(Texture2D texture, Rectangle position) : 
             base(texture, position)
         {
-
+            this.texture = texture;
+            this.position = position;
         }
 
         // Movement
