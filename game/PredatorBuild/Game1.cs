@@ -33,6 +33,8 @@ namespace PredatorBuild
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            predTexture = Content.Load<Texture2D>("Pentagon");
+
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2, 40, 40));
         }
 
@@ -42,6 +44,7 @@ namespace PredatorBuild
                 Exit();
 
             // TODO: Add your update logic here
+            predator.Update(gameTi);
 
             base.Update(gameTime);
         }
@@ -55,6 +58,7 @@ namespace PredatorBuild
 
             predator.Draw(_spriteBatch);
 
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
