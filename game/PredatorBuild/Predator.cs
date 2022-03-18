@@ -32,6 +32,8 @@ namespace PredatorBuild
         {
             this.texture = texture;
             this.position = position;
+            this.predHeight = predHeight;
+            this.predWidth = predWidth;
         }
      
         //
@@ -51,7 +53,7 @@ namespace PredatorBuild
         //*/
         
         // Movement
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)                                                  // Each If statement keeps the predator inside a set of boundaries
         {
             KeyboardState keyBState = Keyboard.GetState();
 
