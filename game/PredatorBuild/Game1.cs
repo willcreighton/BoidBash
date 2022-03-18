@@ -13,6 +13,15 @@ namespace PredatorBuild
         private int width;
         private int height;
 
+        public int Width
+        {
+            get { return width; }
+        }
+        public int Height
+        {
+            get { return height; }
+        }
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -35,7 +44,12 @@ namespace PredatorBuild
             // TODO: use this.Content to load your game content here
             predTexture = Content.Load<Texture2D>("Pentagon");
 
-            predator = new Predator(predTexture, new Rectangle(width / 2, height / 2, 40, 40));
+            predator.PredHeight = 30;
+            predator.PredWidth = 30;
+
+            predator = new Predator(predTexture, new Rectangle(width / 2, height / 2, 
+                predator.PredHeight, predator.PredWidth), 
+                height, width, predator.PredHeight, predator.PredWidth);
         }
 
         protected override void Update(GameTime gameTime)

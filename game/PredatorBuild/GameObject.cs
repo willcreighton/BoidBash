@@ -11,6 +11,8 @@ namespace PredatorBuild
         // Fields
         protected Texture2D texture;
         protected Rectangle position;
+        protected int windowHeight;
+        protected int windowWidth;
 
         // Properties
         /// <summary>
@@ -32,10 +34,12 @@ namespace PredatorBuild
         /// </summary>
         /// <param name="texture"></param>
         /// <param name="position"></param>
-        protected GameObject(Texture2D texture, Rectangle position)
+        protected GameObject(Texture2D texture, Rectangle position, int windowHeight, int windowWidth)
         {
             this.texture = texture;
             this.position = position;
+            this.windowHeight = windowHeight;
+            this.windowWidth = windowWidth;
         }
 
         // Methods
@@ -45,7 +49,7 @@ namespace PredatorBuild
         /// <param name="sb"></param>
         public virtual void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, position, Color.White);
+            sb.Draw(texture, position, Color.Black);
         }
         /// <summary>
         /// Updates GameObject with GameTime
