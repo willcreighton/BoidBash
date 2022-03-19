@@ -7,17 +7,12 @@ namespace BoidBash
     // This enumerator references the different states of the game
     enum GameState
     {
+        // The key's are for testing, specific events or buttons will trigger
+        // the states in the final version.
         MainMenu,       // 'M'
         Game,           // 'G'
-        OptionsMenu,    // 'O'
         PauseMenu,      // 'P'
-        EndScreen       // 'E' (will add later)
-    }
-
-    // This enumerator references the different colors of the game
-    enum GameColor
-    {
-        // TODO: Implement
+        EndScreen       // 'E'
     }
 
     public class Game1 : Game
@@ -27,19 +22,44 @@ namespace BoidBash
         private GameState currentState;
 
         // Screen size
-        private int screenWidth;
-        private int screenHeight;
+        private int windowWidth;
+        private int windowHeight;
 
         // Keyboard states
         private KeyboardState keyboardState;
         private KeyboardState lastKeyboardState;
         
         // Fonts
-        SpriteFont primaryFont;
-        SpriteFont headerFont;
+        private SpriteFont primaryFont;
+        private SpriteFont headerFont;
 
         // Colors
-        Color backgroundColor = new Color(20, 20, 20);
+        private Color backgroundColor = new Color(20, 20, 20);
+
+        // State UI
+        private MainMenuUI mainMenuUI;
+        private GameUI gameUI;
+        private PauseMenuUI pauseMenuUI;
+        private EndScreenUI endScreenUI;
+
+        // Boids
+        private Texture2D boidSprite;
+        private Flock flock;
+
+        // Predator
+        private Predator predator;
+        private Texture2D predTexture;
+        private int width;
+        private int height;
+
+        public int Width
+        {
+            get { return width; }
+        }
+        public int Height
+        {
+            get { return height; }
+        }
 
         public Game1()
         {
@@ -51,11 +71,14 @@ namespace BoidBash
         protected override void Initialize()
         {
             // Adjust the window size
-            screenWidth = 800;
-            screenHeight = 800;
-            _graphics.PreferredBackBufferWidth = screenWidth;
-            _graphics.PreferredBackBufferHeight = screenHeight;
+            windowWidth = 1200;
+            windowHeight = 900;
+            _graphics.PreferredBackBufferWidth = windowWidth;
+            _graphics.PreferredBackBufferHeight = windowHeight;
             _graphics.ApplyChanges();
+
+            width = _graphics.GraphicsDevice.Viewport.Width;
+            height = _graphics.GraphicsDevice.Viewport.Height;
 
             currentState = GameState.MainMenu;
 
@@ -68,6 +91,23 @@ namespace BoidBash
 
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
+
+            boidSprite = this.Content.Load<Texture2D>("BoidSprite");
+            flock = new Flock(30, new Rectangle(0, 0, 800, 800), new Rectangle(0, 0, 800, 800), boidSprite, new Vector2(5, 7), Color.Aqua,
+                _spriteBatch);
+
+            predTexture = Content.Load<Texture2D>("PredatorSprite");
+
+
+
+            predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
+                25, 25),
+                windowHeight, windowWidth, 25, 25);
+
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
+            gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont);
+            pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
+            endScreenUI = new EndScreenUI(windowWidth, windowHeight, headerFont, primaryFont);
         }
 
         protected override void Update(GameTime gameTime)
@@ -85,15 +125,14 @@ namespace BoidBash
                     break;
                 case GameState.Game:
                     ProcessGame();
-                    break;
-                case GameState.OptionsMenu:
-                    ProcessOptionsMenu();
+                    flock.ProcessBoids(new Vector2(0, 0));
+                    predator.Update(gameTime);
                     break;
                 case GameState.PauseMenu:
                     ProcessPauseMenu();
                     break;
                 case GameState.EndScreen:
-                    // TODO: Implement
+                    ProcessEndScreen();
                     break;
                 default:
                     break;
@@ -111,102 +150,22 @@ namespace BoidBash
             // Begin the Sprite Batch
             _spriteBatch.Begin();
 
+            // GameState switches
             switch (currentState)
             {
                 case GameState.MainMenu:
-                    // State display
-                    _spriteBatch.DrawString(
-                        headerFont,
-                        "Main Menu",
-                        new Vector2(20, 15),
-                        Color.White
-                        );
-
-                    // Options Menu prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'O' to access the Options Menu.",
-                        new Vector2(20, screenHeight - 40),
-                        Color.White
-                        );
-
-                    // Game prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'G' to access the Game.",
-                        new Vector2(20, screenHeight - 80),
-                        Color.White
-                        );
+                    mainMenuUI.Draw(_spriteBatch);
                     break;
                 case GameState.Game:
-                    // State display
-                    _spriteBatch.DrawString(
-                        headerFont,
-                        "Game",
-                        new Vector2(20, 15),
-                        Color.White
-                        );
-
-                    // Main Menu prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'M' to return to the Main Menu.",
-                        new Vector2(20, screenHeight - 40),
-                        Color.White
-                        );
-
-                    // Pause Menu prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'P' to access the Pause Menu.",
-                        new Vector2(20, screenHeight - 80),
-                        Color.White
-                        );
-                    break;
-                case GameState.OptionsMenu:
-                    // State display
-                    _spriteBatch.DrawString(
-                        headerFont,
-                        "Options Menu",
-                        new Vector2(20, 15),
-                        Color.White
-                        );
-
-                    // Main Menu prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'M' to return to the Main Menu.",
-                        new Vector2(20, screenHeight - 40),
-                        Color.White
-                        );
+                    gameUI.Draw(_spriteBatch);
+                    flock.Draw();
+                    predator.Draw(_spriteBatch);
                     break;
                 case GameState.PauseMenu:
-                    // State display
-                    _spriteBatch.DrawString(
-                        headerFont,
-                        "Pause Menu",
-                        new Vector2(20, 15),
-                        Color.White
-                        );
-
-                    // Main Menu Prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'M' to return to the Main Menu.",
-                        new Vector2(20, screenHeight - 40),
-                        Color.White
-                        );
-
-                    // Game prompt
-                    _spriteBatch.DrawString(
-                        primaryFont,
-                        "Press 'G' to return to the Game.",
-                        new Vector2(20, screenHeight - 80),
-                        Color.White
-                        );
+                    pauseMenuUI.Draw(_spriteBatch);
                     break;
                 case GameState.EndScreen:
-                    // TODO: Implement
+                    endScreenUI.Draw(_spriteBatch);
                     break;
                 default:
                     break;
@@ -242,10 +201,6 @@ namespace BoidBash
             {
                 currentState = GameState.Game;
             }
-            else if (IsSingleKeyPress(Keys.O))
-            {
-                currentState = GameState.OptionsMenu;
-            }
         }
 
         /// <summary>
@@ -253,24 +208,14 @@ namespace BoidBash
         /// </summary>
         private void ProcessGame()
         {
-            if (IsSingleKeyPress(Keys.M))
-            {
-                currentState = GameState.MainMenu;
-            }
-            else if (IsSingleKeyPress(Keys.P))
+            if (IsSingleKeyPress(Keys.P))
             {
                 currentState = GameState.PauseMenu;
             }
-        }
-
-        /// <summary>
-        /// This method processes the Options Menu state
-        /// </summary>
-        private void ProcessOptionsMenu()
-        {
-            if (IsSingleKeyPress(Keys.M))
+            // For testing the End Screen
+            else if (IsSingleKeyPress(Keys.E))
             {
-                currentState = GameState.MainMenu;
+                currentState = GameState.EndScreen;
             }
         }
 
@@ -284,6 +229,17 @@ namespace BoidBash
                 currentState = GameState.Game;
             }
             else if (IsSingleKeyPress(Keys.M))
+            {
+                currentState = GameState.MainMenu;
+            }
+        }
+
+        /// <summary>
+        /// This method processes the End Screen state
+        /// </summary>
+        private void ProcessEndScreen()
+        {
+            if (IsSingleKeyPress(Keys.M))
             {
                 currentState = GameState.MainMenu;
             }
