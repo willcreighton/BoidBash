@@ -12,7 +12,7 @@ namespace BoidBash
         // Fields
         private int predHeight;
         private int predWidth;
-        private float rotation;
+        //private float rotation;
 
         // Properties
         public int PredHeight

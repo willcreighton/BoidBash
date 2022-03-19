@@ -35,6 +35,7 @@ namespace BoidBash
 
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
+        private Color boidColor = new Color(118, 220, 255);
 
         // State UI
         private MainMenuUI mainMenuUI;
@@ -93,7 +94,7 @@ namespace BoidBash
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
-            flock = new Flock(30, new Rectangle(0, 0, 800, 800), new Rectangle(0, 0, 800, 800), boidSprite, new Vector2(5, 7), Color.Aqua,
+            flock = new Flock(30, new Rectangle(0, 0, 800, 800), new Rectangle(0, 0, 800, 800), boidSprite, new Vector2(5, 7), boidColor,
                 _spriteBatch);
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");

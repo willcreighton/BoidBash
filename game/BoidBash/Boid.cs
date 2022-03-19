@@ -52,7 +52,7 @@ namespace BoidBash
             set { velocity = value; }
 
         }
-
+ 
         /// <summary>
         /// Constructs a boid given a starting position and starting velocity
         /// </summary>
@@ -63,6 +63,5 @@ namespace BoidBash
             this.velocity = velocity;
             bias = velocity;
         }
-
     }
 }
