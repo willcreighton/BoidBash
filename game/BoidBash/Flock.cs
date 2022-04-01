@@ -336,6 +336,14 @@ namespace BoidBash
         }
         // To Do: Determine if boid is in any of specified zones, so crushers can function
 
+        public void ClearFlock()
+        {
+            for (int x = boids.Count - 1; x >= 0; x--)
+            {
+                RemoveBoid(boids[x]);
+            }
+        }
+
         /// <summary>
         /// Draws each boid in the list
         /// </summary>

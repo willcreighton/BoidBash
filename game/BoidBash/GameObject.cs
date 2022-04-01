@@ -14,6 +14,8 @@ namespace BoidBash
         protected int windowHeight;
         protected int windowWidth;
 
+        private Color predatorColor = new Color(255, 61, 61);
+
         // Properties
         /// <summary>
         /// Read-only property for the position of the game object
@@ -21,6 +23,7 @@ namespace BoidBash
         public Rectangle Position
         {
             get { return position; }
+            set { position = value; }
         }
 
         public Texture2D Texture
@@ -49,7 +52,7 @@ namespace BoidBash
         /// <param name="sb"></param>
         public virtual void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, position, Color.IndianRed);
+            sb.Draw(texture, position, predatorColor);
         }
         /// <summary>
         /// Updates GameObject with GameTime

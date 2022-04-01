@@ -35,7 +35,7 @@ namespace BoidBash
 
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
-        private Color boidColor = new Color(118, 220, 255);
+        private Color boidColor = new Color(104, 226, 255);
 
         // State UI
         private MainMenuUI mainMenuUI;
@@ -201,6 +201,7 @@ namespace BoidBash
             if (IsSingleKeyPress(Keys.G))
             {
                 currentState = GameState.Game;
+                flock.AddBoids(50);
             }
         }
 
@@ -232,6 +233,8 @@ namespace BoidBash
             else if (IsSingleKeyPress(Keys.M))
             {
                 currentState = GameState.MainMenu;
+                flock.ClearFlock();
+                predator.Position = new Rectangle(width / 2, height / 2, 25, 25);
             }
         }
 

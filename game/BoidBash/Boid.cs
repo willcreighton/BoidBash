@@ -28,7 +28,6 @@ namespace BoidBash
             get { return bias; }
 
             set { bias = value; }
-
         }
 
         /// <summary>
@@ -39,7 +38,6 @@ namespace BoidBash
             get { return position; }
 
             set { position = value; }
-
         }
 
         /// <summary>
@@ -50,7 +48,6 @@ namespace BoidBash
             get { return velocity; }
 
             set { velocity = value; }
-
         }
  
         /// <summary>
