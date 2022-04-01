@@ -53,6 +53,9 @@ namespace BoidBash
         private int width;
         private int height;
 
+        // Temp
+        private Texture2D blank;
+
         public int Width
         {
             get { return width; }
@@ -94,7 +97,8 @@ namespace BoidBash
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
-            flock = new Flock(30, new Rectangle(0, 0, 800, 800), new Rectangle(0, 0, 800, 800), boidSprite, new Vector2(5, 7), boidColor,
+            blank = this.Content.Load<Texture2D>("White Square");
+            flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 700, 400), boidSprite, new Vector2(5, 7), boidColor,
                 _spriteBatch);
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
@@ -158,6 +162,7 @@ namespace BoidBash
                     mainMenuUI.Draw(_spriteBatch);
                     break;
                 case GameState.Game:
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.White);
                     gameUI.Draw(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);

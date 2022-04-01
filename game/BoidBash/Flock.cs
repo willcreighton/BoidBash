@@ -36,19 +36,19 @@ namespace BoidBash
         // Values to mess with:
         // Arbitrary scalars that control how the boids move
         // Cohesion scalar determines how much the cohesion vector is divided by, and how far the boid will move
-        private const int cohesionScalar = 100;
+        private const float cohesionScalar = .5f;
         // Separation scalar determines the distance boids try to keep from other boids
-        private const int separationScalar = 15;
+        private const float separationScalar = 2;
         // Alignment scalar determines what the vector is divided by, and so the amount alignment impacts
-        private const int alignmentScalar = 8;
+        private const float alignmentScalar = .3f;
         // Velocity Limit determines the velocity that boids are not allowed to exceed
-        private const int velocityLimit = 100;
+        private const float velocityLimit = 3;
         // Bounds avoidance determines the speed the boids turn away from the boids
-        private const int boundsAvoidance = 10;
+        private const float boundsAvoidance = 10;
         // Determines the velocity range from -BV to +BV the boids can start at
-        private const int beginningVelocity = 3;
+        private const float beginningVelocity = 3;
         // Visual Range determines how far the boid can see
-        private const int visualRange = 999;
+        private const float visualRange = 999;
 
         // Experimental: Boid randomness
         private const float randomnessRange = 0.5f;
