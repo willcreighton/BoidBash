@@ -169,6 +169,8 @@ namespace BoidBash
                     break;
                 case GameState.PauseMenu:
                     pauseMenuUI.Draw(_spriteBatch);
+                    flock.Draw();
+                    predator.Draw(_spriteBatch);
                     break;
                 case GameState.EndScreen:
                     endScreenUI.Draw(_spriteBatch);
