@@ -25,6 +25,10 @@ namespace BoidBash
             get { return predWidth; }
             set { predWidth = value; }
         }
+        public Rectangle PredatorPosition
+        {
+            get { return position; }
+        }
 
         // Parameterized Constructor
         public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth) :
