@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace BoidBash
 {
@@ -53,8 +54,10 @@ namespace BoidBash
         private int width;
         private int height;
 
-        // Temp
+        // Debug
         private Texture2D blank;
+        private List<Rectangle> bounds = new List<Rectangle>();
+        private bool inDebug = false;
 
         public int Width
         {
@@ -101,9 +104,12 @@ namespace BoidBash
             flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 700, 400), boidSprite, new Vector2(5, 7), boidColor,
                 _spriteBatch);
 
+            // Add boundaries
+            bounds.Add(new Rectangle(100, 100, 1000, 100));
+            bounds.Add(new Rectangle(100, 100, 100, 700));
+            flock.Boundaries = bounds;
+
             predTexture = Content.Load<Texture2D>("PredatorSprite");
-
-
 
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 25, 25),
@@ -161,8 +167,17 @@ namespace BoidBash
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
                     break;
-                case GameState.Game:
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.White);
+                case GameState.Game:  
+                    // Draws items only meant to be seen in debug
+                    if (inDebug)
+                    {
+                        foreach (Rectangle bound in flock.Boundaries)
+                        { 
+                            _spriteBatch.Draw(blank, bound, Color.Green);
+                        }
+                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.White);
+                    }
+                    // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
@@ -225,6 +240,18 @@ namespace BoidBash
             else if (IsSingleKeyPress(Keys.E))
             {
                 currentState = GameState.EndScreen;
+            }
+            // For toggling debug mode
+            if (IsSingleKeyPress(Keys.Enter))
+            {
+                if (inDebug)
+                {
+                    inDebug = false;
+                }
+                else
+                {
+                    inDebug = true;
+                }
             }
         }
 

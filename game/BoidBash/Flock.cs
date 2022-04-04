@@ -27,6 +27,10 @@ namespace BoidBash
         private Rectangle creationBounds;
         // Random object determining starting positions
         private Random rng;
+        // List of all areas to avoid
+        private List<Rectangle> boundaries = new List<Rectangle>();
+        // List of Pens
+        private List<Rectangle> pens = new List<Rectangle>();
 
         // Boid values
         private Texture2D asset;
@@ -52,6 +56,14 @@ namespace BoidBash
 
         // Experimental: Boid randomness
         private const float randomnessRange = 0.5f;
+
+        // Properties
+        // !Debug Property!
+        public List<Rectangle> Boundaries
+        {
+            get { return boundaries; }
+            set { boundaries = value; }
+        }
 
         /// <summary>
         /// Creates a Flock
