@@ -20,14 +20,18 @@ namespace BoidBash
         // Random Bias to give mind of own
         private Vector2 bias;
 
-        /// <summary>
-        /// Returns and sets the Bias of the boid
-        /// </summary>
-        public Vector2 Bias
-        {
-            get { return bias; }
+        // If not in a pen, the boid is set to -1.
+        // If it IS in a pen, the boid is set to the index of that pen in the list of pens until it leaves
+        private int pen = -1;
 
-            set { bias = value; }
+        /// <summary>
+        /// Returns and sets the pen the boid is in
+        /// </summary>
+        public int Pen
+        {
+            get { return pen; }
+
+            set { pen = value; }
         }
 
         /// <summary>

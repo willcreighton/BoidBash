@@ -30,7 +30,7 @@ namespace BoidBash
         // List of all areas to avoid
         private List<Rectangle> boundaries = new List<Rectangle>();
         // List of Pens
-        private List<Rectangle> pens = new List<Rectangle>();
+        private Bashers bashers;
 
         // Boid values
         private Texture2D asset;
@@ -63,6 +63,22 @@ namespace BoidBash
         {
             get { return boundaries; }
             set { boundaries = value; }
+        }
+
+        /// <summary>
+        /// Accesses the list of boids in the flock
+        /// </summary>
+        public List<Boid> Boids
+        {
+            get { return boids;  }
+        }
+
+        /// <summary>
+        /// Accesses the pens that the flock has
+        /// </summary>
+        public Bashers Pens
+        {
+            get { return Pens; }
         }
 
         /// <summary>
@@ -123,6 +139,9 @@ namespace BoidBash
                 LimitVelocity(b);
                 // Update position based on rules being applied
                 b.Position = b.Position + b.Velocity;
+
+                // Track if the boid is in a pen
+                InPen(b);
             }
         }
 
@@ -405,6 +424,34 @@ namespace BoidBash
                 // Draw the boid to the spritebatch
                 sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
                     null, defaultColor, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+            }
+        }
+
+        /// <summary>
+        /// Detect if a boid is within a pen, and if so, flag it within said pen
+        /// </summary>
+        /// <returns></returns>
+        public void InPen(Boid boid)
+        {
+            bool within = false;
+            // If there are pens
+            if (bashers.Pens.Count > 0)
+            {
+                // For each pen in the list
+                for (int x = 0; x < bashers.Pens.Count; x++)
+                {
+                    // If the boid is within the pen, flag it as such
+                    if (bashers.Pens[x].Contains(boid.Position.X, boid.Position.Y))
+                    {
+                        within = true;
+                        boid.Pen = x;
+                    }
+                    if (!within)
+                    {
+                        // If the boid is not within any pen, give it -1
+                        boid.Pen = -1;
+                    }
+                }
             }
         }
     }
