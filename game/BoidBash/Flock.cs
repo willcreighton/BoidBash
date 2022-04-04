@@ -197,6 +197,7 @@ namespace BoidBash
             // Return finished separation
             return separationVector;
         }
+        // TODO - Check that normalization does not hurt the intended direction
 
         /// <summary>
         /// Returns a vector representing the decion to align with other boids
@@ -259,6 +260,8 @@ namespace BoidBash
         /// <returns></returns>
         private Vector2 Bounds(Boid boid)
         {
+            // Previous Bounds Code
+            /*
             // Get the minimum and max values to stay within
             int xMin = bounds.X;
             int xMax = bounds.X + bounds.Width;
@@ -290,6 +293,37 @@ namespace BoidBash
 
             // Return bounds velocity
             return boundsVelocity;
+            */
+
+            // Create new vector
+            Vector2 boundsVelocity = new Vector2(0,0);
+            List<Rectangle> nearbyBounds = new List<Rectangle>();
+            List<Rectangle> closeBounds = new List<Rectangle>();
+
+            // Use Separation method to keep them away from the walls
+            // If within a certain distance of boundary, separate with same method as boids
+
+            // If not within that distance but stil close, start steering towards creation bounds
+            foreach (Rectangle bound in boundaries)
+            {
+                // If within any boundary, set bounds velocity to 0, move to random point in creation bounds,
+                //  and return
+
+                // If within minimum distance, add to close bounds
+
+                // If within steer away distance, add to nearby bounds
+
+            }
+
+            // If within minimum distance, keep from going past boundary
+
+            // If within steering distance, steer away towards creation bounds
+            //  based on distance to closest boundary
+
+            // Talk to Will before implementing steps
+
+            // Return final vector
+            return boundsVelocity;
 
         }
         // Possibility: Second method that is a hard limit for the boids, make current bounds method cushioned by few pixels
@@ -304,6 +338,8 @@ namespace BoidBash
         {
             // Currently unimplemented
             Vector2 predatorAvoidanceVector = new Vector2(0, 0);
+
+            // TODO - Once new bounds function is working, use similar formula to complete predator avoidance
 
             return predatorAvoidanceVector;
         }

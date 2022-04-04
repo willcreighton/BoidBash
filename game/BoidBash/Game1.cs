@@ -105,8 +105,11 @@ namespace BoidBash
                 _spriteBatch);
 
             // Add boundaries
+            // These are temporary values, which do not include space for the pens yet
             bounds.Add(new Rectangle(100, 100, 1000, 100));
             bounds.Add(new Rectangle(100, 100, 100, 700));
+            bounds.Add(new Rectangle(100, 700, 1000, 100));
+            bounds.Add(new Rectangle(1000, 100, 100, 700));
             flock.Boundaries = bounds;
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
