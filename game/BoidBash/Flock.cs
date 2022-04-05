@@ -339,8 +339,6 @@ namespace BoidBash
             // If within steering distance, steer away towards creation bounds
             //  based on distance to closest boundary
 
-            // Talk to Will before implementing steps
-
             // Return final vector
             return boundsVelocity;
 

@@ -122,7 +122,6 @@ namespace BoidBash
             flock.Pens.AddPen(new Rectangle(200, 600, 100, 100));
             flock.Pens.AddPen(new Rectangle(900, 600, 100, 100));
 
-
             predTexture = Content.Load<Texture2D>("PredatorSprite");
 
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
@@ -143,6 +142,7 @@ namespace BoidBash
             UpdateScores(5);
             UpdateScores(8);
             UpdateScores(7);
+            
 
             System.Diagnostics.Debug.WriteLine(GetScoreList());
             */
@@ -213,6 +213,10 @@ namespace BoidBash
                     gameUI.Draw(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
+                    foreach (Vector3 info in flock.Pens.ScorePrints)
+                    {
+                        _spriteBatch.DrawString(primaryFont, info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
+                    }
                     break;
                 case GameState.PauseMenu:
                     pauseMenuUI.Draw(_spriteBatch);

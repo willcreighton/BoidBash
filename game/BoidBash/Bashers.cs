@@ -18,11 +18,18 @@ namespace BoidBash
     {
         // Fields
         private List<Rectangle> pens = new List<Rectangle>();
+        private List<Vector3> scorePrints = new List<Vector3>();
 
         // Properties
         public List<Rectangle> Pens
         {
             get { return pens;  }
+        }
+        // Clear after drawing all scores in draw method
+        public List<Vector3> ScorePrints
+        {
+            get { return scorePrints; }
+            set { scorePrints = value; }
         }
 
         // Constructor
@@ -47,23 +54,30 @@ namespace BoidBash
         // Hey Team K, to use this, each button is associated with a rectangle. 
         //  Call this method when the button is clicked, and pass in the flock of boids and the index
         //  that the rectangle is at in the list in order to use it. So, button 1; Pen 1; send in 1 as the parameter.
+        //  Use the long that this returns to add to the score
         /// <summary>
         /// Destroys all boids within the specified pen.
-        /// Takes the flock and the index of the rectangle the boid is in as parameters
+        /// Takes the flock, the index of the rectangle the boid is in, and the current reached score goal as parameters
         /// </summary>
         /// <param name="flock"></param>
         /// <param name="pen"></param>
-        public void DestroyContainedBoids(Flock flock, int pen)
+        public long DestroyContainedBoids(Flock flock, int pen, int scoregoal)
         {
+            long scoreIncrease = 0;
+            int boidsBashed = 0;
             foreach (Boid boid in flock.Boids)
             {
                 if (boid.Pen == pen)
                 {
-                    // TODO - increment score
+                    boidsBashed++;
+                    scoreIncrease += (long)Math.Pow(scoregoal, boidsBashed);
                     // TODO - apply visuals
+                    scorePrints.Add(new Vector3(boid.Position.X, boid.Position.Y, (float)Math.Pow(scoregoal, boidsBashed)));
                     flock.RemoveBoid(boid);
                 }
             }
+
+            return scoreIncrease;
         }
     }
 }
