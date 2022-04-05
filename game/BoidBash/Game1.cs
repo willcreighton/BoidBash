@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.IO;
+using System;
 
 namespace BoidBash
 {
@@ -53,6 +55,9 @@ namespace BoidBash
         private Texture2D predTexture;
         private int width;
         private int height;
+
+        // Player Score
+        private long player1Score = 0;
 
         // Debug
         private Texture2D blank;
@@ -122,6 +127,20 @@ namespace BoidBash
             gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, headerFont, primaryFont);
+
+            // TEMPORARY TESTING
+            // Enable to test File IO
+            /*
+            player1Score = 2;
+            UpdateScores(10);
+            UpdateScores(0);
+            UpdateScores(5);
+            UpdateScores(8);
+            UpdateScores(7);
+
+            System.Diagnostics.Debug.WriteLine(getScoreList());
+            */
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -285,5 +304,140 @@ namespace BoidBash
                 currentState = GameState.MainMenu;
             }
         }
+
+        // TODO - Add playernames to text file
+        /// <summary>
+        /// This method updates the high scores text file
+        /// </summary>
+        private void UpdateScores(long score)
+        {
+            List<long> scores = new List<long>();
+            string line = null;
+            StreamReader input = null;
+            StreamWriter output = null;
+            bool willAdd = false;
+            bool added = false;
+
+            // Read through text file, add them to the list of scores
+            try
+            {
+                input = new StreamReader("..//..//..//Highscores.txt");
+
+                while ((line = input.ReadLine()) != null)
+                {
+                    scores.Add(long.Parse(line));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            if (input != null)
+            {
+                input.Close();
+            }
+
+            // If there are less than 10 numbers in the list, willAdd is automatically true
+            if (scores.Count < 10)
+            {
+                willAdd = true;
+            }
+            // Compare with new score
+            for (int x = scores.Count - 1; x >= 0; x--)
+            {
+                // Starting at the lowest number, compare them
+                // If it is greater than the current score, set willAdd to true
+                if (score > scores[x])
+                {
+                    willAdd = true;
+                }
+                // If it is less than or equal to the current item but willAdd is true,
+                //  Insert the score in the previous position
+                else if ((score < scores[x] || score == scores[x]) && willAdd)
+                {
+                    scores.Insert(x + 1, score);
+                    added = true;
+                    break;
+                }
+                // If it is less than the current item and it will not be added, stop the loop
+                else
+                {
+                    break;
+                }
+            }
+
+            // If it hasn't been added yet, add it now
+            if (willAdd && !added)
+            {
+                scores.Insert(0, score);
+            }
+
+            // If the score was added, and there are more than 10 items in the list,
+            //  remove the last item in the list
+            if (willAdd && scores.Count > 10)
+            {
+                scores.RemoveAt(scores.Count - 1);
+            }
+
+            // If the score was added, write the new text file
+            if (willAdd)
+            {
+                try
+                {
+                    output = new StreamWriter("..//..//..//Highscores.txt");
+
+                    // Write a line for each score
+                    foreach (long num in scores)
+                    {
+                        output.WriteLine(num);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                output.Close();
+            }
+        }
+        
+        /// <summary>
+        /// Returns a string containing a formatted list of the top scores
+        /// </summary>
+        /// <returns></returns>
+        private string getScoreList()
+        {
+            string scores = "";
+            string line = null;
+            StreamReader input = null;
+
+            try
+            {
+                // Create streamreader
+                input = new StreamReader("..//..//..//Highscores.txt");
+
+                // Loop through the 10 or less scores in the list
+                for (int x = 0; x < 10 && ((line = input.ReadLine()) != null); x++)
+                {
+                    // Add which place they are in, then the score, then a new line
+                    scores += ((x + 1) + ". " + line + "\n");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            // Close streamreader
+            if (input != null)
+            {
+                input.Close();
+            }
+
+            // return string
+            return scores;
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace BoidBash
     class Bashers
     {
         // Fields
-        private List<Rectangle> pens;
+        private List<Rectangle> pens = new List<Rectangle>();
 
         // Properties
         public List<Rectangle> Pens

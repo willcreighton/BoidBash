@@ -30,7 +30,7 @@ namespace BoidBash
         // List of all areas to avoid
         private List<Rectangle> boundaries = new List<Rectangle>();
         // List of Pens
-        private Bashers bashers;
+        private Bashers bashers = new Bashers();
 
         // Boid values
         private Texture2D asset;
