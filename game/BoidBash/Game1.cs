@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System;
 
 namespace BoidBash
 {
@@ -106,7 +106,7 @@ namespace BoidBash
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
-            flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 700, 400), boidSprite, new Vector2(5, 7), boidColor,
+            flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300), boidSprite, new Vector2(5, 7), boidColor,
                 _spriteBatch);
 
             // Add boundaries
@@ -116,6 +116,12 @@ namespace BoidBash
             bounds.Add(new Rectangle(100, 700, 1000, 100));
             bounds.Add(new Rectangle(1000, 100, 100, 700));
             flock.Boundaries = bounds;
+
+            flock.Pens.AddPen(new Rectangle(200, 200, 100, 100));
+            flock.Pens.AddPen(new Rectangle(900, 200, 100, 100));
+            flock.Pens.AddPen(new Rectangle(200, 600, 100, 100));
+            flock.Pens.AddPen(new Rectangle(900, 600, 100, 100));
+
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
 
@@ -138,7 +144,7 @@ namespace BoidBash
             UpdateScores(8);
             UpdateScores(7);
 
-            System.Diagnostics.Debug.WriteLine(getScoreList());
+            System.Diagnostics.Debug.WriteLine(GetScoreList());
             */
 
         }
@@ -198,6 +204,10 @@ namespace BoidBash
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
                         _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.White);
+                        foreach (Rectangle pen in flock.Pens.Pens)
+                        {
+                            _spriteBatch.Draw(blank, pen, Color.Red);
+                        }
                     }
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
@@ -406,7 +416,7 @@ namespace BoidBash
         /// Returns a string containing a formatted list of the top scores
         /// </summary>
         /// <returns></returns>
-        private string getScoreList()
+        private string GetScoreList()
         {
             string scores = "";
             string line = null;

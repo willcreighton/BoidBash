@@ -78,7 +78,7 @@ namespace BoidBash
         /// </summary>
         public Bashers Pens
         {
-            get { return Pens; }
+            get { return bashers; }
         }
 
         /// <summary>
