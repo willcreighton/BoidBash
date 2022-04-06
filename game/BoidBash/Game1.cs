@@ -135,6 +135,7 @@ namespace BoidBash
 
             // TEMPORARY TESTING
             // Enable to test File IO
+            
             /*
             player1Score = 2;
             UpdateScores(10);
@@ -142,7 +143,12 @@ namespace BoidBash
             UpdateScores(5);
             UpdateScores(8);
             UpdateScores(7);
-            
+            UpdateScores(21);
+            UpdateScores(9);
+            UpdateScores(11);
+            UpdateScores(8);
+            UpdateScores(7);
+
 
             System.Diagnostics.Debug.WriteLine(GetScoreList());
             */
