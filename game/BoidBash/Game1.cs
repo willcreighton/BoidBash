@@ -213,10 +213,12 @@ namespace BoidBash
                     gameUI.Draw(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
+                    // Draws and removes any new point numbers that show up after destroying boids
                     foreach (Vector3 info in flock.Pens.ScorePrints)
                     {
                         _spriteBatch.DrawString(primaryFont, info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
                     }
+                    flock.Pens.ScorePrints.Clear();
                     break;
                 case GameState.PauseMenu:
                     pauseMenuUI.Draw(_spriteBatch);
