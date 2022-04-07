@@ -125,10 +125,10 @@ namespace BoidBash
             bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
 
-            //flock.Pens.AddPen(new Rectangle(200, 200, 100, 100));
-            //flock.Pens.AddPen(new Rectangle(900, 200, 100, 100));
-            //flock.Pens.AddPen(new Rectangle(200, 600, 100, 100));
-            //flock.Pens.AddPen(new Rectangle(900, 600, 100, 100));
+            flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
+            flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
+            flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
+            flock.Pens.AddPen(new Rectangle(100, 550, 100, 150));
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
 
