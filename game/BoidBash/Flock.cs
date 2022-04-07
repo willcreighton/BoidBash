@@ -40,11 +40,11 @@ namespace BoidBash
         // Values to mess with:
         // Arbitrary scalars that control how the boids move
         // Cohesion scalar determines how much the cohesion vector is divided by, and how far the boid will move
-        private const float cohesionScalar = 1000;
+        private const float cohesionScalar = 10000;
         // Separation scalar determines the distance boids try to keep from other boids
         private const float separationScalar = 15;
         // Alignment scalar determines what the vector is divided by, and so the amount alignment impacts
-        private const float alignmentScalar = 0.01f;
+        private const float alignmentScalar = 0.5f;
         // Velocity Limit determines the velocity that boids are not allowed to exceed
         private const float velocityLimit = 3;
         // Bounds avoidance is the distance where boids start to turn away from bounds
@@ -137,11 +137,14 @@ namespace BoidBash
                 b.Velocity = b.Velocity + cohesion + separation + alignment + predatorAvoidance;
                 // Limit the speed of boids so they don't go too fast
                 LimitVelocity(b);
-                // Update position based on rules being applied
-                b.Position = b.Position + b.Velocity;
 
                 // Calculate and apply bounds avoidance
                 Bounds(b);
+
+                // Update position based on rules being applied
+                b.Position = b.Position + b.Velocity;
+
+                
                 // Track if the boid is in a pen
                 InPen(b);
             }
@@ -349,9 +352,13 @@ namespace BoidBash
 
                 // If the boundary contains the position plus the velocity, set velocity not to go past the 
                 //  distance to the object
+                if (distance < boundsAvoidance)
+                {
+
+                }
                 if (bound.Contains(boid.Position + boid.Velocity))
                 {
-                    boid.Velocity -= (boid.Position - result);
+                    boid.Velocity *= -1;
                 }
 
                 // If the boundary is within distance of bounds avoidance, add extra to boid velocity in opposite 
