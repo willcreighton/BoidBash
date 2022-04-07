@@ -289,6 +289,7 @@ namespace BoidBash
             // If not within that distance but stil close, start steering towards creation bounds
             foreach (Rectangle bound in boundaries)
             {
+                
                 // If within a boundary, break and start repositioning
                 if (bound.Contains(boid.Position))
                 {
@@ -296,6 +297,7 @@ namespace BoidBash
                     break;
                 }
 
+                /*
                 // Find the nearest point on the bound
 
                 // Find the left, right, height and width
@@ -349,18 +351,17 @@ namespace BoidBash
 
                 // Calculate distance to nearest point
                 float distance = Vector2.Distance(boid.Position, result);
+                */
+
+                // **Currently, Bounds is rudementary, and only needs this**
 
                 // If the boundary contains the position plus the velocity, set velocity not to go past the 
                 //  distance to the object
-                if (distance < boundsAvoidance)
-                {
-
-                }
                 if (bound.Contains(boid.Position + boid.Velocity))
                 {
                     boid.Velocity *= -1;
                 }
-
+                
                 // If the boundary is within distance of bounds avoidance, add extra to boid velocity in opposite 
                 //  direction of boundary
             }

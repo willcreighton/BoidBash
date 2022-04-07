@@ -117,18 +117,21 @@ namespace BoidBash
             flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
 
-            // Add boundaries
-            // These are temporary values, which do not include space for the pens yet
-            bounds.Add(new Rectangle(100, 100, 1000, 100));
-            bounds.Add(new Rectangle(100, 100, 100, 700));
-            bounds.Add(new Rectangle(100, 700, 1000, 100));
-            bounds.Add(new Rectangle(1000, 100, 100, 700));
+            // Add boundaries for Game flock
+            bounds.Add(new Rectangle(350, 100, 750, 100));
+            bounds.Add(new Rectangle(100, 100, 100, 450));
+            bounds.Add(new Rectangle(100, 700, 750, 100));
+            bounds.Add(new Rectangle(1000, 350, 100, 450));
+            bounds.Add(new Rectangle(100, 0, 350, 100));
+            bounds.Add(new Rectangle(0, 450, 100, 350));
+            bounds.Add(new Rectangle(1100, 100, 100, 350));
+            bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
 
-            flock.Pens.AddPen(new Rectangle(200, 200, 100, 100));
-            flock.Pens.AddPen(new Rectangle(900, 200, 100, 100));
-            flock.Pens.AddPen(new Rectangle(200, 600, 100, 100));
-            flock.Pens.AddPen(new Rectangle(900, 600, 100, 100));
+            flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
+            flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
+            flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
+            flock.Pens.AddPen(new Rectangle(100, 550, 100, 150));
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
 
