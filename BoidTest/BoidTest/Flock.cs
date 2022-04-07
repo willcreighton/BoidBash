@@ -143,6 +143,7 @@ namespace BoidTest
             // Remove the position of the current boid so it is not factored in
             cohesionVector -= boid.Position;
             // Get the average position of all boids
+            // only divide by number added TODO
             cohesionVector /= boids.Count - 1;
 
             // Return the vector divided by the cohesion scalar

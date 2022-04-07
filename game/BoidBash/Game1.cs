@@ -106,8 +106,8 @@ namespace BoidBash
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
-            flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300), boidSprite, new Vector2(5, 7), boidColor,
-                _spriteBatch);
+            flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
+                boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
 
             // Add boundaries
             // These are temporary values, which do not include space for the pens yet
@@ -139,13 +139,13 @@ namespace BoidBash
             /*
             player1Score = 2;
             UpdateScores(10);
-            UpdateScores(0);
-            UpdateScores(5);
-            UpdateScores(8);
+            UpdateScores(0444214);
+            UpdateScores(-5);
+            UpdateScores(855);
             UpdateScores(7);
-            UpdateScores(21);
+            UpdateScores(2112123123211111);
             UpdateScores(9);
-            UpdateScores(11);
+            UpdateScores(131232131);
             UpdateScores(8);
             UpdateScores(7);
 
@@ -222,9 +222,10 @@ namespace BoidBash
                     // Draws and removes any new point numbers that show up after destroying boids
                     foreach (Vector3 info in flock.Pens.ScorePrints)
                     {
-                        _spriteBatch.DrawString(primaryFont, info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
+                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     flock.Pens.ScorePrints.Clear();
+                    // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
                     pauseMenuUI.Draw(_spriteBatch);
