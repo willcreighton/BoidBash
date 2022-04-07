@@ -260,7 +260,6 @@ namespace BoidBash
 
             // End the Sprite Batch
             _spriteBatch.End();
-            ShapeBatch.End();
             base.Draw(gameTime);
         }
 
