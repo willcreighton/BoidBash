@@ -99,6 +99,9 @@ namespace BoidBash
             // Assemble Vector
             returnNums = new Vector2(scoreIncrease, ifScoreGoal);
 
+            // Add new boids to the flock
+            flock.AddBoids(boidsBashed);
+
             return returnNums;
         }
     }
