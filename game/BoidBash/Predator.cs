@@ -56,6 +56,8 @@ namespace BoidBash
         }
         //*/
 
+        // Note from Brian - If you are attempting to keep within boundaries, I recommend stopping it from passing
+        //  through any rectangles in the flock.Boundaries list.
         // Movement
         public override void Update(GameTime gameTime)                                         // Each If statement keeps the predator inside a set of boundaries
         {
