@@ -203,9 +203,8 @@ namespace BoidBash
         {
             GraphicsDevice.Clear(backgroundColor);
 
-            // Begin the Sprite Batch
+            // Begin the Sprite Batch and the ShapeBatch
             _spriteBatch.Begin();
-
             ShapeBatch.Begin(GraphicsDevice);
 
             // GameState switches
@@ -214,7 +213,22 @@ namespace BoidBash
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
                     break;
-                case GameState.Game:  
+                case GameState.Game:
+
+                    //Draws the main box area for the game
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
+
+                    /*Draws the Crushers from top to bottom -
+                     * Top Left
+                     * Top Right
+                     * Bottom Right
+                     * Bottom Left
+                     */
+                    ShapeBatch.Box(200f, 100f, 150f, 100f, Color.Red);
+                    ShapeBatch.Box(1000f, 200f, 100f, 150f, Color.Red);
+                    ShapeBatch.Box(850f, 700f, 150f, 100f, Color.Red);
+                    ShapeBatch.Box(100f, 550f, 100f, 150f, Color.Red);
+
                     // Draws items only meant to be seen in debug
                     if (inDebug)
                     {
@@ -242,7 +256,6 @@ namespace BoidBash
                     }
                     flock.Pens.ScorePrints.Clear();
 
-                    
                     // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
@@ -258,8 +271,11 @@ namespace BoidBash
                     break;
             }
 
-            // End the Sprite Batch
+            // End the Sprite Batch and the ShapeBatch
             _spriteBatch.End();
+
+            ShapeBatch.End();
+
             base.Draw(gameTime);
         }
 
