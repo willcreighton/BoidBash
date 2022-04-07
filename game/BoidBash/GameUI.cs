@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Threading;
+using System.Timers;
 
 namespace BoidBash
 {
@@ -23,6 +23,8 @@ namespace BoidBash
         private long score = 0;
         private int timer = 60;
         private int scoreGoal = 1;
+
+        public Timer aTmr = new Timer(1000);
 
         // Constructor
         public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
@@ -50,15 +52,20 @@ namespace BoidBash
         /// <summary>
         /// This method decrements the timer
         /// </summary>
-        public int TimerUpdater()
+        public void TimerUpdater()
         {
-            if (timer > 0)
-            {
-                // Wait 1 second logic here...
-                timer--;
-            }
+            aTmr.Elapsed -= ATmr_Elapsed;
+            aTmr.Enabled = true;
+            aTmr.AutoReset = true;
+            aTmr.Start();
+            Console.Read();
+        }
 
-            return timer;
+        public void ATmr_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            //timer = timer - 1;
+            timer--;
+            throw new NotImplementedException();
         }
 
         /// <summary>

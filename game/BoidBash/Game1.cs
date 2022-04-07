@@ -178,6 +178,9 @@ namespace BoidBash
                     ProcessGame();
                     flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
                     predator.Update(gameTime);
+                    gameUI.TimerUpdater();
+                    //gameUI.ATmr_Elapsed();
+                    
 
                     // Testing score incrementing
                     /*
@@ -225,10 +228,10 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    ShapeBatch.Box(200f, 100f, 150f, 100f, Color.Red);
-                    ShapeBatch.Box(1000f, 200f, 100f, 150f, Color.Red);
-                    ShapeBatch.Box(850f, 700f, 150f, 100f, Color.Red);
-                    ShapeBatch.Box(100f, 550f, 100f, 150f, Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Red);
 
                     // Draws items only meant to be seen in debug
                     if (inDebug)
