@@ -59,6 +59,9 @@ namespace BoidBash
         // Player Score
         private long player1Score = 0;
 
+        //Timer
+        float timer = 60f;
+
         // Debug
         private Texture2D blank;
         private List<Rectangle> bounds = new List<Rectangle>();
@@ -138,6 +141,8 @@ namespace BoidBash
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, headerFont, primaryFont);
 
+            headerFont = Content.Load<SpriteFont>("headerFont");
+
             // TEMPORARY TESTING
             // Enable to test File IO
             
@@ -177,10 +182,8 @@ namespace BoidBash
                     ProcessGame();
                     flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
                     predator.Update(gameTime);
-                    gameUI.TimerUpdater();
-                    //gameUI.ATmr_Elapsed();
+                    timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     
-
                     // Testing score incrementing
                     /*
                     player1Score++;
@@ -248,7 +251,8 @@ namespace BoidBash
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    gameUI.DrawTimer(_spriteBatch);
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("00"), new Vector2(500, 15),
+                    Color.White);
                     gameUI.DrawScoreGoal(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
