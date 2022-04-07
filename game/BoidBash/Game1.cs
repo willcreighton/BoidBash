@@ -206,6 +206,8 @@ namespace BoidBash
             // Begin the Sprite Batch
             _spriteBatch.Begin();
 
+            ShapeBatch.Begin(GraphicsDevice);
+
             // GameState switches
             switch (currentState)
             {
@@ -257,6 +259,8 @@ namespace BoidBash
                         _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     flock.Pens.ScorePrints.Clear();
+
+                    
                     // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
