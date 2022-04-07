@@ -35,6 +35,7 @@ namespace BoidBash
         // Fonts
         private SpriteFont primaryFont;
         private SpriteFont headerFont;
+        private SpriteFont titleFont; // TODO: Create far larger font for title screen
 
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
@@ -236,7 +237,7 @@ namespace BoidBash
                     //Draws the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
 
-                    /*Draws the Crushers from top to bottom -
+                    /* Draws the Crushers from top to bottom -
                      * Top Left
                      * Top Right
                      * Bottom Right
@@ -277,6 +278,20 @@ namespace BoidBash
                     // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
+                    //Draws the main box area for the game
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
+
+                    /* Draws the Crushers from top to bottom -
+                     * Top Left
+                     * Top Right
+                     * Bottom Right
+                     * Bottom Left
+                     */
+                    ShapeBatch.Box(200f, 100f, 150f, 100f, Color.Red);
+                    ShapeBatch.Box(1000f, 200f, 100f, 150f, Color.Red);
+                    ShapeBatch.Box(850f, 700f, 150f, 100f, Color.Red);
+                    ShapeBatch.Box(100f, 550f, 100f, 150f, Color.Red);
+
                     gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
                     flock.Draw();

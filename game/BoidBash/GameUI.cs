@@ -82,7 +82,7 @@ namespace BoidBash
             // State display
             _spriteBatch.DrawString(
                 headerFont,
-                "BOID BASH",
+                "Boid Bash",
                 new Vector2(20, 15),
                 Color.White
                 );
@@ -90,7 +90,7 @@ namespace BoidBash
             // Pause Menu prompt
             _spriteBatch.DrawString(
                 primaryFont,
-                "Press 'P' to access the Pause Menu.",
+                "Press 'P' to Pause",
                 new Vector2(20, windowHeight - 40),
                 Color.White
                 );

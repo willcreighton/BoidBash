@@ -40,15 +40,15 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "Boid Bash",
-                new Vector2(520, 300),
+                new Vector2(510, 300),
                 Color.White
                 );
 
             // Game prompt
             _spriteBatch.DrawString(
                 primaryFont,
-                "Press 'G' to access the Game.",
-                new Vector2(20, windowHeight - 40),
+                "Press 'G' to start the Game",
+                new Vector2(455, windowHeight - 400),
                 Color.White
                 );
         }
