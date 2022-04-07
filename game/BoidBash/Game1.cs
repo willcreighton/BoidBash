@@ -73,6 +73,11 @@ namespace BoidBash
             get { return height; }
         }
 
+        public long Score
+        {
+            get { return player1Score; }
+        }
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -172,6 +177,12 @@ namespace BoidBash
                     ProcessGame();
                     flock.ProcessBoids(new Vector2(0, 0));
                     predator.Update(gameTime);
+
+                    // Testing score incrementing
+                    /*
+                    player1Score++;
+                    gameUI.ScoreUpdater(player1Score);
+                    */
                     break;
                 case GameState.PauseMenu:
                     ProcessPauseMenu();
@@ -217,6 +228,9 @@ namespace BoidBash
                     }
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
+                    gameUI.DrawScore(_spriteBatch);
+                    gameUI.DrawTimer(_spriteBatch);
+                    gameUI.DrawScoreGoal(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
                     // Draws and removes any new point numbers that show up after destroying boids
@@ -228,6 +242,7 @@ namespace BoidBash
                     // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
+                    gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);

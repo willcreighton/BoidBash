@@ -39,8 +39,8 @@ namespace BoidBash
             // State display
             _spriteBatch.DrawString(
                 headerFont,
-                "Main Menu",
-                new Vector2(20, 15),
+                "Boid Bash",
+                new Vector2(520, 300),
                 Color.White
                 );
 
