@@ -212,6 +212,24 @@ namespace BoidBash
             {
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
+                    // This is to be deleted once proven functional!
+
+                    // Attempt at finding nearest point on a rectangle
+
+                    Rectangle testRectangle = new Rectangle(100, 100, 100, 100);
+                    float left = testRectangle.X;
+                    float top = testRectangle.Y;
+                    float width = testRectangle.Width;
+                    float height = testRectangle.Height;
+
+                    Vector2 testPoint = new Vector2(120, 80);
+
+                    float right = left + width;
+                    float botom = top + height;
+
+                    
+
+
                     break;
                 case GameState.Game:
 
