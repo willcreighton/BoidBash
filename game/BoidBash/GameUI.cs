@@ -82,7 +82,7 @@ namespace BoidBash
             // State display
             _spriteBatch.DrawString(
                 headerFont,
-                "Game",
+                "BOID BASH",
                 new Vector2(20, 15),
                 Color.White
                 );

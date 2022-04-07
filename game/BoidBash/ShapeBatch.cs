@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace PE_Recursion
+namespace BoidBash
 {
 	/// <summary>
 	/// Allows simple shapes to be drawn in MonoGame.  These shapes
