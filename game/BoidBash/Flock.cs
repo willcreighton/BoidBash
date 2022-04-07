@@ -40,11 +40,11 @@ namespace BoidBash
         // Values to mess with:
         // Arbitrary scalars that control how the boids move
         // Cohesion scalar determines how much the cohesion vector is divided by, and how far the boid will move
-        private const float cohesionScalar = .5f;
+        private const float cohesionScalar = 1000;
         // Separation scalar determines the distance boids try to keep from other boids
-        private const float separationScalar = 2;
+        private const float separationScalar = 15;
         // Alignment scalar determines what the vector is divided by, and so the amount alignment impacts
-        private const float alignmentScalar = .3f;
+        private const float alignmentScalar = 0.01f;
         // Velocity Limit determines the velocity that boids are not allowed to exceed
         private const float velocityLimit = 3;
         // Bounds avoidance is the distance where boids start to turn away from bounds
@@ -52,9 +52,9 @@ namespace BoidBash
         // Determines the velocity range from -BV to +BV the boids can start at
         private const float beginningVelocity = 3;
         // Visual Range determines how far the boid can see
-        private const float visualRange = 999;
+        private const float visualRange = 50;
         // Predator avoidance describes what distance boids attempt to keep from the predator
-        private const float predatorAvoidance = 10;
+        private const float predatorAvoidance = 100;
 
         // Experimental: Boid randomness
         private const float randomnessRange = 0.5f;
@@ -259,16 +259,11 @@ namespace BoidBash
         /// <param name="boid"></param>
         private void LimitVelocity(Boid boid)
         {
-            // Get the absolute velocity of the boid
-            // TODO - replace with normalize?
-            int absoluteVelocity = (int)Math.Sqrt(Math.Pow(boid.Position.X, 2)
-                + Math.Pow(boid.Position.Y, 2));
-
-            // If the absolute velocity is higher than the limit
-            if (absoluteVelocity > velocityLimit)
+            // Makes the maximum velocity based on if it goes over the velocity limit
+            if (Math.Sqrt(boid.Velocity.X * boid.Velocity.X + boid.Velocity.Y * boid.Velocity.Y) > velocityLimit)
             {
-                // Keep boid direction, but change magnitude
-                boid.Velocity = (boid.Velocity / absoluteVelocity) * velocityLimit;
+                // If higher than limit, set to max speed but same angle
+                boid.Velocity = (boid.Velocity / (float)Math.Sqrt(boid.Velocity.X * boid.Velocity.X + boid.Velocity.Y * boid.Velocity.Y)) * velocityLimit;
             }
         }
 
@@ -356,7 +351,7 @@ namespace BoidBash
                 //  distance to the object
                 if (bound.Contains(boid.Position + boid.Velocity))
                 {
-                    // TODO - get new velocity
+                    boid.Velocity -= (boid.Position - result);
                 }
 
                 // If the boundary is within distance of bounds avoidance, add extra to boid velocity in opposite 
@@ -424,7 +419,7 @@ namespace BoidBash
                         rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
 
                     // Randomize velocity for new boids
-                    velocity = new Vector2(rng.Next(-3, 3), rng.Next(-3, 3));
+                    velocity = new Vector2(rng.Next(-30, 30), rng.Next(-30, 30));
 
                     // Add new boid to list
                     boids.Add(new Boid(position, velocity));

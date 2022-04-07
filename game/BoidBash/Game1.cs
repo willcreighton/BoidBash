@@ -175,7 +175,7 @@ namespace BoidBash
                     break;
                 case GameState.Game:
                     ProcessGame();
-                    flock.ProcessBoids(new Vector2(0, 0));
+                    flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
                     predator.Update(gameTime);
 
                     // Testing score incrementing
