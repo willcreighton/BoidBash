@@ -13,6 +13,7 @@ namespace BoidBash
         private int predHeight;
         private int predWidth;
         //private float rotation;
+        private Vector2 actualPosition;
 
         // Properties
         public int PredHeight
@@ -29,6 +30,10 @@ namespace BoidBash
         {
             get { return position; }
         }
+        public Vector2 ActualPosition
+        {
+            get { return actualPosition; }
+        }
 
         // Parameterized Constructor
         public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth) :
@@ -38,6 +43,8 @@ namespace BoidBash
             this.position = position;
             this.predHeight = predHeight;
             this.predWidth = predWidth;
+
+            actualPosition = new Vector2(position.Center.X, position.Center.Y);
         }
 
         //
@@ -82,7 +89,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Right) || keyBState.IsKeyDown(Keys.D))
             {
                 //rotation = MathHelper.ToRadians(90);
-                if ((position.X + predWidth) <= windowWidth)
+                if (position.X + predWidth <= windowWidth)
                 {
                     position.X += 5;
                 }
@@ -90,8 +97,8 @@ namespace BoidBash
 
             if (keyBState.IsKeyDown(Keys.Down) || keyBState.IsKeyDown(Keys.S))
             {
-                //rotation = MathHelper.ToRadians(180);
-                if ((position.Y + predHeight) <= windowHeight)
+                //    //rotation = MathHelper.ToRadians(180);
+                if (position.Y + predHeight <= windowHeight)
                 {
                     position.Y += 5;
                 }
