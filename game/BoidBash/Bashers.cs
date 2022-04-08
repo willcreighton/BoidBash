@@ -139,7 +139,7 @@ namespace BoidBash
 
                     if (bashedSpecial)
                     {
-                        SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 1));
+                        SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 2));
                         SpecialScoreTimers.Add(2);
                         bashedSpecial = false;
                     }

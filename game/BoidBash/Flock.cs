@@ -464,7 +464,7 @@ namespace BoidBash
                 if (!b.IsSpecial)
                 {
                     // Calculate rotation in radians
-                    float angle = (float)Math.Atan2((double)b.Position.X, (double)b.Position.Y);
+                    float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
                         null, defaultColor, angle, new Vector2(0, 0), SpriteEffects.None, 0);
@@ -472,7 +472,7 @@ namespace BoidBash
                 else
                 {
                     // Calculate rotation in radians
-                    float angle = (float)Math.Atan2((double)b.Position.X, (double)b.Position.Y);
+                    float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
                         null, Color.Lime, angle, new Vector2(0, 0), SpriteEffects.None, 0);
@@ -507,5 +507,24 @@ namespace BoidBash
                 }
             }
         }
+
+        /// <summary>
+        /// Repositions all boids within the flock to random points within the creation bounds
+        /// </summary>
+        public void RepositionBoids()
+        {
+            Vector2 position;
+            // Loop from 0 to desired number of boids
+            foreach (Boid boid in boids)
+            {
+                // Randomize position to within creation bounds
+                position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
+                    rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
+
+                // Add new boid to list
+                boid.Position = position;
+            }
+        }
+
     }
 }
