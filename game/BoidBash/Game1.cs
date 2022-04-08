@@ -118,7 +118,7 @@ namespace BoidBash
             blank = this.Content.Load<Texture2D>("White Square");
             flock = new Flock(30, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
-            menuFlock = new Flock(100, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
+            menuFlock = new Flock(100, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
 
             // Add boundaries for Game flock
@@ -242,7 +242,7 @@ namespace BoidBash
                 case GameState.Game:
 
                     //Draws the main box area for the game
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
 
                     /* Draws the Crushers from top to bottom -
                      * Top Left
@@ -250,10 +250,10 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Red);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Red);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Red);
-                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Gray);
 
                     // Draws items only meant to be seen in debug
                     if (inDebug)
@@ -342,6 +342,7 @@ namespace BoidBash
         {
             if (IsSingleKeyPress(Keys.Enter))
             {
+                timer = 60;
                 currentState = GameState.Game;
                 flock.AddBoids(50);
             }
@@ -372,6 +373,10 @@ namespace BoidBash
                 {
                     inDebug = true;
                 }
+            }
+            if (timer < 0.01f)
+            {
+                currentState = GameState.EndScreen;
             }
         }
 
