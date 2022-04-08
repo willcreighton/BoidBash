@@ -17,8 +17,8 @@ namespace BoidBash
         private Vector2 position;
         // Tracks where the boids is headed
         private Vector2 velocity;
-        // Random Bias to give mind of own
-        private Vector2 bias;
+        // set to true if it is a special boid
+        private bool isSpecial = false;
 
         // If not in a pen, the boid is set to -1.
         // If it IS in a pen, the boid is set to the index of that pen in the list of pens until it leaves
@@ -53,6 +53,15 @@ namespace BoidBash
 
             set { velocity = value; }
         }
+
+        /// <summary>
+        /// Returns and sets if the boid has a special property
+        /// </summary>
+        public bool IsSpecial
+        {
+            get { return isSpecial; }
+            set { isSpecial = value; }
+        }
  
         /// <summary>
         /// Constructs a boid given a starting position and starting velocity
@@ -62,7 +71,6 @@ namespace BoidBash
         {
             this.position = position;
             this.velocity = velocity;
-            bias = velocity;
         }
     }
 }

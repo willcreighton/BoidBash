@@ -141,6 +141,8 @@ namespace BoidBash
             bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
 
+            flock.AddBoids(50);
+
             // Menu flock's boundaries
             menuBounds.Add(new Rectangle(0, -100, 1200, 100));
             menuBounds.Add(new Rectangle(-100, 0, 100, 900));
@@ -273,6 +275,7 @@ namespace BoidBash
             {
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
+                    _spriteBatch.DrawString(primaryFont, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
                     menuFlock.Draw();
                     break;
                 case GameState.Game:
@@ -298,7 +301,7 @@ namespace BoidBash
                         { 
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
-                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
                         foreach (Rectangle pen in flock.Pens.Pens)
                         {
                             _spriteBatch.Draw(blank, pen, Color.Red);
@@ -328,6 +331,22 @@ namespace BoidBash
                         }
                     }
 
+                    // Draws and removes any new point numbers that show up after destroying special boids
+                    foreach (Vector3 info in flock.Pens.SpecialScorePrints)
+                    {
+                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Purple);
+                    }
+                    // Change the amount of time left on the special timers
+                    for (int x = flock.Pens.SpecialScoreTimers.Count - 1; x >= 0; x--)
+                    {
+                        flock.Pens.SpecialScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (flock.Pens.SpecialScoreTimers[x] <= 0)
+                        {
+                            flock.Pens.SpecialScorePrints.RemoveAt(x);
+                            flock.Pens.SpecialScoreTimers.RemoveAt(x);
+                        }
+                    }
+
                     foreach (Button b in buttons)
                     {
                         b.Draw(_spriteBatch);
@@ -337,7 +356,7 @@ namespace BoidBash
                     break;
                 case GameState.PauseMenu:
                     //Draws the main box area for the game
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
 
                     /* Draws the Crushers from top to bottom -
                      * Top Left
@@ -345,11 +364,13 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    ShapeBatch.Box(200f, 100f, 150f, 100f, Color.Red);
-                    ShapeBatch.Box(1000f, 200f, 100f, 150f, Color.Red);
-                    ShapeBatch.Box(850f, 700f, 150f, 100f, Color.Red);
-                    ShapeBatch.Box(100f, 550f, 100f, 150f, Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Gray);
 
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
+                    Color.White);
                     gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
                     flock.Draw();
@@ -393,8 +414,10 @@ namespace BoidBash
             if (IsSingleKeyPress(Keys.Enter))
             {
                 timer = 30;
+                flock.Pens.ScoreTimers.Clear();
+                flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
-                flock.AddBoids(50);
+                flock.RepositionBoids();
             }
         }
 
@@ -418,7 +441,7 @@ namespace BoidBash
                 currentState = GameState.EndScreen;
             }
             // For toggling debug mode
-            if (IsSingleKeyPress(Keys.Enter))
+            if (IsSingleKeyPress(Keys.Back))
             {
                 if (inDebug)
                 {
@@ -583,8 +606,12 @@ namespace BoidBash
                 // Loop through the 10 or less scores in the list
                 for (int x = 0; x < 10 && ((line = input.ReadLine()) != null); x++)
                 {
+                    if (x < 9)
+                    {
+                        scores += "  ";
+                    }
                     // Add which place they are in, then the score, then a new line
-                    scores += ((x + 1) + ". " + line + "\n");
+                    scores += ((x + 1) + ". " + String.Format("{0:n0}", long.Parse(line)) + "\n");
                 }
             }
             catch (Exception e)
@@ -602,6 +629,10 @@ namespace BoidBash
             return scores;
         }
 
+        /// <summary>
+        /// Called When a button is clicked in order to bash the boids in the pen
+        /// </summary>
+        /// <param name="pen"></param>
         public void Bashed(int pen)
         {
             Vector2 dataReturn;
@@ -612,6 +643,10 @@ namespace BoidBash
             if (dataReturn.Y == 1)
             {
                 scoreGoal++;
+            }
+            if (dataReturn.Y == 2)
+            {
+                timer += 2;
             }
         }
     }

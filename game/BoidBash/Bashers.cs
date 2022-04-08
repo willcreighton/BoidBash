@@ -20,6 +20,8 @@ namespace BoidBash
         private List<Rectangle> pens = new List<Rectangle>();
         private List<Vector3> scorePrints = new List<Vector3>();
         private List<float> scoreTimers = new List<float>();
+        private List<Vector3> specialScorePrints = new List<Vector3>();
+        private List<float> specialScoreTimers = new List<float>();
 
         // Properties
         public List<Rectangle> Pens
@@ -33,10 +35,25 @@ namespace BoidBash
             set { scorePrints = value; }
         }
 
+        // Timers for all the scoreprints
         public List<float> ScoreTimers
         {
             get { return scoreTimers; }
             set { scoreTimers = value; }
+        }
+
+        // All special score prints
+        public List<Vector3> SpecialScorePrints
+        {
+            get { return specialScorePrints; }
+            set { specialScorePrints = value; }
+        }
+
+        // All special score timers
+        public List<float> SpecialScoreTimers
+        {
+            get { return specialScoreTimers; }
+            set { specialScoreTimers = value; }
         }
 
         // Constructor
@@ -74,7 +91,7 @@ namespace BoidBash
             int scoreIncrease = 0;
             int boidsBashed = 0;
             int ifScoreGoal = -1;
-            bool upScoreGoal = false;
+            bool bashedSpecial = false;
             Vector2 returnNums;
 
             for (int x = flock.Boids.Count -1; x >= 0; x--)
@@ -95,11 +112,15 @@ namespace BoidBash
                         scoreIncrease += (int)Math.Pow(scoregoal, boidsBashed);
                     }
                     
+                    if (flock.Boids[x].IsSpecial)
+                    {
+                        bashedSpecial = true;
+                    }
 
                     // Checking if new score goal has been reached
                     if (scoregoal < boidsBashed)
                     {
-                        upScoreGoal = true;
+                        ifScoreGoal = 1;                       
                     }
 
                     // TODO - apply visuals
@@ -115,15 +136,21 @@ namespace BoidBash
                         (float)Math.Pow(scoregoal, boidsBashed) * scoregoal));
                         ScoreTimers.Add(1);
                     }
+
+                    if (bashedSpecial)
+                    {
+                        SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 2));
+                        SpecialScoreTimers.Add(2);
+                        bashedSpecial = false;
+                    }
                     
                     flock.RemoveBoid(flock.Boids[x]);
                 }
             }
 
-            // If reached score goal, set ifScoreGoal to 1 so it can be determined in Game
-            if (upScoreGoal)
+            if (bashedSpecial)
             {
-                ifScoreGoal = 1;
+                ifScoreGoal = 2;
             }
 
             // Assemble Vector
