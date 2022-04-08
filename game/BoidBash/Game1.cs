@@ -13,7 +13,8 @@ namespace BoidBash
         MainMenu,
         Game,
         PauseMenu,
-        EndScreen
+        EndScreen,
+        Instructions
     }
 
     public class Game1 : Game
