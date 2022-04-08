@@ -52,7 +52,7 @@ namespace BoidBash
         // Visual Range determines how far the boid can see
         private const float visualRange = 50;
         // Predator avoidance describes what distance boids attempt to keep from the predator
-        private const float predatorAvoidance = 100;
+        private const float predatorAvoidance = 113;
 
         // Experimental: Boid randomness
         private const float randomnessRange = 0.5f;
@@ -474,7 +474,7 @@ namespace BoidBash
                     // Calculate rotation in radians
                     float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
-                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
+                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X + 2, (int)size.Y + 2),
                         null, Color.Gold, angle, new Vector2(0, 0), SpriteEffects.None, 0);
                 }
             }

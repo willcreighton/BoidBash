@@ -37,7 +37,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "Pause Menu",
-                new Vector2(20, 15),
+                new Vector2(1000, 15),
                 Color.White
                 );
 

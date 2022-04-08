@@ -177,21 +177,22 @@ namespace BoidBash
 
             // TEMPORARY TESTING
             // Enable to test File IO
+            
+            //player1Score = 2;
             /*
-            player1Score = 2;
-            UpdateScores(10);
-            UpdateScores(0444214);
-            UpdateScores(-5);
-            UpdateScores(855);
-            UpdateScores(7);
-            UpdateScores(2112123123211111);
-            UpdateScores(9);
-            UpdateScores(131232131);
-            UpdateScores(8);
-            UpdateScores(7);
-
-            System.Diagnostics.Debug.WriteLine(GetScoreList());
+            UpdateScores(325306027);
+            UpdateScores(260714129);
+            UpdateScores(229811503);
+            UpdateScores(179622342);
+            UpdateScores(173690822);
+            UpdateScores(165747780);
+            UpdateScores(161942856);
+            UpdateScores(145060864);
+            UpdateScores(142758264);
+            UpdateScores(139509943);
             */
+            System.Diagnostics.Debug.WriteLine(GetScoreList());
+            
 
             // Add buttons
             buttons.Add(new Button(
@@ -243,7 +244,7 @@ namespace BoidBash
                     break;
                 case GameState.Game:
                     ProcessGame();
-                    flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
+                    flock.ProcessBoids(predator.ActualPosition);
                     predator.Update(gameTime);
 
                     if (timer > 0)
@@ -316,7 +317,7 @@ namespace BoidBash
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     flock.Draw();

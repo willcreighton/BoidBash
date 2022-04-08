@@ -54,7 +54,7 @@ namespace BoidBash
             // State display
             _spriteBatch.Draw(
                 boidBashLogo,
-                new Rectangle(10, 5, 100, 90),
+                new Rectangle(1085, 800, 100, 90),
                 Color.White
                 );
 
@@ -77,7 +77,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 String.Format("Score: {0:n0}", score),
-                new Vector2(800, 15),
+                new Vector2(15, 15),
                 Color.White
                 );
         }
@@ -91,7 +91,7 @@ namespace BoidBash
             // Timer display
             _spriteBatch.DrawString(
                 headerFont,
-                "Timer: " + timer,
+                "Time: " + timer,
                 new Vector2(500, 15),
                 Color.White
                 );
@@ -107,7 +107,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "Score Goal: " + scoreGoal,
-                new Vector2(950, 850),
+                new Vector2(500, 115),
                 Color.White
                 );
         }
