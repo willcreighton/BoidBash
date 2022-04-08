@@ -430,6 +430,8 @@ namespace BoidBash
                     boids.Add(new Boid(position, velocity));
                 }
             }
+            // Set one special boid
+            Boids[0].IsSpecial = true;
         }
         // Possibility: Change creation bounds to a circle
 
@@ -459,11 +461,22 @@ namespace BoidBash
             // Loop through all boids in list
             foreach (Boid b in boids)
             {
-                // Calculate rotation in radians
-                float angle = (float)Math.Atan2((double)b.Position.X, (double)b.Position.Y);
-                // Draw the boid to the spritebatch
-                sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
-                    null, defaultColor, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                if (!b.IsSpecial)
+                {
+                    // Calculate rotation in radians
+                    float angle = (float)Math.Atan2((double)b.Position.X, (double)b.Position.Y);
+                    // Draw the boid to the spritebatch
+                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
+                        null, defaultColor, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                }
+                else
+                {
+                    // Calculate rotation in radians
+                    float angle = (float)Math.Atan2((double)b.Position.X, (double)b.Position.Y);
+                    // Draw the boid to the spritebatch
+                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
+                        null, Color.Lime, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                }
             }
         }
 

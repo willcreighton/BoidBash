@@ -329,6 +329,22 @@ namespace BoidBash
                         }
                     }
 
+                    // Draws and removes any new point numbers that show up after destroying boids
+                    foreach (Vector3 info in flock.Pens.SpecialScorePrints)
+                    {
+                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Purple);
+                    }
+                    // Change the amount of time left on the timers
+                    for (int i = flock.Pens.SpecialScoreTimers.Count - 1; i >= 0; i--)
+                    {
+                        flock.Pens.SpecialScoreTimers[i] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (flock.Pens.SpecialScoreTimers[i] <= 0)
+                        {
+                            flock.Pens.SpecialScorePrints.RemoveAt(i);
+                            flock.Pens.SpecialScoreTimers.RemoveAt(i);
+                        }
+                    }
+
                     foreach (Button b in buttons)
                     {
                         b.Draw(_spriteBatch);
@@ -605,6 +621,10 @@ namespace BoidBash
             return scores;
         }
 
+        /// <summary>
+        /// Called When a button is clicked in order to bash the boids in the pen
+        /// </summary>
+        /// <param name="pen"></param>
         public void Bashed(int pen)
         {
             Vector2 dataReturn;
@@ -615,6 +635,10 @@ namespace BoidBash
             if (dataReturn.Y == 1)
             {
                 scoreGoal++;
+            }
+            if (dataReturn.Y == 2)
+            {
+                timer++;
             }
         }
     }
