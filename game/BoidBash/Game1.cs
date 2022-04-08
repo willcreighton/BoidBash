@@ -176,7 +176,6 @@ namespace BoidBash
 
             // TEMPORARY TESTING
             // Enable to test File IO
-
             /*
             player1Score = 2;
             UpdateScores(10);
