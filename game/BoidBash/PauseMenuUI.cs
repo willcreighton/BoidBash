@@ -17,7 +17,6 @@ namespace BoidBash
         private int windowHeight;
         private SpriteFont headerFont;
         private SpriteFont primaryFont;
-        private Color backgroundColor;
 
         // Constructor
         public PauseMenuUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
@@ -26,8 +25,6 @@ namespace BoidBash
             this.windowHeight = windowHeight;
             this.headerFont = headerFont;
             this.primaryFont = primaryFont;
-
-            backgroundColor = new Color(20, 20, 20);
         }
 
         /// <summary>
