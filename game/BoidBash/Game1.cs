@@ -492,8 +492,9 @@ namespace BoidBash
         // TODO - Add playernames to text file
         /// <summary>
         /// This method updates the high scores text file
+        /// Returns true if the score was added to the list
         /// </summary>
-        private void UpdateScores(ulong score)
+        private bool UpdateScores(ulong score)
         {
             List<ulong> scores = new List<ulong>();
             string line = null;
@@ -584,6 +585,8 @@ namespace BoidBash
 
                 output.Close();
             }
+
+            return willAdd;
         }
         
         /// <summary>
