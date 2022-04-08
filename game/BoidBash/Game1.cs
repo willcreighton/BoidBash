@@ -111,7 +111,7 @@ namespace BoidBash
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
-            flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
+            flock = new Flock(30, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
 
             // Add boundaries for Game flock
