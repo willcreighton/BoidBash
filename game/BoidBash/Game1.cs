@@ -35,7 +35,6 @@ namespace BoidBash
         // Fonts
         private SpriteFont primaryFont;
         private SpriteFont headerFont;
-        private SpriteFont titleFont; // TODO: Create far larger font for title screen
 
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
@@ -50,6 +49,7 @@ namespace BoidBash
         // Boids
         private Texture2D boidSprite;
         private Flock flock;
+        private Flock menuFlock;
 
         // Predator
         private Predator predator;
@@ -63,6 +63,7 @@ namespace BoidBash
         // Debug
         private Texture2D blank;
         private List<Rectangle> bounds = new List<Rectangle>();
+        private List<Rectangle> menuBounds = new List<Rectangle>();
         private bool inDebug = false;
 
         public int Width
@@ -114,6 +115,8 @@ namespace BoidBash
             blank = this.Content.Load<Texture2D>("White Square");
             flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
+            menuFlock = new Flock(100, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
+                boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
 
             // Add boundaries
             // These are temporary values, which do not include space for the pens yet
@@ -122,6 +125,13 @@ namespace BoidBash
             bounds.Add(new Rectangle(100, 700, 1000, 100));
             bounds.Add(new Rectangle(1000, 100, 100, 700));
             flock.Boundaries = bounds;
+
+            // Menu flock's boundaries
+            menuBounds.Add(new Rectangle(0, -100, 1200, 100));
+            menuBounds.Add(new Rectangle(-100, 0, 100, 900));
+            menuBounds.Add(new Rectangle(0, 900, 1200, 100));
+            menuBounds.Add(new Rectangle(1200, 0, 100, 900));
+            menuFlock.Boundaries = menuBounds;
 
             flock.Pens.AddPen(new Rectangle(200, 200, 100, 100));
             flock.Pens.AddPen(new Rectangle(900, 200, 100, 100));
@@ -155,7 +165,6 @@ namespace BoidBash
             UpdateScores(8);
             UpdateScores(7);
 
-
             System.Diagnostics.Debug.WriteLine(GetScoreList());
             */
 
@@ -173,6 +182,7 @@ namespace BoidBash
             {
                 case GameState.MainMenu:
                     ProcessMainMenu();
+                    menuFlock.ProcessBoids(new Vector2(-300, -300));
                     break;
                 case GameState.Game:
                     ProcessGame();
@@ -216,6 +226,7 @@ namespace BoidBash
             {
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
+                    menuFlock.Draw();
                     break;
                 case GameState.Game:
 
@@ -317,7 +328,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessMainMenu()
         {
-            if (IsSingleKeyPress(Keys.G))
+            if (IsSingleKeyPress(Keys.Enter))
             {
                 currentState = GameState.Game;
                 flock.AddBoids(50);
@@ -357,7 +368,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessPauseMenu()
         {
-            if (IsSingleKeyPress(Keys.G))
+            if (IsSingleKeyPress(Keys.Enter))
             {
                 currentState = GameState.Game;
             }

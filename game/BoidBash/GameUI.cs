@@ -97,7 +97,7 @@ namespace BoidBash
             // Pause Menu prompt
             _spriteBatch.DrawString(
                 primaryFont,
-                "Press 'P' to Pause",
+                "Press P to Pause",
                 new Vector2(20, windowHeight - 40),
                 Color.White
                 );
@@ -143,7 +143,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "Score Goal: " + scoreGoal,
-                new Vector2(20, 300),
+                new Vector2(20, 750),
                 Color.White
                 );
         }
