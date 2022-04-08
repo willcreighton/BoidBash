@@ -121,7 +121,7 @@ namespace BoidBash
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
-            bashButton = Content.Load<Texture2D>("BashButton");
+            bashButton = Content.Load<Texture2D>("BashButton2");
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
