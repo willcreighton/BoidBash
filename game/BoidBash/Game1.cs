@@ -48,7 +48,8 @@ namespace BoidBash
 
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
-        private Color boidColor = new Color(104, 226, 255);
+        private Color boidColor = new Color(0, 200, 255);
+        private Color penColor = new Color(100, 100, 100);
 
         // State UI
         private MainMenuUI mainMenuUI;
@@ -294,10 +295,10 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Gray);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Gray);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Gray);
-                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), penColor);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), penColor);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), penColor);
+                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), penColor);
 
                     // Draws items only meant to be seen in debug
                     if (inDebug)
@@ -369,10 +370,10 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Gray);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Gray);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Gray);
-                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Gray);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), penColor);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), penColor);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), penColor);
+                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), penColor);
 
                     _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
                     Color.White);
@@ -435,18 +436,12 @@ namespace BoidBash
             {
                 button.Update();
             }
-
             if (IsSingleKeyPress(Keys.P))
             {
                 currentState = GameState.PauseMenu;
             }
-            // For testing the End Screen
-            else if (IsSingleKeyPress(Keys.E))
-            {
-                currentState = GameState.EndScreen;
-            }
             // For toggling debug mode
-            if (IsSingleKeyPress(Keys.Back))
+            else if (IsSingleKeyPress(Keys.Back))
             {
                 if (inDebug)
                 {
