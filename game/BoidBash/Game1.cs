@@ -290,7 +290,7 @@ namespace BoidBash
                     //Draws the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
 
-                    /* Draws the Crushers from top to bottom -
+                    /* Draws the Crushers from top to bottom
                      * Top Left
                      * Top Right
                      * Bottom Right
@@ -300,6 +300,9 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), penColor);
                     _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), penColor);
                     _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), penColor);
+
+                    //Adding some outlines to the game area - RYAN
+                    //ShapeBatch.Line(new Vector2(200f, 100f), 150f, 0f, 5f, Color.Green);
 
                     // Draws items only meant to be seen in debug
                     if (inDebug)
