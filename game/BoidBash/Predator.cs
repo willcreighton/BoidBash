@@ -61,21 +61,24 @@ namespace BoidBash
             this.predWidth = predWidth;            
         }
 
-        //
-        /* Attempting to make a rotating predator
+       /*
         public override void Draw(SpriteBatch sb)
-        {           
+        {
+            MouseState mouseState = Mouse.GetState();
+            float rotation = (float)Math.Atan2((double)mouseState.Y -
+                actualPosition.Y, (double)mouseState.X - actualPosition.X);
+
             sb.Draw(texture,                                                                   // Texture
                 new Vector2(position.X, position.Y),                                           // Position
                 position,                                                                      // Rectangle
-                Color.Black,                                                                   // Color
+                Color.Red,                                                                   // Color
                 rotation,                                                                      // Rotation Angle
                 new Vector2(position.X, position.Y),                                           // Origin
                 new Vector2(0, 0),                                                             // Scale
                 SpriteEffects.None,                                                            // Sprite Effect
                 1);                                                                            // Depth           
         }
-        //*/
+        */
 
         // Movement
         public override void Update(GameTime gameTime)                                         // Each If statement keeps the predator inside a set of boundaries
