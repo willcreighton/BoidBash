@@ -299,7 +299,7 @@ namespace BoidBash
                         { 
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
-                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
                         foreach (Rectangle pen in flock.Pens.Pens)
                         {
                             _spriteBatch.Draw(blank, pen, Color.Red);
@@ -394,6 +394,8 @@ namespace BoidBash
             if (IsSingleKeyPress(Keys.Enter))
             {
                 timer = 30;
+                flock.Pens.ScoreTimers.Clear();
+                flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
                 flock.AddBoids(50);
             }
@@ -419,7 +421,7 @@ namespace BoidBash
                 currentState = GameState.EndScreen;
             }
             // For toggling debug mode
-            if (IsSingleKeyPress(Keys.Enter))
+            if (IsSingleKeyPress(Keys.Back))
             {
                 if (inDebug)
                 {
