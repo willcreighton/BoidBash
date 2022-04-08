@@ -21,8 +21,6 @@ namespace BoidBash
         // Flock values
         // List of all boid objects
         private List<Boid> boids = new List<Boid>();
-        // The boundaries the boids must stay within
-        private Rectangle bounds;
         // The boundaries the boids are created within
         private Rectangle creationBounds;
         // Random object determining starting positions
@@ -93,14 +91,13 @@ namespace BoidBash
         /// <param name="size"></param>
         /// <param name="defaultColor"></param>
         /// <param name="sb"></param>
-        public Flock(int numBoids, Rectangle bounds, Rectangle creationBounds,
+        public Flock(int numBoids, Rectangle creationBounds,
             Texture2D asset, Vector2 size, Color defaultColor, SpriteBatch sb)
         {
             // Initialzie Random0
             rng = new Random();
 
             // Pass down values to appropriate fields
-            this.bounds = bounds;
             this.creationBounds = creationBounds;
             this.asset = asset;
             this.size = size;

@@ -14,6 +14,7 @@ namespace BoidBash
         private int predWidth;
         //private float rotation;
         private Vector2 actualPosition;
+        private Rectangle predatorBounds = new Rectangle(200, 200, 800, 500);
 
         // Properties
         public int PredHeight
@@ -71,7 +72,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Left) || keyBState.IsKeyDown(Keys.A))
             {
                 //rotation = 0;
-                if (position.X >= 0)
+                if (position.X >= predatorBounds.X)
                 {
                     position.X -= 5;
                 }
@@ -80,7 +81,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Up) || keyBState.IsKeyDown(Keys.W))
             {
                 //rotation = MathHelper.ToRadians(-90);
-                if (position.Y >= 0)
+                if (position.Y >= predatorBounds.Y)
                 {
                     position.Y -= 5;
                 }
@@ -89,7 +90,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Right) || keyBState.IsKeyDown(Keys.D))
             {
                 //rotation = MathHelper.ToRadians(90);
-                if (position.X + predWidth <= windowWidth)
+                if (position.X + predWidth <= predatorBounds.X + predatorBounds.Width)
                 {
                     position.X += 5;
                 }
@@ -98,7 +99,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Down) || keyBState.IsKeyDown(Keys.S))
             {
                 //    //rotation = MathHelper.ToRadians(180);
-                if (position.Y + predHeight <= windowHeight)
+                if (position.Y + predHeight <= predatorBounds.Y + predatorBounds.Height)
                 {
                     position.Y += 5;
                 }
