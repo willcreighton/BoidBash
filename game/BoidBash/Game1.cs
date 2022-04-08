@@ -243,7 +243,7 @@ namespace BoidBash
                     break;
                 case GameState.Game:
                     ProcessGame();
-                    flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
+                    flock.ProcessBoids(predator.ActualPosition);
                     predator.Update(gameTime);
 
                     if (timer > 0)
@@ -316,7 +316,7 @@ namespace BoidBash
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     flock.Draw();

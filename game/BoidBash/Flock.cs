@@ -52,7 +52,7 @@ namespace BoidBash
         // Visual Range determines how far the boid can see
         private const float visualRange = 50;
         // Predator avoidance describes what distance boids attempt to keep from the predator
-        private const float predatorAvoidance = 100;
+        private const float predatorAvoidance = 113;
 
         // Experimental: Boid randomness
         private const float randomnessRange = 0.5f;
