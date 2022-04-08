@@ -60,7 +60,7 @@ namespace BoidBash
         private long player1Score = 0;
 
         //Timer
-        float timer = 60f;
+        private float timer = 60f;
 
         // Debug
         private Texture2D blank;
@@ -185,7 +185,12 @@ namespace BoidBash
                     ProcessGame();
                     flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
                     predator.Update(gameTime);
-                    timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (timer > 0)
+                    {
+                        timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    }
                     
                     // Testing score incrementing
                     /*
@@ -254,7 +259,7 @@ namespace BoidBash
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("00"), new Vector2(500, 15),
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
                     Color.White);
                     gameUI.DrawScoreGoal(_spriteBatch);
                     flock.Draw();
