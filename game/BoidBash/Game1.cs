@@ -331,7 +331,7 @@ namespace BoidBash
                             flock.Pens.ScoreTimers.RemoveAt(x);
                         }
                     }
-
+                    
                     // Draws and removes any new point numbers that show up after destroying special boids
                     foreach (Vector3 info in flock.Pens.SpecialScorePrints)
                     {
