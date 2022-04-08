@@ -477,7 +477,6 @@ namespace BoidBash
             else if (IsSingleKeyPress(Keys.M))
             {
                 currentState = GameState.MainMenu;
-                flock.ClearFlock();
                 predator.Position = new Rectangle(width / 2, height / 2, 25, 25);
                 player1Score = 0;
                 scoreGoal = 1;
