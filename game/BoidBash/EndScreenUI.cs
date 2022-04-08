@@ -40,7 +40,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "End Screen",
-                new Vector2(20, 15),
+                new Vector2(510, 350),
                 Color.White
                 );
 
