@@ -24,6 +24,11 @@ namespace BoidBash
         private SpriteBatch _spriteBatch;
         private GameState currentState;
 
+        Button button;
+        private List<Button> buttons = new List<Button>();
+        private Color bgColor = Color.White;
+        private Random rng = new Random();
+
         // Screen size
         private int windowWidth;
         private int windowHeight;
@@ -159,7 +164,7 @@ namespace BoidBash
 
             // TEMPORARY TESTING
             // Enable to test File IO
-            
+
             /*
             player1Score = 2;
             UpdateScores(10);
@@ -176,6 +181,14 @@ namespace BoidBash
             System.Diagnostics.Debug.WriteLine(GetScoreList());
             */
 
+            // Add buttons
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,           // device to create a custom texture
+                    new Rectangle(10, 40, 200, 100),    // where to put the button
+                    "Random BG",                        // button label
+                    primaryFont,                               // label font
+                    Color.Purple));                     // button color
+            buttons[0].OnButtonClick += this.RandomizeBackground;
         }
 
         protected override void Update(GameTime gameTime)
