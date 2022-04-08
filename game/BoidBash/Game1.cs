@@ -376,6 +376,7 @@ namespace BoidBash
             }
             if (timer < 0.01f)
             {
+                UpdateScores(player1Score);
                 currentState = GameState.EndScreen;
             }
         }
