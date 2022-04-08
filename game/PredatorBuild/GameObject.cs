@@ -13,14 +13,15 @@ namespace PredatorBuild
         protected Rectangle position;
         protected int windowHeight;
         protected int windowWidth;
+        protected Point actualPosition;
 
         // Properties
         /// <summary>
         /// Read-only property for the position of the game object
         /// </summary>
-        public Rectangle Position
+        public Point Position
         {
-            get { return position; }
+            get { return actualPosition; }
         }
 
         public Texture2D Texture
@@ -40,6 +41,8 @@ namespace PredatorBuild
             this.position = position;
             this.windowHeight = windowHeight;
             this.windowWidth = windowWidth;
+
+            actualPosition = position.Center;
         }
 
         // Methods
