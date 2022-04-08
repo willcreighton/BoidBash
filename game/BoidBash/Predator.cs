@@ -42,9 +42,7 @@ namespace BoidBash
             this.texture = texture;
             this.position = position;
             this.predHeight = predHeight;
-            this.predWidth = predWidth;
-
-            actualPosition = new Vector2(position.Center.X, position.Center.Y);
+            this.predWidth = predWidth;            
         }
 
         //
@@ -103,6 +101,8 @@ namespace BoidBash
                     position.Y += 5;
                 }
             }
+            
+            actualPosition = new Vector2(position.Center.X, position.Center.Y);
         }
     }
 }
