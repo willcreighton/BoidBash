@@ -12,7 +12,7 @@ namespace PredatorBuild
         // Fields
         private int predHeight;
         private int predWidth;
-        private float rotation;
+        //private float rotation;
 
         // Properties
         public int PredHeight
@@ -27,13 +27,11 @@ namespace PredatorBuild
         }
 
         // Parameterized Constructor
-        public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth) : 
+        public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth/*, int predHeight, int predWidth*/) : 
             base(texture, position, windowHeight, windowWidth)
         {
-            this.texture = texture;
-            this.position = position;
-            this.predHeight = predHeight;
-            this.predWidth = predWidth;
+            //this.predHeight = predHeight;
+            //this.predWidth = predWidth;
         }
      
         //
@@ -60,35 +58,35 @@ namespace PredatorBuild
             if (keyBState.IsKeyDown(Keys.Left))
             {
                 //rotation = 0;
-                if (position.X >= 0)
+                if (actualPosition.X >= 0)
                 {
-                    position.X -= 5;
+                    actualPosition.X -= 5;
                 }
                 
             }
             if (keyBState.IsKeyDown(Keys.Up))
             {
                 //rotation = MathHelper.ToRadians(-90);
-                if (position.Y >= 0)
+                if (actualPosition.Y >= 0)
                 {
-                    position.Y -= 5;
+                    actualPosition.Y -= 5;
                 }               
             }
             
             if (keyBState.IsKeyDown(Keys.Right))
             {
                 //rotation = MathHelper.ToRadians(90);
-                if ((position.X + predWidth) <= windowWidth)
+                if (actualPosition.X <= windowWidth)
                 {
-                    position.X += 5;
+                    actualPosition.X += 5;
                 }                
             }           
             if (keyBState.IsKeyDown(Keys.Down))
             {
                 //rotation = MathHelper.ToRadians(180);
-                if ((position.Y + predHeight) <= windowHeight)
+                if (actualPosition.Y <= windowHeight)
                 {
-                    position.Y += 5;
+                    actualPosition.Y += 5;
                 }
             }
             

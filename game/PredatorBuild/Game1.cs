@@ -34,6 +34,7 @@ namespace PredatorBuild
             // TODO: Add your initialization logic here
             width = _graphics.GraphicsDevice.Viewport.Width;
             height = _graphics.GraphicsDevice.Viewport.Height;
+
             base.Initialize();
         }
 
@@ -49,7 +50,7 @@ namespace PredatorBuild
 
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2, 
                 predator.PredHeight, predator.PredWidth), 
-                height, width, predator.PredHeight, predator.PredWidth);
+                height, width);
         }
 
         protected override void Update(GameTime gameTime)
