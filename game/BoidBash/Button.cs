@@ -20,11 +20,8 @@ namespace BoidBash
     public class Button
     {
         // Button specific fields
-        private SpriteFont font;
         private MouseState prevMState;
-        private string text;
         private Rectangle position; // Button position and size
-        private Vector2 textLoc;
         private Texture2D buttonImg;
         private int pen;
 
@@ -42,29 +39,15 @@ namespace BoidBash
         /// </summary>
         /// <param name="device">The graphics device for this game - needed to create custom button textures.</param>
         /// <param name="position">Where to draw the button's top left corner</param>
-        /// <param name="text">The text to draw on the button</param>
-        /// <param name="font">The font to use when drawing the button text.</param>
         /// <param name="color">The color to make the button's texture.</param>
-        public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color, int pen)
+        public Button(GraphicsDevice device, Rectangle position, Color color, int pen, Texture2D texture)
         {
             // Save copies/references to the info we'll need later
-            this.font = font;
             this.position = position;
-            this.text = text;
             this.pen = pen;
 
-            // Figure out where on the button to draw it
-            Vector2 textSize = font.MeasureString(text);
-            textLoc = new Vector2(
-                (position.X + position.Width / 2) - textSize.X / 2,
-                (position.Y + position.Height / 2) - textSize.Y / 2
-            );
-
-            // Make a custom 2d texture for the button itself
-            buttonImg = new Texture2D(device, position.Width, position.Height, false, SurfaceFormat.Color);
-            int[] colorData = new int[buttonImg.Width * buttonImg.Height]; // an array to hold all the pixels of the texture
-            Array.Fill<int>(colorData, (int)color.PackedValue); // fill the array with all the same color
-            buttonImg.SetData<Int32>(colorData, 0, colorData.Length); // update the texture's data
+            // Load in the button's texture
+            buttonImg = texture;
         }
 
         /// <summary>
@@ -90,8 +73,7 @@ namespace BoidBash
         }
 
         /// <summary>
-        /// Override the GameObject Draw() to draw the button and then
-        /// overlay it with text.
+        /// Override the GameObject Draw() to draw the button
         /// </summary>
         /// <param name="spriteBatch">The spriteBatch on which to draw this button. The button 
         /// assumes that Begin() has already been called and End() will be called later.</param>
@@ -99,9 +81,6 @@ namespace BoidBash
         {
             // Draw the button itself
             spriteBatch.Draw(buttonImg, position, Color.White);
-
-            // Draw button text over the button
-            spriteBatch.DrawString(font, text, textLoc, Color.White);
         }
     }
 }

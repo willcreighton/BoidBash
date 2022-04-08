@@ -28,6 +28,7 @@ namespace BoidBash
         private List<Button> buttons = new List<Button>();
         private Color bgColor = Color.White;
         private Random rng = new Random();
+        private Texture2D bashButton;
 
         // Screen size
         private int windowWidth;
@@ -120,6 +121,8 @@ namespace BoidBash
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
+            bashButton = Content.Load<Texture2D>("BashButton");
+
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
             flock = new Flock(30, new Rectangle(300, 300, 400, 300),
@@ -188,37 +191,33 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
                     new Rectangle(110, 110, 80, 80),    // where to put the button
-                    "BASH!",                            // button label
-                    primaryFont,                        // label font
                     Color.DarkRed,                      // button color
-                    0));                                // pen number
+                    0,                                  // pen number
+                    bashButton));                       // texture 
             buttons[0].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
                     new Rectangle(1010, 110, 80, 80),   // where to put the button
-                    "BASH!",                            // button label
-                    primaryFont,                        // label font
                     Color.DarkRed,                      // button color
-                    1));                                // pen number
+                    1,                                  // pen number
+                    bashButton));                       // texture 
             buttons[1].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
                     new Rectangle(1010, 710, 80, 80),   // where to put the button
-                    "BASH!",                            // button label
-                    primaryFont,                        // label font
                     Color.DarkRed,                      // button color
-                    2));                                // pen number
+                    2,                                  // pen number
+                    bashButton));                       // texture         
             buttons[2].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
                     new Rectangle(110, 710, 80, 80),    // where to put the button
-                    "BASH!",                            // button label
-                    primaryFont,                        // label font
                     Color.DarkRed,                      // button color
-                    3));                                // pen number
+                    3,                                  // pen number
+                    bashButton));                       // texture 
             buttons[3].OnButtonClick += this.Bashed;
         }
 
@@ -319,7 +318,7 @@ namespace BoidBash
                     // Draws and removes any new point numbers that show up after destroying boids
                     foreach (Vector3 info in flock.Pens.ScorePrints)
                     {
-                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
+                        _spriteBatch.DrawString(primaryFont, "+" + String.Format("{0:n0}", info.Z), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     // Change the amount of time left on the timers
                     for (int x = flock.Pens.ScoreTimers.Count -1; x >= 0; x--)

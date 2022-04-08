@@ -72,14 +72,14 @@ namespace BoidBash
         }
 
         // Methods
-        // --- TODO ---
-        // Implement buttons as seen in Events and Delegates PE
 
-        // Hey Team K, to use this, each button is associated with a rectangle. 
-        //  Call this method when the button is clicked, and pass in the flock of boids and the index
-        //  that the rectangle is at in the list in order to use it. So, button 1; Pen 1; send in 1 as the parameter.
-        //  Use the first int that this returns to add to the score,
-        //  and if the second is 1, add to the reached scoregoals, else, don't
+        /*
+        ***** To use this, each button is associated with a rectangle. *****
+        Call this method when the button is clicked, and pass in the flock of boids and the index
+        that the rectangle is at in the list in order to use it. So, button 1; Pen 1; send in 1 as the parameter.
+        Use the first int that this returns to add to the score,
+        and if the second is 1, add to the reached scoregoals, else, don't
+        */
         /// <summary>
         /// Destroys all boids within the specified pen.
         /// Takes the flock, the index of the rectangle the boid is in, and the current reached score goal as parameters
