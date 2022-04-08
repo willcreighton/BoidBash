@@ -90,6 +90,7 @@ namespace BoidBash
         {
             int scoreIncrease = 0;
             int boidsBashed = 0;
+            int bashBonus = 0;
             int ifScoreGoal = -1;
             bool bashedSpecial = false;
             Vector2 returnNums;
@@ -99,17 +100,18 @@ namespace BoidBash
                 if (flock.Boids[x].Pen == pen)
                 {
                     // Score Increment
-                    if (boidsBashed < 7)
+                    boidsBashed++;
+                    if (bashBonus < 7)
                     {
-                        boidsBashed++;
+                        bashBonus++;
                     }
-                    if (boidsBashed == 7)
+                    if (bashBonus == 7)
                     {
-                        scoreIncrease += (int)Math.Pow(scoregoal, boidsBashed) * scoregoal;
+                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus) * scoregoal;
                     }
                     else
                     {
-                        scoreIncrease += (int)Math.Pow(scoregoal, boidsBashed);
+                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus);
                     }
                     
                     if (flock.Boids[x].IsSpecial)
@@ -118,22 +120,22 @@ namespace BoidBash
                     }
 
                     // Checking if new score goal has been reached
-                    if (scoregoal < boidsBashed)
+                    if (scoregoal < bashBonus)
                     {
                         ifScoreGoal = 1;                       
                     }
 
                     // TODO - apply visuals
-                    if (boidsBashed < 7)
+                    if (bashBonus < 7)
                     {
                         scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (float)Math.Pow(scoregoal, boidsBashed)));
+                        (float)Math.Pow(scoregoal, bashBonus)));
                         ScoreTimers.Add(1);
                     }
                     else
                     {
                         scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (float)Math.Pow(scoregoal, boidsBashed) * scoregoal));
+                        (float)Math.Pow(scoregoal, bashBonus) * scoregoal));
                         ScoreTimers.Add(1);
                     }
 
@@ -141,16 +143,11 @@ namespace BoidBash
                     {
                         SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 2));
                         SpecialScoreTimers.Add(2);
-                        bashedSpecial = false;
+                        ifScoreGoal = 2;
                     }
                     
                     flock.RemoveBoid(flock.Boids[x]);
                 }
-            }
-
-            if (bashedSpecial)
-            {
-                ifScoreGoal = 2;
             }
 
             // Assemble Vector

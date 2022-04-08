@@ -125,7 +125,7 @@ namespace BoidBash
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
-            flock = new Flock(30, new Rectangle(300, 300, 400, 300),
+            flock = new Flock(70, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
             menuFlock = new Flock(100, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
@@ -140,8 +140,6 @@ namespace BoidBash
             bounds.Add(new Rectangle(1100, 100, 100, 350));
             bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
-
-            flock.AddBoids(50);
 
             // Menu flock's boundaries
             menuBounds.Add(new Rectangle(0, -100, 1200, 100));
@@ -493,8 +491,9 @@ namespace BoidBash
         // TODO - Add playernames to text file
         /// <summary>
         /// This method updates the high scores text file
+        /// Returns true if the score was added to the list
         /// </summary>
-        private void UpdateScores(ulong score)
+        private bool UpdateScores(ulong score)
         {
             List<ulong> scores = new List<ulong>();
             string line = null;
@@ -585,6 +584,8 @@ namespace BoidBash
 
                 output.Close();
             }
+
+            return willAdd;
         }
         
         /// <summary>
