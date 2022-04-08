@@ -20,11 +20,10 @@ namespace BoidBash
         private SpriteFont primaryFont;
         private Color backgroundColor;
 
-        private long score = 0;
+        private ulong score = 0;
         private int timer = 60;
-        private int scoreGoal = 1;
 
-        public Timer aTmr = new Timer(1000);
+        //public Timer aTmr = new Timer(1000);
 
         // Constructor
         public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
@@ -42,9 +41,9 @@ namespace BoidBash
         /// </summary>
         /// <param name="scoreIncrease"></param>
         /// <returns></returns>
-        public long ScoreUpdater(long scoreIncrease)
+        public ulong ScoreUpdater(ulong scoreIncrease)
         {
-            score += scoreIncrease;
+            score = scoreIncrease;
 
             return score;
         }
@@ -70,18 +69,6 @@ namespace BoidBash
             throw new NotImplementedException();
         }
         */
-
-        /// <summary>
-        /// This method updates the score goal
-        /// </summary>
-        /// <returns></returns>
-        public int ScoreGoalUpdater()
-        {
-            // If score goal has increased then
-            // update scoreGoal
-
-            return scoreGoal;
-        }
 
         /// <summary>
         /// Draw the Game UI
@@ -115,8 +102,8 @@ namespace BoidBash
             // Score display
             _spriteBatch.DrawString(
                 headerFont,
-                "Score: " + score,
-                new Vector2(1000, 15),
+                String.Format("Score: {0:n0}", score),
+                new Vector2(800, 15),
                 Color.White
                 );
         }
@@ -140,7 +127,7 @@ namespace BoidBash
         /// Draw the Score Goal
         /// </summary>
         /// <param name="_spriteBatch"></param>
-        public void DrawScoreGoal(SpriteBatch _spriteBatch)
+        public void DrawScoreGoal(SpriteBatch _spriteBatch, int scoreGoal)
         {
             // Score display
             _spriteBatch.DrawString(

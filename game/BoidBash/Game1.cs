@@ -63,11 +63,11 @@ namespace BoidBash
         private int height;
 
         // Player Score
-        private long player1Score = 0;
+        private ulong player1Score = 0;
         private int scoreGoal = 1;
 
         //Timer
-        private float timer = 60f;
+        private float timer = 30f;
 
         // Debug
         private Texture2D blank;
@@ -84,7 +84,7 @@ namespace BoidBash
             get { return height; }
         }
 
-        public long Score
+        public ulong Score
         {
             get { return player1Score; }
         }
@@ -194,7 +194,7 @@ namespace BoidBash
 
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(110, 710, 80, 80),    // where to put the button
+                    new Rectangle(1010, 110, 80, 80),   // where to put the button
                     "BASH!",                            // button label
                     primaryFont,                        // label font
                     Color.DarkRed,                      // button color
@@ -203,7 +203,7 @@ namespace BoidBash
 
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(1010, 110, 80, 80),    // where to put the button
+                    new Rectangle(1010, 710, 80, 80),   // where to put the button
                     "BASH!",                            // button label
                     primaryFont,                        // label font
                     Color.DarkRed,                      // button color
@@ -212,7 +212,7 @@ namespace BoidBash
 
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(1010, 710, 80, 80),    // where to put the button
+                    new Rectangle(110, 710, 80, 80),    // where to put the button
                     "BASH!",                            // button label
                     primaryFont,                        // label font
                     Color.DarkRed,                      // button color
@@ -242,14 +242,9 @@ namespace BoidBash
                     if (timer > 0)
                     {
                         timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
                     }
                     
-                    // Testing score incrementing
-                    /*
-                    player1Score++;
                     gameUI.ScoreUpdater(player1Score);
-                    */
                     break;
                 case GameState.PauseMenu:
                     ProcessPauseMenu();
@@ -315,7 +310,7 @@ namespace BoidBash
                     gameUI.DrawScore(_spriteBatch);
                     _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
                     Color.White);
-                    gameUI.DrawScoreGoal(_spriteBatch);
+                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
                     // Draws and removes any new point numbers that show up after destroying boids
@@ -323,7 +318,16 @@ namespace BoidBash
                     {
                         _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
                     }
-                    flock.Pens.ScorePrints.Clear();
+                    // Change the amount of time left on the timers
+                    for (int x = flock.Pens.ScoreTimers.Count -1; x >= 0; x--)
+                    {
+                        flock.Pens.ScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (flock.Pens.ScoreTimers[x] <= 0)
+                        {
+                            flock.Pens.ScorePrints.RemoveAt(x);
+                            flock.Pens.ScoreTimers.RemoveAt(x);
+                        }
+                    }
 
                     foreach (Button b in buttons)
                     {
@@ -389,7 +393,7 @@ namespace BoidBash
         {
             if (IsSingleKeyPress(Keys.Enter))
             {
-                timer = 60;
+                timer = 30;
                 currentState = GameState.Game;
                 flock.AddBoids(50);
             }
@@ -400,6 +404,11 @@ namespace BoidBash
         /// </summary>
         private void ProcessGame()
         {
+            foreach (Button button in buttons)
+            {
+                button.Update();
+            }
+
             if (IsSingleKeyPress(Keys.P))
             {
                 currentState = GameState.PauseMenu;
@@ -464,9 +473,9 @@ namespace BoidBash
         /// <summary>
         /// This method updates the high scores text file
         /// </summary>
-        private void UpdateScores(long score)
+        private void UpdateScores(ulong score)
         {
-            List<long> scores = new List<long>();
+            List<ulong> scores = new List<ulong>();
             string line = null;
             StreamReader input = null;
             StreamWriter output = null;
@@ -480,7 +489,7 @@ namespace BoidBash
 
                 while ((line = input.ReadLine()) != null)
                 {
-                    scores.Add(long.Parse(line));
+                    scores.Add(ulong.Parse(line));
                 }
             }
             catch (Exception e)
@@ -543,7 +552,7 @@ namespace BoidBash
                     output = new StreamWriter("..//..//..//Highscores.txt");
 
                     // Write a line for each score
-                    foreach (long num in scores)
+                    foreach (ulong num in scores)
                     {
                         output.WriteLine(num);
                     }
@@ -599,7 +608,7 @@ namespace BoidBash
             Vector2 dataReturn;
             dataReturn = flock.Pens.DestroyContainedBoids(flock, pen, scoreGoal);
 
-            player1Score += (long)dataReturn.X;
+            player1Score += (ulong)dataReturn.X;
 
             if (dataReturn.Y == 1)
             {

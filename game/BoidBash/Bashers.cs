@@ -19,6 +19,7 @@ namespace BoidBash
         // Fields
         private List<Rectangle> pens = new List<Rectangle>();
         private List<Vector3> scorePrints = new List<Vector3>();
+        private List<float> scoreTimers = new List<float>();
 
         // Properties
         public List<Rectangle> Pens
@@ -30,6 +31,12 @@ namespace BoidBash
         {
             get { return scorePrints; }
             set { scorePrints = value; }
+        }
+
+        public List<float> ScoreTimers
+        {
+            get { return scoreTimers; }
+            set { scoreTimers = value; }
         }
 
         // Constructor
@@ -70,13 +77,24 @@ namespace BoidBash
             bool upScoreGoal = false;
             Vector2 returnNums;
 
-            foreach (Boid boid in flock.Boids)
+            for (int x = flock.Boids.Count -1; x >= 0; x--)
             {
-                if (boid.Pen == pen)
+                if (flock.Boids[x].Pen == pen)
                 {
                     // Score Increment
-                    boidsBashed++;
-                    scoreIncrease += (int)Math.Pow(scoregoal, boidsBashed);
+                    if (boidsBashed < 7)
+                    {
+                        boidsBashed++;
+                    }
+                    if (boidsBashed == 7)
+                    {
+                        scoreIncrease += (int)Math.Pow(scoregoal, boidsBashed) * scoregoal;
+                    }
+                    else
+                    {
+                        scoreIncrease += (int)Math.Pow(scoregoal, boidsBashed);
+                    }
+                    
 
                     // Checking if new score goal has been reached
                     if (scoregoal < boidsBashed)
@@ -85,8 +103,20 @@ namespace BoidBash
                     }
 
                     // TODO - apply visuals
-                    scorePrints.Add(new Vector3(boid.Position.X, boid.Position.Y, (float)Math.Pow(scoregoal, boidsBashed)));
-                    flock.RemoveBoid(boid);
+                    if (boidsBashed < 7)
+                    {
+                        scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
+                        (float)Math.Pow(scoregoal, boidsBashed)));
+                        ScoreTimers.Add(1);
+                    }
+                    else
+                    {
+                        scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
+                        (float)Math.Pow(scoregoal, boidsBashed) * scoregoal));
+                        ScoreTimers.Add(1);
+                    }
+                    
+                    flock.RemoveBoid(flock.Boids[x]);
                 }
             }
 
