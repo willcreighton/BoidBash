@@ -24,7 +24,7 @@ namespace BoidBash
         private SpriteBatch _spriteBatch;
         private GameState currentState;
 
-        Button button;
+        // Buttons
         private List<Button> buttons = new List<Button>();
         private Color bgColor = Color.White;
         private Random rng = new Random();
@@ -64,6 +64,7 @@ namespace BoidBash
 
         // Player Score
         private long player1Score = 0;
+        private int scoreGoal = 1;
 
         //Timer
         private float timer = 60f;
@@ -184,11 +185,39 @@ namespace BoidBash
             // Add buttons
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(10, 40, 200, 100),    // where to put the button
-                    "Random BG",                        // button label
-                    primaryFont,                               // label font
-                    Color.Purple));                     // button color
-            buttons[0].OnButtonClick += this.RandomizeBackground;
+                    new Rectangle(110, 110, 80, 80),    // where to put the button
+                    "BASH!",                            // button label
+                    primaryFont,                        // label font
+                    Color.DarkRed,                      // button color
+                    0));                                // pen number
+            buttons[0].OnButtonClick += this.Bashed;
+
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,           // device to create a custom texture
+                    new Rectangle(110, 710, 80, 80),    // where to put the button
+                    "BASH!",                            // button label
+                    primaryFont,                        // label font
+                    Color.DarkRed,                      // button color
+                    1));                                // pen number
+            buttons[1].OnButtonClick += this.Bashed;
+
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,           // device to create a custom texture
+                    new Rectangle(1010, 110, 80, 80),    // where to put the button
+                    "BASH!",                            // button label
+                    primaryFont,                        // label font
+                    Color.DarkRed,                      // button color
+                    2));                                // pen number
+            buttons[2].OnButtonClick += this.Bashed;
+
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,           // device to create a custom texture
+                    new Rectangle(1010, 710, 80, 80),    // where to put the button
+                    "BASH!",                            // button label
+                    primaryFont,                        // label font
+                    Color.DarkRed,                      // button color
+                    3));                                // pen number
+            buttons[3].OnButtonClick += this.Bashed;
         }
 
         protected override void Update(GameTime gameTime)
@@ -295,6 +324,11 @@ namespace BoidBash
                         _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     flock.Pens.ScorePrints.Clear();
+
+                    foreach (Button b in buttons)
+                    {
+                        b.Draw(_spriteBatch);
+                    }
 
                     // TODO - Make these messages appear for more than one frame
                     break;
@@ -408,6 +442,8 @@ namespace BoidBash
                 currentState = GameState.MainMenu;
                 flock.ClearFlock();
                 predator.Position = new Rectangle(width / 2, height / 2, 25, 25);
+                player1Score = 0;
+                scoreGoal = 1;
             }
         }
 
@@ -419,6 +455,8 @@ namespace BoidBash
             if (IsSingleKeyPress(Keys.M))
             {
                 currentState = GameState.MainMenu;
+                player1Score = 0;
+                scoreGoal = 1;
             }
         }
 
@@ -556,5 +594,17 @@ namespace BoidBash
             return scores;
         }
 
+        public void Bashed(int pen)
+        {
+            Vector2 dataReturn;
+            dataReturn = flock.Pens.DestroyContainedBoids(flock, pen, scoreGoal);
+
+            player1Score += (long)dataReturn.X;
+
+            if (dataReturn.Y == 1)
+            {
+                scoreGoal++;
+            }
+        }
     }
 }

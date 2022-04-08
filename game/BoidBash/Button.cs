@@ -12,7 +12,7 @@ namespace BoidBash
     /// implement a method matching this delegate and then tie that method to
     /// the button's "OnButtonClick" event.
     /// </summary>
-    public delegate void OnButtonClickDelegate();
+    public delegate void OnButtonClickDelegate(int pen);
 
     /// <summary>
     /// Builds, monitors, and draws a customized Button
@@ -26,7 +26,7 @@ namespace BoidBash
         private Rectangle position; // Button position and size
         private Vector2 textLoc;
         private Texture2D buttonImg;
-        private Color textColor;
+        private int pen;
 
         /// <summary>
         /// If the client wants to be notified when a button is clicked, it must
@@ -45,12 +45,13 @@ namespace BoidBash
         /// <param name="text">The text to draw on the button</param>
         /// <param name="font">The font to use when drawing the button text.</param>
         /// <param name="color">The color to make the button's texture.</param>
-        public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color)
+        public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color, int pen)
         {
             // Save copies/references to the info we'll need later
             this.font = font;
             this.position = position;
             this.text = text;
+            this.pen = pen;
 
             // Figure out where on the button to draw it
             Vector2 textSize = font.MeasureString(text);
@@ -58,9 +59,6 @@ namespace BoidBash
                 (position.X + position.Width / 2) - textSize.X / 2,
                 (position.Y + position.Height / 2) - textSize.Y / 2
             );
-
-            // Invert the button color for the text color (because why not)
-            textColor = new Color(255 - color.R, 255 - color.G, 255 - color.B);
 
             // Make a custom 2d texture for the button itself
             buttonImg = new Texture2D(device, position.Width, position.Height, false, SurfaceFormat.Color);
@@ -84,7 +82,7 @@ namespace BoidBash
                 if (OnButtonClick != null)
                 {
                     // Call ALL methods attached to this button
-                    OnButtonClick();
+                    OnButtonClick(pen);
                 }
             }
 
@@ -103,7 +101,7 @@ namespace BoidBash
             spriteBatch.Draw(buttonImg, position, Color.White);
 
             // Draw button text over the button
-            spriteBatch.DrawString(font, text, textLoc, textColor);
+            spriteBatch.DrawString(font, text, textLoc, Color.White);
         }
     }
 }
