@@ -59,6 +59,9 @@ namespace BoidBash
         // Player Score
         private long player1Score = 0;
 
+        //Timer
+        private float timer = 60f;
+
         // Debug
         private Texture2D blank;
         private List<Rectangle> bounds = new List<Rectangle>();
@@ -71,6 +74,11 @@ namespace BoidBash
         public int Height
         {
             get { return height; }
+        }
+
+        public long Score
+        {
+            get { return player1Score; }
         }
 
         public Game1()
@@ -109,18 +117,21 @@ namespace BoidBash
             flock = new Flock(30, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
 
-            // Add boundaries
-            // These are temporary values, which do not include space for the pens yet
-            bounds.Add(new Rectangle(100, 100, 1000, 100));
-            bounds.Add(new Rectangle(100, 100, 100, 700));
-            bounds.Add(new Rectangle(100, 700, 1000, 100));
-            bounds.Add(new Rectangle(1000, 100, 100, 700));
+            // Add boundaries for Game flock
+            bounds.Add(new Rectangle(350, 100, 750, 100));
+            bounds.Add(new Rectangle(100, 100, 100, 450));
+            bounds.Add(new Rectangle(100, 700, 750, 100));
+            bounds.Add(new Rectangle(1000, 350, 100, 450));
+            bounds.Add(new Rectangle(100, 0, 350, 100));
+            bounds.Add(new Rectangle(0, 450, 100, 350));
+            bounds.Add(new Rectangle(1100, 100, 100, 350));
+            bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
 
-            flock.Pens.AddPen(new Rectangle(200, 200, 100, 100));
-            flock.Pens.AddPen(new Rectangle(900, 200, 100, 100));
-            flock.Pens.AddPen(new Rectangle(200, 600, 100, 100));
-            flock.Pens.AddPen(new Rectangle(900, 600, 100, 100));
+            flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
+            flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
+            flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
+            flock.Pens.AddPen(new Rectangle(100, 550, 100, 150));
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
 
@@ -132,6 +143,8 @@ namespace BoidBash
             gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, headerFont, primaryFont);
+
+            headerFont = Content.Load<SpriteFont>("headerFont");
 
             // TEMPORARY TESTING
             // Enable to test File IO
@@ -170,8 +183,20 @@ namespace BoidBash
                     break;
                 case GameState.Game:
                     ProcessGame();
-                    flock.ProcessBoids(new Vector2(0, 0));
+                    flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
                     predator.Update(gameTime);
+
+                    if (timer > 0)
+                    {
+                        timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    }
+                    
+                    // Testing score incrementing
+                    /*
+                    player1Score++;
+                    gameUI.ScoreUpdater(player1Score);
+                    */
                     break;
                 case GameState.PauseMenu:
                     ProcessPauseMenu();
@@ -192,8 +217,9 @@ namespace BoidBash
         {
             GraphicsDevice.Clear(backgroundColor);
 
-            // Begin the Sprite Batch
+            // Begin the Sprite Batch and the ShapeBatch
             _spriteBatch.Begin();
+            ShapeBatch.Begin(GraphicsDevice);
 
             // GameState switches
             switch (currentState)
@@ -201,7 +227,22 @@ namespace BoidBash
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
                     break;
-                case GameState.Game:  
+                case GameState.Game:
+
+                    //Draws the main box area for the game
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
+
+                    /*Draws the Crushers from top to bottom -
+                     * Top Left
+                     * Top Right
+                     * Bottom Right
+                     * Bottom Left
+                     */
+                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), Color.Red);
+                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), Color.Red);
+
                     // Draws items only meant to be seen in debug
                     if (inDebug)
                     {
@@ -217,6 +258,10 @@ namespace BoidBash
                     }
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
+                    gameUI.DrawScore(_spriteBatch);
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
+                    Color.White);
+                    gameUI.DrawScoreGoal(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
                     // Draws and removes any new point numbers that show up after destroying boids
@@ -225,9 +270,11 @@ namespace BoidBash
                         _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     flock.Pens.ScorePrints.Clear();
+
                     // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
+                    gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
@@ -239,8 +286,10 @@ namespace BoidBash
                     break;
             }
 
-            // End the Sprite Batch
+            // End the Sprite Batch and the ShapeBatch
             _spriteBatch.End();
+
+            ShapeBatch.End();
 
             base.Draw(gameTime);
         }
