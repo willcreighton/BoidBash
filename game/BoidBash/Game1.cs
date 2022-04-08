@@ -170,7 +170,7 @@ namespace BoidBash
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont, playPrompt, boidBashLogo);
             gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont, boidBashLogo);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
-            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver);
+            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, headerFont);
 
             headerFont = Content.Load<SpriteFont>("headerFont");
 
@@ -250,7 +250,7 @@ namespace BoidBash
                     {
                         timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     }
-                    
+
                     gameUI.ScoreUpdater(player1Score);
                     break;
                 case GameState.PauseMenu:
@@ -280,9 +280,9 @@ namespace BoidBash
             switch (currentState)
             {
                 case GameState.MainMenu:
+                    menuFlock.Draw();
                     mainMenuUI.Draw(_spriteBatch);
                     _spriteBatch.DrawString(primaryFont, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
-                    menuFlock.Draw();
                     break;
                 case GameState.Game:
 
@@ -461,6 +461,7 @@ namespace BoidBash
             if (timer < 0.01f)
             {
                 UpdateScores(player1Score);
+                endScreenUI.Score = player1Score;
                 currentState = GameState.EndScreen;
             }
         }

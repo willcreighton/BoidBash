@@ -14,8 +14,6 @@ namespace BoidBash
         protected int windowHeight;
         protected int windowWidth;
 
-        private Color predatorColor = new Color(255, 61, 61);
-
         // Properties
         /// <summary>
         /// Read-only property for the position of the game object
@@ -52,7 +50,7 @@ namespace BoidBash
         /// <param name="sb"></param>
         public virtual void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, position, predatorColor);
+            sb.Draw(texture, position, Color.Red);
         }
         /// <summary>
         /// Updates GameObject with GameTime
