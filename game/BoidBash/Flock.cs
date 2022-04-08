@@ -475,7 +475,7 @@ namespace BoidBash
                     float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
-                        null, Color.Lime, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                        null, Color.Gold, angle, new Vector2(0, 0), SpriteEffects.None, 0);
                 }
             }
         }

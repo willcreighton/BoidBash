@@ -18,22 +18,19 @@ namespace BoidBash
         private int windowHeight;
         private SpriteFont headerFont;
         private SpriteFont primaryFont;
-        private Color backgroundColor;
+        private Texture2D boidBashLogo;
 
         private ulong score = 0;
         private int timer = 60;
 
-        //public Timer aTmr = new Timer(1000);
-
         // Constructor
-        public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
+        public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont, Texture2D boidBashLogo)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.headerFont = headerFont;
             this.primaryFont = primaryFont;
-
-            backgroundColor = new Color(20, 20, 20);
+            this.boidBashLogo = boidBashLogo;
         }
 
         /// <summary>
@@ -48,28 +45,6 @@ namespace BoidBash
             return score;
         }
 
-        //I will delete this later
-        /*
-        /// <summary>
-        /// This method decrements the timer
-        /// </summary>
-        public void TimerUpdater()
-        {
-            aTmr.Elapsed -= ATmr_Elapsed;
-            aTmr.Enabled = true;
-            aTmr.AutoReset = true;
-            aTmr.Start();
-            Console.Read();
-        }
-
-        public void ATmr_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            //timer = timer - 1;
-            timer--;
-            throw new NotImplementedException();
-        }
-        */
-
         /// <summary>
         /// Draw the Game UI
         /// </summary>
@@ -77,10 +52,9 @@ namespace BoidBash
         public void Draw(SpriteBatch _spriteBatch)
         {
             // State display
-            _spriteBatch.DrawString(
-                headerFont,
-                "Boid Bash",
-                new Vector2(20, 15),
+            _spriteBatch.Draw(
+                boidBashLogo,
+                new Rectangle(10, 5, 100, 90),
                 Color.White
                 );
 
@@ -114,7 +88,7 @@ namespace BoidBash
         /// <param name="_spriteBatch"></param>
         public void DrawTimer(SpriteBatch _spriteBatch)
         {
-            // Score display
+            // Timer display
             _spriteBatch.DrawString(
                 headerFont,
                 "Timer: " + timer,
@@ -129,7 +103,7 @@ namespace BoidBash
         /// <param name="_spriteBatch"></param>
         public void DrawScoreGoal(SpriteBatch _spriteBatch, int scoreGoal)
         {
-            // Score display
+            // Score Goal display
             _spriteBatch.DrawString(
                 headerFont,
                 "Score Goal: " + scoreGoal,
