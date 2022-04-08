@@ -474,7 +474,7 @@ namespace BoidBash
                     // Calculate rotation in radians
                     float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
-                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
+                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X + 4, (int)size.Y + 3),
                         null, Color.Gold, angle, new Vector2(0, 0), SpriteEffects.None, 0);
                 }
             }
