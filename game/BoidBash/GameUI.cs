@@ -49,6 +49,8 @@ namespace BoidBash
             return score;
         }
 
+        //I will delete this later
+        /*
         /// <summary>
         /// This method decrements the timer
         /// </summary>
@@ -67,6 +69,7 @@ namespace BoidBash
             timer--;
             throw new NotImplementedException();
         }
+        */
 
         /// <summary>
         /// This method updates the score goal
@@ -143,7 +146,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "Score Goal: " + scoreGoal,
-                new Vector2(20, 750),
+                new Vector2(950, 850),
                 Color.White
                 );
         }

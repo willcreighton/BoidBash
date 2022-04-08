@@ -60,6 +60,9 @@ namespace BoidBash
         // Player Score
         private long player1Score = 0;
 
+        //Timer
+        float timer = 60f;
+
         // Debug
         private Texture2D blank;
         private List<Rectangle> bounds = new List<Rectangle>();
@@ -118,25 +121,21 @@ namespace BoidBash
             menuFlock = new Flock(100, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
 
-            // Add boundaries
-            // These are temporary values, which do not include space for the pens yet
-            bounds.Add(new Rectangle(100, 100, 1000, 100));
-            bounds.Add(new Rectangle(100, 100, 100, 700));
-            bounds.Add(new Rectangle(100, 700, 1000, 100));
-            bounds.Add(new Rectangle(1000, 100, 100, 700));
+            // Add boundaries for Game flock
+            bounds.Add(new Rectangle(350, 100, 750, 100));
+            bounds.Add(new Rectangle(100, 100, 100, 450));
+            bounds.Add(new Rectangle(100, 700, 750, 100));
+            bounds.Add(new Rectangle(1000, 350, 100, 450));
+            bounds.Add(new Rectangle(100, 0, 350, 100));
+            bounds.Add(new Rectangle(0, 450, 100, 350));
+            bounds.Add(new Rectangle(1100, 100, 100, 350));
+            bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
 
-            // Menu flock's boundaries
-            menuBounds.Add(new Rectangle(0, -100, 1200, 100));
-            menuBounds.Add(new Rectangle(-100, 0, 100, 900));
-            menuBounds.Add(new Rectangle(0, 900, 1200, 100));
-            menuBounds.Add(new Rectangle(1200, 0, 100, 900));
-            menuFlock.Boundaries = menuBounds;
-
-            flock.Pens.AddPen(new Rectangle(200, 200, 100, 100));
-            flock.Pens.AddPen(new Rectangle(900, 200, 100, 100));
-            flock.Pens.AddPen(new Rectangle(200, 600, 100, 100));
-            flock.Pens.AddPen(new Rectangle(900, 600, 100, 100));
+            flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
+            flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
+            flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
+            flock.Pens.AddPen(new Rectangle(100, 550, 100, 150));
 
             predTexture = Content.Load<Texture2D>("PredatorSprite");
 
@@ -148,6 +147,8 @@ namespace BoidBash
             gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, headerFont, primaryFont);
+
+            headerFont = Content.Load<SpriteFont>("headerFont");
 
             // TEMPORARY TESTING
             // Enable to test File IO
@@ -188,10 +189,8 @@ namespace BoidBash
                     ProcessGame();
                     flock.ProcessBoids(new Vector2(predator.PredatorPosition.X, predator.PredatorPosition.Y));
                     predator.Update(gameTime);
-                    gameUI.TimerUpdater();
-                    //gameUI.ATmr_Elapsed();
+                    timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     
-
                     // Testing score incrementing
                     /*
                     player1Score++;
@@ -260,7 +259,8 @@ namespace BoidBash
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    gameUI.DrawTimer(_spriteBatch);
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("00"), new Vector2(500, 15),
+                    Color.White);
                     gameUI.DrawScoreGoal(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
