@@ -132,6 +132,13 @@ namespace BoidBash
             bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
 
+            // Menu flock's boundaries
+            menuBounds.Add(new Rectangle(0, -100, 1200, 100));
+            menuBounds.Add(new Rectangle(-100, 0, 100, 900));
+            menuBounds.Add(new Rectangle(0, 900, 1200, 100));
+            menuBounds.Add(new Rectangle(1200, 0, 100, 900));
+            menuFlock.Boundaries = menuBounds;
+
             flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
             flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
             flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
