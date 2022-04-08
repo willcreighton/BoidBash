@@ -31,12 +31,27 @@ namespace BoidBash
         {
             get { return position; }
         }
+        /// <summary>
+        /// ActualPosition returns the center of the rectangle that the predator is drawn upon
+        /// </summary>
         public Vector2 ActualPosition
         {
             get { return actualPosition; }
         }
 
         // Parameterized Constructor
+        /// <summary>
+        /// Predator Constructor that takes in a Texture2D for the predator texture, 
+        /// a Rectangle for the position/size, 
+        /// an integer for both the height and width of the game window to create boundaries,
+        /// and an integer for the height and width of the predator to help keep the sprite inside the boundaries.
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="position"></param>
+        /// <param name="windowHeight"></param>
+        /// <param name="windowWidth"></param>
+        /// <param name="predHeight"></param>
+        /// <param name="predWidth"></param>
         public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth) :
             base(texture, position, windowHeight, windowWidth)
         {
