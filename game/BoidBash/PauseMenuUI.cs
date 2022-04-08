@@ -47,7 +47,7 @@ namespace BoidBash
             // Game prompt
             _spriteBatch.DrawString(
                 primaryFont,
-                "Press 'G' to access the Game.",
+                "Press ENTER to Resume",
                 new Vector2(20, windowHeight - 40),
                 Color.White
                 );
@@ -55,7 +55,7 @@ namespace BoidBash
             // Main Menu prompt
             _spriteBatch.DrawString(
                 primaryFont,
-                "Press 'M' to return to the Main Menu.",
+                "Press M to Return to Main Menu",
                 new Vector2(20, windowHeight - 80),
                 Color.White
                 );

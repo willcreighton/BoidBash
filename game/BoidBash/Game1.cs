@@ -49,6 +49,7 @@ namespace BoidBash
         // Boids
         private Texture2D boidSprite;
         private Flock flock;
+        private Flock menuFlock;
 
         // Predator
         private Predator predator;
@@ -65,6 +66,7 @@ namespace BoidBash
         // Debug
         private Texture2D blank;
         private List<Rectangle> bounds = new List<Rectangle>();
+        private List<Rectangle> menuBounds = new List<Rectangle>();
         private bool inDebug = false;
 
         public int Width
@@ -116,6 +118,8 @@ namespace BoidBash
             blank = this.Content.Load<Texture2D>("White Square");
             flock = new Flock(30, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
+            menuFlock = new Flock(100, new Rectangle(200, 200, 800, 500), new Rectangle(300, 300, 400, 300),
+                boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
 
             // Add boundaries for Game flock
             bounds.Add(new Rectangle(350, 100, 750, 100));
@@ -127,6 +131,13 @@ namespace BoidBash
             bounds.Add(new Rectangle(1100, 100, 100, 350));
             bounds.Add(new Rectangle(750, 800, 350, 100));
             flock.Boundaries = bounds;
+
+            // Menu flock's boundaries
+            menuBounds.Add(new Rectangle(0, -100, 1200, 100));
+            menuBounds.Add(new Rectangle(-100, 0, 100, 900));
+            menuBounds.Add(new Rectangle(0, 900, 1200, 100));
+            menuBounds.Add(new Rectangle(1200, 0, 100, 900));
+            menuFlock.Boundaries = menuBounds;
 
             flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
             flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
@@ -162,7 +173,6 @@ namespace BoidBash
             UpdateScores(8);
             UpdateScores(7);
 
-
             System.Diagnostics.Debug.WriteLine(GetScoreList());
             */
 
@@ -180,6 +190,7 @@ namespace BoidBash
             {
                 case GameState.MainMenu:
                     ProcessMainMenu();
+                    menuFlock.ProcessBoids(new Vector2(-300, -300));
                     break;
                 case GameState.Game:
                     ProcessGame();
@@ -226,13 +237,14 @@ namespace BoidBash
             {
                 case GameState.MainMenu:
                     mainMenuUI.Draw(_spriteBatch);
+                    menuFlock.Draw();
                     break;
                 case GameState.Game:
 
                     //Draws the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
 
-                    /*Draws the Crushers from top to bottom -
+                    /* Draws the Crushers from top to bottom -
                      * Top Left
                      * Top Right
                      * Bottom Right
@@ -274,6 +286,20 @@ namespace BoidBash
                     // TODO - Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
+                    //Draws the main box area for the game
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Blue);
+
+                    /* Draws the Crushers from top to bottom -
+                     * Top Left
+                     * Top Right
+                     * Bottom Right
+                     * Bottom Left
+                     */
+                    ShapeBatch.Box(200f, 100f, 150f, 100f, Color.Red);
+                    ShapeBatch.Box(1000f, 200f, 100f, 150f, Color.Red);
+                    ShapeBatch.Box(850f, 700f, 150f, 100f, Color.Red);
+                    ShapeBatch.Box(100f, 550f, 100f, 150f, Color.Red);
+
                     gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
                     flock.Draw();
@@ -314,7 +340,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessMainMenu()
         {
-            if (IsSingleKeyPress(Keys.G))
+            if (IsSingleKeyPress(Keys.Enter))
             {
                 currentState = GameState.Game;
                 flock.AddBoids(50);
@@ -354,7 +380,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessPauseMenu()
         {
-            if (IsSingleKeyPress(Keys.G))
+            if (IsSingleKeyPress(Keys.Enter))
             {
                 currentState = GameState.Game;
             }
