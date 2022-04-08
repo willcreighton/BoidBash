@@ -15,19 +15,16 @@ namespace BoidBash
         // Fields
         private int windowWidth;
         private int windowHeight;
-        private SpriteFont headerFont;
-        private SpriteFont primaryFont;
-        private Color backgroundColor;
+        private Texture2D continuePrompt;
+        private Texture2D gameOver;
 
         // Constructor
-        public EndScreenUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
+        public EndScreenUI(int windowWidth, int windowHeight, Texture2D continuePrompt, Texture2D gameOver)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.headerFont = headerFont;
-            this.primaryFont = primaryFont;
-
-            backgroundColor = new Color(20, 20, 20);
+            this.continuePrompt = continuePrompt;
+            this.gameOver = gameOver;
         }
 
         /// <summary>
@@ -36,19 +33,17 @@ namespace BoidBash
         /// <param name="_spriteBatch"></param>
         public void Draw(SpriteBatch _spriteBatch)
         {
-            // State display
-            _spriteBatch.DrawString(
-                headerFont,
-                "End Screen",
-                new Vector2(20, 15),
+            // Game over display
+            _spriteBatch.Draw(
+                gameOver,
+                new Rectangle(370, 250, 460, 60),
                 Color.White
                 );
 
-            // Main Menu prompt
-            _spriteBatch.DrawString(
-                primaryFont,
-                "Press 'M' to return to the Main Menu.",
-                new Vector2(20, windowHeight - 40),
+            // Continue to Main Menu prompt
+            _spriteBatch.Draw(
+                continuePrompt,
+                new Vector2(460, windowHeight - 400),
                 Color.White
                 );
         }

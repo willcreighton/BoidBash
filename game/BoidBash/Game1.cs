@@ -10,12 +10,10 @@ namespace BoidBash
     // This enumerator references the different states of the game
     enum GameState
     {
-        // The key's are for testing, specific events or buttons will trigger
-        // the states in the final version.
-        MainMenu,       // 'M'
-        Game,           // 'G'
-        PauseMenu,      // 'P'
-        EndScreen       // 'E'
+        MainMenu,
+        Game,
+        PauseMenu,
+        EndScreen
     }
 
     public class Game1 : Game
@@ -29,6 +27,12 @@ namespace BoidBash
         private Color bgColor = Color.White;
         private Random rng = new Random();
         private Texture2D bashButton;
+
+        // Textures
+        private Texture2D playPrompt;
+        private Texture2D boidBashLogo;
+        private Texture2D continuePrompt;
+        private Texture2D gameOver;
 
         // Screen size
         private int windowWidth;
@@ -67,7 +71,7 @@ namespace BoidBash
         private ulong player1Score = 0;
         private int scoreGoal = 1;
 
-        //Timer
+        // Timer
         private float timer = 30f;
 
         // Debug
@@ -122,6 +126,10 @@ namespace BoidBash
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
             bashButton = Content.Load<Texture2D>("BashButton2");
+            playPrompt = Content.Load<Texture2D>("Start");
+            boidBashLogo = Content.Load<Texture2D>("BoidBashLogo");
+            continuePrompt = Content.Load<Texture2D>("End");
+            gameOver = Content.Load<Texture2D>("GameOver");
 
             boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("White Square");
@@ -161,10 +169,10 @@ namespace BoidBash
                 25, 25),
                 windowHeight, windowWidth, 25, 25);
 
-            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
-            gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont);
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont, playPrompt, boidBashLogo);
+            gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont, boidBashLogo);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
-            endScreenUI = new EndScreenUI(windowWidth, windowHeight, headerFont, primaryFont);
+            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver);
 
             headerFont = Content.Load<SpriteFont>("headerFont");
 
@@ -483,7 +491,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessEndScreen()
         {
-            if (IsSingleKeyPress(Keys.M))
+            if (IsSingleKeyPress(Keys.Enter))
             {
                 currentState = GameState.MainMenu;
                 player1Score = 0;

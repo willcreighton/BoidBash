@@ -17,17 +17,18 @@ namespace BoidBash
         private int windowHeight;
         private SpriteFont headerFont;
         private SpriteFont primaryFont;
-        private Color backgroundColor;
+        private Texture2D playPrompt;
+        private Texture2D boidBashLogo;
 
         // Constructor
-        public MainMenuUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
+        public MainMenuUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont, Texture2D playPrompt, Texture2D boidBashLogo)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.headerFont = headerFont;
             this.primaryFont = primaryFont;
-
-            backgroundColor = new Color(20, 20, 20);
+            this.playPrompt = playPrompt;
+            this.boidBashLogo = boidBashLogo;
         }
 
         /// <summary>
@@ -37,18 +38,16 @@ namespace BoidBash
         public void Draw(SpriteBatch _spriteBatch)
         {
             // State display
-            _spriteBatch.DrawString(
-                headerFont,
-                "Boid Bash",
-                new Vector2(510, 350),
+            _spriteBatch.Draw(
+                boidBashLogo,
+                new Rectangle(405, 100, 342, 300),
                 Color.White
                 );
 
             // Game prompt
-            _spriteBatch.DrawString(
-                primaryFont,
-                "Press ENTER to Start",
-                new Vector2(480, windowHeight - 400),
+            _spriteBatch.Draw(
+                playPrompt,
+                new Vector2(460, windowHeight - 400),
                 Color.White
                 );
         }
