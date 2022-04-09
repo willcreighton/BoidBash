@@ -60,7 +60,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 String.Format("Score: {0:n0}", score),
-                new Vector2(15, 10),
+                new Vector2(15, 15),
                 Color.White
                 );
         }

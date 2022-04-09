@@ -356,11 +356,11 @@ namespace BoidBash
                 //  distance to the object
                 if (bound.Contains(boid.Position + boid.Velocity))
                 {
-                    boid.Velocity *= new Vector2(-0.5f, -1);
+                    boid.Velocity *= -1;
                 }
                 
                 // If the boundary is within distance of bounds avoidance, add extra to boid velocity in opposite 
-                //  direction of boundary
+                // direction of boundary
             }
             
             // If within a boundary, reposition the boid within the creation bounds

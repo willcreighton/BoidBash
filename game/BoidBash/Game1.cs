@@ -32,9 +32,13 @@ namespace BoidBash
 
         // Textures
         private Texture2D playPrompt;
-        private Texture2D boidBashLogo;
         private Texture2D continuePrompt;
+        private Texture2D resumePrompt;
+        private Texture2D pausePrompt;
+        private Texture2D returnPrompt;
+        private Texture2D boidBashLogo;
         private Texture2D gameOver;
+        private Texture2D pausedDisplay;
 
         // Screen size
         private int windowWidth;
@@ -129,13 +133,17 @@ namespace BoidBash
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
             bashButton = Content.Load<Texture2D>("BashButton2");
-            playPrompt = Content.Load<Texture2D>("Start");
+            playPrompt = Content.Load<Texture2D>("StartPrompt");
             boidBashLogo = Content.Load<Texture2D>("BoidBashLogo");
-            continuePrompt = Content.Load<Texture2D>("End");
+            continuePrompt = Content.Load<Texture2D>("ContinuePrompt");
             gameOver = Content.Load<Texture2D>("GameOver");
+            resumePrompt = Content.Load<Texture2D>("ResumePrompt");
+            pausePrompt = Content.Load<Texture2D>("PausePrompt");
+            returnPrompt = Content.Load<Texture2D>("ReturnMainMenu");
+            pausedDisplay = Content.Load<Texture2D>("Paused");
 
-            boidSprite = this.Content.Load<Texture2D>("BoidSprite");
-            blank = this.Content.Load<Texture2D>("White Square");
+        boidSprite = this.Content.Load<Texture2D>("BoidSprite");
+            blank = this.Content.Load<Texture2D>("WhiteSquare");
             flock = new Flock(70, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
@@ -171,8 +179,8 @@ namespace BoidBash
                 windowHeight, windowWidth, 25, 25);
 
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont, playPrompt, boidBashLogo);
-            gameUI = new GameUI(windowWidth, windowHeight, headerFont, primaryFont, boidBashLogo);
-            pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, headerFont, primaryFont);
+            gameUI = new GameUI(windowWidth, windowHeight, headerFont, boidBashLogo, pausePrompt);
+            pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, headerFont);
 
             headerFont = Content.Load<SpriteFont>("headerFont");
@@ -321,7 +329,8 @@ namespace BoidBash
                         _spriteBatch.Draw(blank, new Rectangle(300, 300, 600, 300), Color.Blue);
                     }
                     // Ususal items to be drawn
-                    gameUI.Draw(_spriteBatch);
+                    gameUI.DrawPausePrompt(_spriteBatch);
+                    gameUI.DrawLogo(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
                     _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
@@ -382,10 +391,11 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), penColor);
                     _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), penColor);
 
-                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(500, 15),
+                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
                     gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
+                    gameUI.DrawLogo(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
                     break;
@@ -424,7 +434,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessMainMenu()
         {
-            if (IsSingleKeyPress(Keys.Enter))
+            if (IsSingleKeyPress(Keys.Space))
             {
                 timer = 30;
                 flock.Pens.ScoreTimers.Clear();
@@ -444,7 +454,7 @@ namespace BoidBash
             {
                 button.Update();
             }
-            if (IsSingleKeyPress(Keys.P))
+            if (IsSingleKeyPress(Keys.Tab))
             {
                 currentState = GameState.PauseMenu;
             }
@@ -473,7 +483,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessPauseMenu()
         {
-            if (IsSingleKeyPress(Keys.Enter))
+            if (IsSingleKeyPress(Keys.Space))
             {
                 currentState = GameState.Game;
             }
@@ -491,7 +501,7 @@ namespace BoidBash
         /// </summary>
         private void ProcessEndScreen()
         {
-            if (IsSingleKeyPress(Keys.Enter))
+            if (IsSingleKeyPress(Keys.Space))
             {
                 currentState = GameState.MainMenu;
                 player1Score = 0;

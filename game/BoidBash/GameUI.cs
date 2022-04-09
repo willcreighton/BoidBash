@@ -17,20 +17,19 @@ namespace BoidBash
         private int windowWidth;
         private int windowHeight;
         private SpriteFont headerFont;
-        private SpriteFont primaryFont;
         private Texture2D boidBashLogo;
+        private Texture2D pausePrompt;
 
         private ulong score = 0;
-        private int timer = 60;
 
         // Constructor
-        public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont, Texture2D boidBashLogo)
+        public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, Texture2D boidBashLogo, Texture2D pausePrompt)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.headerFont = headerFont;
-            this.primaryFont = primaryFont;
             this.boidBashLogo = boidBashLogo;
+            this.pausePrompt = pausePrompt;
         }
 
         /// <summary>
@@ -46,23 +45,29 @@ namespace BoidBash
         }
 
         /// <summary>
-        /// Draw the Game UI
+        /// Draw the Pause prompt
         /// </summary>
         /// <param name="_spriteBatch"></param>
-        public void Draw(SpriteBatch _spriteBatch)
+        public void DrawPausePrompt(SpriteBatch _spriteBatch)
         {
-            // State display
+            // Pause Menu prompt
+            _spriteBatch.Draw(
+                pausePrompt,
+                new Vector2(20, windowHeight - 40),
+                Color.White
+                );
+        }
+
+        /// <summary>
+        /// Draw the Boid Bash logo
+        /// </summary>
+        /// <param name="_spriteBatch"></param>
+        public void DrawLogo(SpriteBatch _spriteBatch)
+        {
+            // Boid Bash logo display
             _spriteBatch.Draw(
                 boidBashLogo,
                 new Rectangle(1085, 800, 100, 90),
-                Color.White
-                );
-
-            // Pause Menu prompt
-            _spriteBatch.DrawString(
-                primaryFont,
-                "Press P to Pause",
-                new Vector2(20, windowHeight - 40),
                 Color.White
                 );
         }
@@ -83,21 +88,6 @@ namespace BoidBash
         }
 
         /// <summary>
-        /// Draw the Timer
-        /// </summary>
-        /// <param name="_spriteBatch"></param>
-        public void DrawTimer(SpriteBatch _spriteBatch)
-        {
-            // Timer display
-            _spriteBatch.DrawString(
-                headerFont,
-                "Time: " + timer,
-                new Vector2(500, 15),
-                Color.White
-                );
-        }
-
-        /// <summary>
         /// Draw the Score Goal
         /// </summary>
         /// <param name="_spriteBatch"></param>
@@ -107,7 +97,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 headerFont,
                 "Bash Goal: " + scoreGoal,
-                new Vector2(500, 115),
+                new Vector2(505, 115),
                 Color.White
                 );
         }
