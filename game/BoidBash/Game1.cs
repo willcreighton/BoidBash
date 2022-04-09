@@ -51,7 +51,7 @@ namespace BoidBash
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
         private Color boidColor = new Color(0, 200, 255);
-        private Color penColor = new Color(100, 100, 100);
+        private Color penColor = new Color(80, 80, 80);
 
         // State UI
         private MainMenuUI mainMenuUI;
@@ -333,7 +333,7 @@ namespace BoidBash
                         _spriteBatch.DrawString(primaryFont, "+" + String.Format("{0:n0}", info.Z), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     // Change the amount of time left on the timers
-                    for (int x = flock.Pens.ScoreTimers.Count -1; x >= 0; x--)
+                    for (int x = flock.Pens.ScoreTimers.Count - 1; x >= 0; x--)
                     {
                         flock.Pens.ScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (flock.Pens.ScoreTimers[x] <= 0)

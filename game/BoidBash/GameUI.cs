@@ -106,7 +106,7 @@ namespace BoidBash
             // Score Goal display
             _spriteBatch.DrawString(
                 headerFont,
-                "Score Goal: " + scoreGoal,
+                "Bash Goal: " + scoreGoal,
                 new Vector2(500, 115),
                 Color.White
                 );
