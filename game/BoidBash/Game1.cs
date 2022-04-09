@@ -51,7 +51,7 @@ namespace BoidBash
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
         private Color boidColor = new Color(0, 200, 255);
-        private Color penColor = new Color(80, 80, 80);
+        private Color penColor = new Color(70, 70, 70);
 
         // State UI
         private MainMenuUI mainMenuUI;

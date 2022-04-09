@@ -37,14 +37,14 @@ namespace BoidBash
         /// <param name="_spriteBatch"></param>
         public void Draw(SpriteBatch _spriteBatch)
         {
-            // State display
+            // Boid Bash logo
             _spriteBatch.Draw(
                 boidBashLogo,
                 new Rectangle(405, 100, 342, 300),
                 Color.White
                 );
 
-            // Game prompt
+            // Play prompt
             _spriteBatch.Draw(
                 playPrompt,
                 new Vector2(460, windowHeight - 400),
