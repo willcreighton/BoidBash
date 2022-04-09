@@ -92,6 +92,7 @@ namespace BoidBash
             int boidsBashed = 0;
             int bashBonus = 0;
             int ifScoreGoal = -1;
+            bool upScoreGoal = false;
             bool bashedSpecial = false;
             Vector2 returnNums;
 
@@ -122,7 +123,7 @@ namespace BoidBash
                     // Checking if new score goal has been reached
                     if (scoregoal < bashBonus)
                     {
-                        ifScoreGoal = 1;                       
+                        upScoreGoal = true;                      
                     }
 
                     // TODO - apply visuals
@@ -143,18 +144,32 @@ namespace BoidBash
                     {
                         SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 2));
                         SpecialScoreTimers.Add(2);
-                        ifScoreGoal = 2;
                     }
                     
-                    flock.RemoveBoid(flock.Boids[x]);
+                    flock.RepositionBoid(flock.Boids[x]);
                 }
+            }
+
+            if (bashedSpecial && upScoreGoal)
+            {
+                ifScoreGoal = 3;
+            }
+            else if (bashedSpecial)
+            {
+                ifScoreGoal = 2;
+            }
+            else if (upScoreGoal)
+            {
+                ifScoreGoal = 1;
+            }
+
+            if (boidsBashed > scoregoal && scoregoal >= 7)
+            {
+                flock.AddBoids((boidsBashed - scoregoal) * 2);
             }
 
             // Assemble Vector
             returnNums = new Vector2(scoreIncrease, ifScoreGoal);
-
-            // Add new boids to the flock
-            flock.AddBoids(boidsBashed);
 
             return returnNums;
         }
