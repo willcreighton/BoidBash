@@ -526,5 +526,21 @@ namespace BoidBash
             }
         }
 
+        /// <summary>
+        /// Changes the position of the specified boid to a random place within the creation bounds
+        /// </summary>
+        /// <param name="boid"></param>
+        public void RepositionBoid(Boid boid)
+        {
+            Vector2 position;
+
+            // Randomize position to within creation bounds
+            position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
+                rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
+
+            // Add new boid to list
+            boid.Position = position;
+        }
+
     }
 }

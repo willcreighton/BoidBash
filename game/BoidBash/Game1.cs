@@ -138,7 +138,7 @@ namespace BoidBash
             blank = this.Content.Load<Texture2D>("White Square");
             flock = new Flock(70, new Rectangle(300, 300, 400, 300),
                 boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
-            menuFlock = new Flock(100, new Rectangle(300, 300, 400, 300),
+            menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
                 boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
 
             // Add boundaries for Game flock
@@ -318,6 +318,7 @@ namespace BoidBash
                         {
                             _spriteBatch.Draw(blank, pen, Color.Red);
                         }
+                        _spriteBatch.Draw(blank, new Rectangle(300, 300, 600, 300), Color.Blue);
                     }
                     // Ususal items to be drawn
                     gameUI.Draw(_spriteBatch);
@@ -346,7 +347,7 @@ namespace BoidBash
                     // Draws and removes any new point numbers that show up after destroying special boids
                     foreach (Vector3 info in flock.Pens.SpecialScorePrints)
                     {
-                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Purple);
+                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Magenta);
                     }
                     // Change the amount of time left on the special timers
                     for (int x = flock.Pens.SpecialScoreTimers.Count - 1; x >= 0; x--)
@@ -429,7 +430,8 @@ namespace BoidBash
                 flock.Pens.ScoreTimers.Clear();
                 flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
-                flock.RepositionBoids();
+                flock.ClearFlock();
+                flock.AddBoids(50);
             }
         }
 
@@ -653,9 +655,14 @@ namespace BoidBash
             {
                 scoreGoal++;
             }
-            if (dataReturn.Y == 2)
+            else if (dataReturn.Y == 2)
             {
                 timer += 2;
+            }
+            else if (dataReturn.Y ==3)
+            {
+                timer += 2;
+                scoreGoal++;
             }
         }
     }
