@@ -23,6 +23,7 @@ namespace BoidBash
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameState currentState;
+        private MouseState mouseState;
 
         // Buttons
         private List<Button> buttons = new List<Button>();
@@ -39,6 +40,7 @@ namespace BoidBash
         private Texture2D boidBashLogo;
         private Texture2D gameOver;
         private Texture2D pausedDisplay;
+        private Texture2D customCursor;
 
         // Screen size
         private int windowWidth;
@@ -105,7 +107,7 @@ namespace BoidBash
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         protected override void Initialize()
@@ -121,6 +123,7 @@ namespace BoidBash
             height = _graphics.GraphicsDevice.Viewport.Height;
 
             currentState = GameState.MainMenu;
+            mouseState = new MouseState();
 
             base.Initialize();
         }
@@ -141,6 +144,7 @@ namespace BoidBash
             pausePrompt = Content.Load<Texture2D>("PausePrompt");
             returnPrompt = Content.Load<Texture2D>("ReturnMainMenu");
             pausedDisplay = Content.Load<Texture2D>("Paused");
+            customCursor = Content.Load<Texture2D>("CustomCursor");
 
         boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("WhiteSquare");
@@ -287,6 +291,8 @@ namespace BoidBash
             _spriteBatch.Begin();
             ShapeBatch.Begin(GraphicsDevice);
 
+            mouseState = Mouse.GetState();
+
             // GameState switches
             switch (currentState)
             {
@@ -406,12 +412,54 @@ namespace BoidBash
                     break;
             }
 
+            // Draw the cursor on top
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                _spriteBatch.Draw(
+                    customCursor,
+                    new Rectangle(mouseState.X, mouseState.Y, 16, 16),
+                    Color.Red
+                    );
+            }
+            else if (mouseState.RightButton == ButtonState.Pressed)
+            {
+                _spriteBatch.Draw(
+                    customCursor,
+                    new Rectangle(mouseState.X, mouseState.Y, 16, 16),
+                    Disco()
+                    );
+            }
+            else
+            {
+                _spriteBatch.Draw(
+                    customCursor,
+                    new Rectangle(mouseState.X, mouseState.Y, 16, 16),
+                    Color.White
+                    );
+            }
+
+
             // End the Sprite Batch and the ShapeBatch
             _spriteBatch.End();
-
             ShapeBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Fun little method for those who find it :)
+        /// ~ Will <3
+        /// </summary>
+        /// <returns></returns>
+        private Color Disco()
+        {
+            Color color = new Color(
+                rng.Next(0, 256),
+                rng.Next(0, 256),
+                rng.Next(0, 256)
+                );
+
+            return color;
         }
 
         /// <summary>
