@@ -49,7 +49,7 @@ namespace BoidBash
         // Keyboard states
         private KeyboardState keyboardState;
         private KeyboardState lastKeyboardState;
-        
+
         // Fonts
         private SpriteFont primaryFont;
         private SpriteFont headerFont;
@@ -146,12 +146,12 @@ namespace BoidBash
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
 
-        boidSprite = this.Content.Load<Texture2D>("BoidSprite");
+            boidSprite = this.Content.Load<Texture2D>("BoidSprite");
             blank = this.Content.Load<Texture2D>("WhiteSquare");
             flock = new Flock(70, new Rectangle(300, 300, 400, 300),
-                boidSprite, new Vector2(5, 7), boidColor,_spriteBatch);
+            boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-                boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
+            boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
 
             // Add boundaries for Game flock
             bounds.Add(new Rectangle(350, 100, 750, 100));
@@ -191,7 +191,7 @@ namespace BoidBash
 
             // TEMPORARY TESTING
             // Enable to test File IO
-            
+
             //player1Score = 2;
             /*
             UpdateScores(325306027);
@@ -206,7 +206,7 @@ namespace BoidBash
             UpdateScores(139509943);
             */
             System.Diagnostics.Debug.WriteLine(GetScoreList());
-            
+
 
             // Add buttons
             buttons.Add(new Button(
@@ -324,7 +324,7 @@ namespace BoidBash
                     if (inDebug)
                     {
                         foreach (Rectangle bound in flock.Boundaries)
-                        { 
+                        {
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
                         _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
@@ -358,7 +358,7 @@ namespace BoidBash
                             flock.Pens.ScoreTimers.RemoveAt(x);
                         }
                     }
-                    
+
                     // Draws and removes any new point numbers that show up after destroying special boids
                     foreach (Vector3 info in flock.Pens.SpecialScorePrints)
                     {
@@ -656,7 +656,7 @@ namespace BoidBash
 
             return willAdd;
         }
-        
+
         /// <summary>
         /// Returns a string containing a formatted list of the top scores
         /// </summary>
@@ -717,7 +717,7 @@ namespace BoidBash
             {
                 timer += 2;
             }
-            else if (dataReturn.Y ==3)
+            else if (dataReturn.Y == 3)
             {
                 timer += 2;
                 scoreGoal++;
