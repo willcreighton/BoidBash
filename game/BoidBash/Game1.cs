@@ -32,10 +32,10 @@ namespace BoidBash
         private MouseState mouseState;
 
         // Border timer sync
-        int rInterval;
-        int gInterval;
-        int bInterval;
-        Color colorDrawn;
+        private int rInterval;
+        private int gInterval;
+        private int bInterval;
+        private Color colorDrawn;
 
         // Buttons
         private List<Button> buttons = new List<Button>();
@@ -55,14 +55,14 @@ namespace BoidBash
         private Texture2D customCursor;
 
         // Sounds
-        SoundEffect bash;
-        SoundEffect clicked;
-        SoundEffect stateChange;
-        SoundEffect gameOverSound;
-        //SoundEffect timeIncrease;
-        //SoundEffect scored;
-        Song menuMusic;
-        Song gameMusic;
+        private SoundEffect bash;
+        private SoundEffect clicked;
+        private SoundEffect stateChange;
+        private SoundEffect gameOverSound;
+        //private SoundEffect timeIncrease;
+        //private SoundEffect scored;
+        private Song menuMusic;
+        private Song gameMusic;
 
         // Screen size
         private int windowWidth;
