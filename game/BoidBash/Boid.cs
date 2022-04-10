@@ -19,10 +19,48 @@ namespace BoidBash
         private Vector2 velocity;
         // set to true if it is a special boid
         private bool isSpecial = false;
-
+        private bool useDefaultColor = true;
+        private Color color;
+        private bool hasTrail = false;
+        private List<Vector2> trail = null;
         // If not in a pen, the boid is set to -1.
         // If it IS in a pen, the boid is set to the index of that pen in the list of pens until it leaves
         private int pen = -1;
+
+        public List<Vector2> Trail
+        {
+            get { return trail; }
+            set { trail = value; }
+        }
+
+        public bool HasTrail
+        {
+            get { return hasTrail; }
+            set
+            {
+                if (!value)
+                {
+                    trail.Clear();
+                }
+                else if (trail == null)
+                {
+                    trail = new List<Vector2>();
+                }
+                hasTrail = value;
+            }
+        }
+
+        public Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
+
+        public bool UseDefaultColor
+        {
+            get { return useDefaultColor; }
+            set { useDefaultColor = value; }
+        }
 
         /// <summary>
         /// Returns and sets the pen the boid is in

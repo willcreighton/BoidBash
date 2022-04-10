@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -24,6 +25,7 @@ namespace BoidBash
         private Rectangle position; // Button position and size
         private Texture2D buttonImg;
         private int pen;
+        private SoundEffect clicked;
 
         /// <summary>
         /// If the client wants to be notified when a button is clicked, it must
@@ -40,11 +42,12 @@ namespace BoidBash
         /// <param name="device">The graphics device for this game - needed to create custom button textures.</param>
         /// <param name="position">Where to draw the button's top left corner</param>
         /// <param name="color">The color to make the button's texture.</param>
-        public Button(GraphicsDevice device, Rectangle position, Color color, int pen, Texture2D texture)
+        public Button(GraphicsDevice device, Rectangle position, Color color, int pen, Texture2D texture, SoundEffect clicked)
         {
             // Save copies/references to the info we'll need later
             this.position = position;
             this.pen = pen;
+            this.clicked = clicked;
 
             // Load in the button's texture
             buttonImg = texture;
@@ -66,6 +69,8 @@ namespace BoidBash
                 {
                     // Call ALL methods attached to this button
                     OnButtonClick(pen);
+
+                    clicked.Play();
                 }
             }
 

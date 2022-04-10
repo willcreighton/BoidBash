@@ -15,16 +15,18 @@ namespace BoidBash
         // Fields
         private int windowWidth;
         private int windowHeight;
-        private SpriteFont headerFont;
-        private SpriteFont primaryFont;
+        private Texture2D resumePrompt;
+        private Texture2D returnPrompt;
+        private Texture2D pausedDisplay;
 
         // Constructor
-        public PauseMenuUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont)
+        public PauseMenuUI(int windowWidth, int windowHeight, Texture2D resumePrompt, Texture2D returnPrompt, Texture2D pausedDisplay)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.headerFont = headerFont;
-            this.primaryFont = primaryFont;
+            this.resumePrompt = resumePrompt;
+            this.returnPrompt = returnPrompt;
+            this.pausedDisplay = pausedDisplay;
         }
 
         /// <summary>
@@ -33,26 +35,23 @@ namespace BoidBash
         /// <param name="_spriteBatch"></param>
         public void Draw(SpriteBatch _spriteBatch)
         {
-            // State display
-            _spriteBatch.DrawString(
-                headerFont,
-                "Pause Menu",
-                new Vector2(1000, 15),
+            // Paused display
+            _spriteBatch.Draw(
+                pausedDisplay,
+                new Rectangle(500, 15, 200, 45),
                 Color.White
                 );
 
-            // Game prompt
-            _spriteBatch.DrawString(
-                primaryFont,
-                "Press ENTER to Resume",
+            // Resume prompt
+            _spriteBatch.Draw(
+                resumePrompt,
                 new Vector2(20, windowHeight - 40),
                 Color.White
                 );
 
             // Main Menu prompt
-            _spriteBatch.DrawString(
-                primaryFont,
-                "Press M to Return to Main Menu",
+            _spriteBatch.Draw(
+                returnPrompt,
                 new Vector2(20, windowHeight - 80),
                 Color.White
                 );

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -22,6 +23,12 @@ namespace BoidBash
         private List<float> scoreTimers = new List<float>();
         private List<Vector3> specialScorePrints = new List<Vector3>();
         private List<float> specialScoreTimers = new List<float>();
+        private int totalBoidsBashed;
+        private int totalSpecialBoidsBashed;
+        private SoundEffect smallBash;
+        private SoundEffect mediumBash;
+        private SoundEffect largeBash;
+        private SoundEffect timeIncrease;
 
         // Properties
         public List<Rectangle> Pens
@@ -56,10 +63,27 @@ namespace BoidBash
             set { specialScoreTimers = value; }
         }
 
-        // Constructor
-        public Bashers()
+        // Total boids bashed
+        public int TotalBoidsBashed
         {
-            
+            get { return totalBoidsBashed; }
+            set { totalBoidsBashed = value; }
+        }
+
+        // Total special boids bashed
+        public int TotalSpecialBoidsBashed
+        {
+            get { return totalSpecialBoidsBashed; }
+            set { totalSpecialBoidsBashed = value; }
+        }
+
+        // Constructor
+        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease)
+        {
+            this.smallBash = smallBash;
+            this.mediumBash = mediumBash;
+            this.largeBash = largeBash;
+            this.timeIncrease = timeIncrease;
         }
 
         /// <summary>
@@ -92,15 +116,17 @@ namespace BoidBash
             int boidsBashed = 0;
             int bashBonus = 0;
             int ifScoreGoal = -1;
+            bool upScoreGoal = false;
             bool bashedSpecial = false;
             Vector2 returnNums;
 
-            for (int x = flock.Boids.Count -1; x >= 0; x--)
+            for (int x = flock.Boids.Count - 1; x >= 0; x--)
             {
                 if (flock.Boids[x].Pen == pen)
                 {
                     // Score Increment
                     boidsBashed++;
+
                     if (bashBonus < 7)
                     {
                         bashBonus++;
@@ -120,11 +146,11 @@ namespace BoidBash
                     }
 
                     // Checking if new score goal has been reached
-                    if (scoregoal < bashBonus)
+                    if (scoregoal <= boidsBashed)
                     {
-                        ifScoreGoal = 1;                       
+                        upScoreGoal = true;                      
                     }
-
+                     
                     // TODO - apply visuals
                     if (bashBonus < 7)
                     {
@@ -143,18 +169,51 @@ namespace BoidBash
                     {
                         SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 2));
                         SpecialScoreTimers.Add(2);
-                        ifScoreGoal = 2;
                     }
                     
-                    flock.RemoveBoid(flock.Boids[x]);
+                    flock.RepositionBoid(flock.Boids[x]);
                 }
+            }
+
+            if (bashedSpecial && upScoreGoal)
+            {
+                timeIncrease.Play();
+                ifScoreGoal = 3;
+                totalSpecialBoidsBashed++;
+            }
+            else if (bashedSpecial)
+            {
+                timeIncrease.Play();
+                ifScoreGoal = 2;
+                totalSpecialBoidsBashed++;
+            }
+            else if (upScoreGoal)
+            {
+                ifScoreGoal = 1;
+            }
+
+            if (boidsBashed > scoregoal && scoregoal >= 7)
+            {
+                flock.AddBoids((boidsBashed - scoregoal) * 2);
             }
 
             // Assemble Vector
             returnNums = new Vector2(scoreIncrease, ifScoreGoal);
 
-            // Add new boids to the flock
-            flock.AddBoids(boidsBashed);
+            if (boidsBashed > 7)
+            {
+                largeBash.Play();
+            }
+            else if (boidsBashed > 3)
+            {
+                mediumBash.Play();
+            }
+            else if (boidsBashed > 0)
+            {
+                smallBash.Play();
+            }
+
+            totalBoidsBashed += boidsBashed;
 
             return returnNums;
         }

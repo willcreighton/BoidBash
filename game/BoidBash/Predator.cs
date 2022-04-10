@@ -39,8 +39,9 @@ namespace BoidBash
             get { return actualPosition; }
         }
 
-        // Parameterized Constructor
         /// <summary>
+        /// Parameterized Constructor
+        /// 
         /// Predator Constructor that takes in a Texture2D for the predator texture, 
         /// a Rectangle for the position/size, 
         /// an integer for both the height and width of the game window to create boundaries,
@@ -58,37 +59,38 @@ namespace BoidBash
             this.texture = texture;
             this.position = position;
             this.predHeight = predHeight;
-            this.predWidth = predWidth;            
+            this.predWidth = predWidth;
         }
 
-       /*
-        public override void Draw(SpriteBatch sb)
-        {
-            MouseState mouseState = Mouse.GetState();
-            float rotation = (float)Math.Atan2((double)mouseState.Y -
-                actualPosition.Y, (double)mouseState.X - actualPosition.X);
+        /*
+         public override void Draw(SpriteBatch sb)
+         {
+             MouseState mouseState = Mouse.GetState();
+             float rotation = (float)Math.Atan2((double)mouseState.Y -
+                 actualPosition.Y, (double)mouseState.X - actualPosition.X);
 
-            sb.Draw(texture,                                                                   // Texture
-                new Vector2(position.X, position.Y),                                           // Position
-                position,                                                                      // Rectangle
-                Color.Red,                                                                   // Color
-                rotation,                                                                      // Rotation Angle
-                new Vector2(position.X, position.Y),                                           // Origin
-                new Vector2(0, 0),                                                             // Scale
-                SpriteEffects.None,                                                            // Sprite Effect
-                1);                                                                            // Depth           
-        }
-        */
+             sb.Draw(texture,                                                                   // Texture
+                 new Vector2(position.X, position.Y),                                           // Position
+                 position,                                                                      // Rectangle
+                 Color.Red,                                                                     // Color
+                 rotation,                                                                      // Rotation Angle
+                 new Vector2(position.X, position.Y),                                           // Origin
+                 new Vector2(0, 0),                                                             // Scale
+                 SpriteEffects.None,                                                            // Sprite Effect
+                 1);                                                                            // Depth           
+         }
+         */
 
         // Movement
-        public override void Update(GameTime gameTime)                                         // Each If statement keeps the predator inside a set of boundaries
+        public override void Update(GameTime gameTime)
         {
             KeyboardState keyBState = Keyboard.GetState();
 
+            // Each if statement keeps the predator inside a set of boundaries
             if (keyBState.IsKeyDown(Keys.Left) || keyBState.IsKeyDown(Keys.A))
             {
                 //rotation = 0;
-                if (position.X >= predatorBounds.X)
+                if (position.X > predatorBounds.X)
                 {
                     position.X -= 5;
                 }
@@ -97,7 +99,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Up) || keyBState.IsKeyDown(Keys.W))
             {
                 //rotation = MathHelper.ToRadians(-90);
-                if (position.Y >= predatorBounds.Y)
+                if (position.Y > predatorBounds.Y)
                 {
                     position.Y -= 5;
                 }
@@ -106,7 +108,7 @@ namespace BoidBash
             if (keyBState.IsKeyDown(Keys.Right) || keyBState.IsKeyDown(Keys.D))
             {
                 //rotation = MathHelper.ToRadians(90);
-                if (position.X + predWidth <= predatorBounds.X + predatorBounds.Width)
+                if (position.X + predWidth < predatorBounds.X + predatorBounds.Width)
                 {
                     position.X += 5;
                 }
@@ -114,13 +116,13 @@ namespace BoidBash
 
             if (keyBState.IsKeyDown(Keys.Down) || keyBState.IsKeyDown(Keys.S))
             {
-                //    //rotation = MathHelper.ToRadians(180);
-                if (position.Y + predHeight <= predatorBounds.Y + predatorBounds.Height)
+                //rotation = MathHelper.ToRadians(180);
+                if (position.Y + predHeight < predatorBounds.Y + predatorBounds.Height)
                 {
                     position.Y += 5;
                 }
             }
-            
+
             actualPosition = new Vector2(position.Center.X, position.Center.Y);
         }
     }
