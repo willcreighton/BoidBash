@@ -213,9 +213,9 @@ namespace BoidBash
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
             menuFlock.BackgroundColor = backgroundColor;
 
             foreach (Boid boid in menuFlock.Boids)
@@ -257,7 +257,7 @@ namespace BoidBash
 
             predTexture = Content.Load<Texture2D>("PredSp");
 
-            predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
+            predator = new Predator(predTexture, new Rectangle((width / 2) - 18, (height / 2) - 18,
                 35, 35),
                 windowHeight, windowWidth, 35, 35);
 
