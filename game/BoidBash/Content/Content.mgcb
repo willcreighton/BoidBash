@@ -55,12 +55,6 @@
 /processorParam:TextureFormat=Color
 /build:BoidSp4.png
 
-#begin click.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:click.wav
-
 #begin clicked.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -90,6 +84,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:CustomCursor.png
+
+#begin DisplayBoid.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DisplayBoid.png
 
 #begin gameMusic.mp3
 /importer:Mp3Importer
@@ -122,11 +128,23 @@
 /processorParam:TextureFormat=Compressed
 /build:HeaderFont.spritefont
 
+#begin largeBash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:largeBash.wav
+
 #begin mainMenuMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:mainMenuMusic.mp3
+
+#begin mediumBash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:mediumBash.wav
 
 #begin menuMusic.mp3
 /importer:Mp3Importer
@@ -207,6 +225,12 @@
 /processorParam:Quality=Best
 /build:scoreIncrease.wav
 
+#begin smallBash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:smallBash.wav
+
 #begin SquareArt.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -266,6 +290,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:timeIncrease.wav
+
+#begin timeIncrease2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:timeIncrease2.wav
 
 #begin WhiteSquare.png
 /importer:TextureImporter

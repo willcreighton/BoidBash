@@ -45,7 +45,7 @@ namespace BoidBash
             // Game over display
             _spriteBatch.Draw(
                 gameOver,
-                new Rectangle(355, 300, 470, 60),
+                new Rectangle(360, 300, 470, 60),
                 Color.White
                 );
 

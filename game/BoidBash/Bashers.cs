@@ -23,7 +23,12 @@ namespace BoidBash
         private List<float> scoreTimers = new List<float>();
         private List<Vector3> specialScorePrints = new List<Vector3>();
         private List<float> specialScoreTimers = new List<float>();
-        private SoundEffect bash;
+        private int totalBoidsBashed;
+        private int totalSpecialBoidsBashed;
+        private SoundEffect smallBash;
+        private SoundEffect mediumBash;
+        private SoundEffect largeBash;
+        private SoundEffect timeIncrease;
 
         // Properties
         public List<Rectangle> Pens
@@ -58,10 +63,27 @@ namespace BoidBash
             set { specialScoreTimers = value; }
         }
 
-        // Constructor
-        public Bashers(SoundEffect bash)
+        // Total boids bashed
+        public int TotalBoidsBashed
         {
-            this.bash = bash;
+            get { return totalBoidsBashed; }
+            set { totalBoidsBashed = value; }
+        }
+
+        // Total special boids bashed
+        public int TotalSpecialBoidsBashed
+        {
+            get { return totalSpecialBoidsBashed; }
+            set { totalSpecialBoidsBashed = value; }
+        }
+
+        // Constructor
+        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease)
+        {
+            this.smallBash = smallBash;
+            this.mediumBash = mediumBash;
+            this.largeBash = largeBash;
+            this.timeIncrease = timeIncrease;
         }
 
         /// <summary>
@@ -104,7 +126,6 @@ namespace BoidBash
                 {
                     // Score Increment
                     boidsBashed++;
-                    bash.Play();
 
                     if (bashBonus < 7)
                     {
@@ -156,11 +177,15 @@ namespace BoidBash
 
             if (bashedSpecial && upScoreGoal)
             {
+                timeIncrease.Play();
                 ifScoreGoal = 3;
+                totalSpecialBoidsBashed++;
             }
             else if (bashedSpecial)
             {
+                timeIncrease.Play();
                 ifScoreGoal = 2;
+                totalSpecialBoidsBashed++;
             }
             else if (upScoreGoal)
             {
@@ -174,6 +199,21 @@ namespace BoidBash
 
             // Assemble Vector
             returnNums = new Vector2(scoreIncrease, ifScoreGoal);
+
+            if (boidsBashed > 7)
+            {
+                largeBash.Play();
+            }
+            else if (boidsBashed > 3)
+            {
+                mediumBash.Play();
+            }
+            else if (boidsBashed > 0)
+            {
+                smallBash.Play();
+            }
+
+            totalBoidsBashed += boidsBashed;
 
             return returnNums;
         }

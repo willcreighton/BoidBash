@@ -30,6 +30,7 @@ namespace BoidBash
         private List<Rectangle> boundaries = new List<Rectangle>();
         // List of Pens
         private Bashers bashers;
+        private Color backgroundColor = new Color(5, 5, 5);
 
         // Boid values
         private Texture2D asset;
@@ -83,6 +84,14 @@ namespace BoidBash
         }
 
         /// <summary>
+        /// Aids trail transition
+        /// </summary>
+        public Color BackgroundColor
+        {
+            set { backgroundColor = value; }
+        }
+
+        /// <summary>
         /// Creates a Flock
         /// </summary>
         /// <param name="numBoids"></param>
@@ -93,9 +102,10 @@ namespace BoidBash
         /// <param name="defaultColor"></param>
         /// <param name="sb"></param>
         public Flock(int numBoids, Rectangle creationBounds,
-            Texture2D asset, Vector2 size, Color defaultColor, SpriteBatch sb, SoundEffect bash)
+            Texture2D asset, Vector2 size, Color defaultColor,
+            SpriteBatch sb, SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease)
         {
-            bashers = new Bashers(bash);
+            bashers = new Bashers(smallBash, mediumBash, largeBash, timeIncrease);
 
             // Initialzie Random0
             rng = new Random();
@@ -463,8 +473,6 @@ namespace BoidBash
 
         public void DrawBoidTrails(Boid boid)
         {
-            Color background = new Color(5, 5, 5);
-
             if (boid.HasTrail && boid.Trail != null && boid.Trail.Count > 0)
             {
                 int rInterval;
@@ -473,21 +481,21 @@ namespace BoidBash
 
                 if (boid.UseDefaultColor)
                 {
-                    rInterval = (defaultColor.R - background.R) / boid.Trail.Count;
-                    gInterval = (defaultColor.G - background.G) / boid.Trail.Count;
-                    bInterval = (defaultColor.B - background.B) / boid.Trail.Count;
+                    rInterval = (defaultColor.R - backgroundColor.R) / boid.Trail.Count;
+                    gInterval = (defaultColor.G - backgroundColor.G) / boid.Trail.Count;
+                    bInterval = (defaultColor.B - backgroundColor.B) / boid.Trail.Count;
                 }
                 else
                 {
-                    rInterval = (boid.Color.R - background.R) / boid.Trail.Count;
-                    gInterval = (boid.Color.G - background.G) / boid.Trail.Count;
-                    bInterval = (boid.Color.B - background.B) / boid.Trail.Count;
+                    rInterval = (boid.Color.R - backgroundColor.R) / boid.Trail.Count;
+                    gInterval = (boid.Color.G - backgroundColor.G) / boid.Trail.Count;
+                    bInterval = (boid.Color.B - backgroundColor.B) / boid.Trail.Count;
                 }
 
                 for (int x = 0; x < boid.Trail.Count - 7; x++)
                 {
                     ShapeBatch.Line(boid.Trail[x], boid.Trail[x + 1],
-                        new Color(background.R + (rInterval * x), background.G + (gInterval * x), background.B + (bInterval * x)));
+                        new Color(backgroundColor.R + (rInterval * x), backgroundColor.G + (gInterval * x), backgroundColor.B + (bInterval * x)));
                 }
             }
         }

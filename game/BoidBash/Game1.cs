@@ -55,11 +55,13 @@ namespace BoidBash
         private Texture2D customCursor;
 
         // Sounds
-        private SoundEffect bash;
+        private SoundEffect smallBash;
+        private SoundEffect mediumBash;
+        private SoundEffect largeBash;
         private SoundEffect clicked;
         private SoundEffect stateChange;
         private SoundEffect gameOverSound;
-        //private SoundEffect timeIncrease;
+        private SoundEffect timeIncrease;
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
@@ -92,6 +94,7 @@ namespace BoidBash
         private Texture2D boidSprite;
         private Flock flock;
         private Flock menuFlock;
+        private Texture2D displayBoid;
 
         // Predator
         private Predator predator;
@@ -162,8 +165,11 @@ namespace BoidBash
 
             clicked = Content.Load<SoundEffect>("clicked");
             stateChange = Content.Load<SoundEffect>("stateChange");
-            bash = Content.Load<SoundEffect>("bash");
+            smallBash = Content.Load<SoundEffect>("smallBash");
+            mediumBash = Content.Load<SoundEffect>("mediumBash");
+            largeBash = Content.Load<SoundEffect>("largeBash");
             gameOverSound = Content.Load<SoundEffect>("gameOverSound");
+            timeIncrease = Content.Load<SoundEffect>("timeIncrease");
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
 
@@ -182,13 +188,15 @@ namespace BoidBash
             customCursor = Content.Load<Texture2D>("CustomCursor");
 
             boidSprite = Content.Load<Texture2D>("BoidSp4");
+            displayBoid = Content.Load<Texture2D>("DisplayBoid");
             blank = Content.Load<Texture2D>("WhiteSquare");
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, bash);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, bash);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            menuFlock.BackgroundColor = backgroundColor;
 
             foreach (Boid boid in menuFlock.Boids)
             {
@@ -257,7 +265,6 @@ namespace BoidBash
             UpdateScores(139509943);
             */
             System.Diagnostics.Debug.WriteLine(GetScoreList());
-
 
             // Add buttons
             buttons.Add(new Button(
@@ -415,6 +422,23 @@ namespace BoidBash
                     gameUI.DrawScore(_spriteBatch);
                     _spriteBatch.DrawString(headerFont, "Time: " + timer.ToString("0"), new Vector2(1060, 15),
                     Color.White);
+
+                    // Draw amount of boids bashed
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        new Rectangle(15, 265, 46, 60),
+                        boidColor
+                        );
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        new Rectangle(15, 365, 46, 60),
+                        Color.Gold
+                        );
+                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalBoidsBashed, new Vector2(75, 275),
+                    Color.White);
+                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalSpecialBoidsBashed, new Vector2(75, 375),
+                    Color.White);
+
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
@@ -492,9 +516,39 @@ namespace BoidBash
                     gameUI.DrawLogo(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
+                    // Draw amount of boids bashed
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        new Rectangle(15, 265, 46, 60),
+                        boidColor
+                        );
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        new Rectangle(15, 365, 46, 60),
+                        Color.Gold
+                        );
+                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalBoidsBashed, new Vector2(75, 275),
+                    Color.White);
+                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalSpecialBoidsBashed, new Vector2(75, 375),
+                    Color.White);
                     break;
                 case GameState.EndScreen:
                     endScreenUI.Draw(_spriteBatch);
+                    // Draw amount of boids bashed
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        new Rectangle(240, 400, 46, 60),
+                        boidColor
+                        );
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        new Rectangle(905, 400, 46, 60),
+                        Color.Gold
+                        );
+                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalBoidsBashed, new Vector2(230, 470),
+                    Color.White);
+                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalSpecialBoidsBashed, new Vector2(905, 470),
+                    Color.White);
                     break;
                 default:
                     break;
@@ -598,6 +652,8 @@ namespace BoidBash
                 currentState = GameState.Game;
                 flock.ClearFlock();
                 flock.AddBoids(50);
+                flock.Pens.TotalBoidsBashed = 0;
+                flock.Pens.TotalSpecialBoidsBashed = 0;
             }
         }
 
