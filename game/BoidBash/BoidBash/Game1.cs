@@ -833,6 +833,8 @@ namespace BoidBash
                 flock.AddBoids(50);
                 flock.Pens.TotalBoidsBashed = 0;
                 flock.Pens.TotalSpecialBoidsBashed = 0;
+                player1Score = 0;
+                scoreGoal = 1;
 
                 totalScoreIncrementPrint.Clear();
                 totalScoreIncrementTimer.Clear();
