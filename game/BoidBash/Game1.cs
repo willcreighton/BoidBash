@@ -36,7 +36,7 @@ namespace BoidBash
         private List<int> totalTimeIncrementPrint = new List<int>();
         private List<float> totalTimeIncrementTimer = new List<float>();
 
-        // Border timer sync
+        // Border color timer sync
         private int rInterval;
         private int gInterval;
         private int bInterval;
