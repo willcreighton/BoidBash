@@ -29,6 +29,7 @@ namespace BoidBash
         private SoundEffect mediumBash;
         private SoundEffect largeBash;
         private SoundEffect timeIncrease;
+        private SoundEffect addBoids;
 
         // Properties
         public List<Rectangle> Pens
@@ -78,12 +79,13 @@ namespace BoidBash
         }
 
         // Constructor
-        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease)
+        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease, SoundEffect addBoids)
         {
             this.smallBash = smallBash;
             this.mediumBash = mediumBash;
             this.largeBash = largeBash;
             this.timeIncrease = timeIncrease;
+            this.addBoids = addBoids;
         }
 
         /// <summary>
@@ -97,13 +99,6 @@ namespace BoidBash
 
         // Methods
 
-        /*
-        ***** To use this, each button is associated with a rectangle. *****
-        Call this method when the button is clicked, and pass in the flock of boids and the index
-        that the rectangle is at in the list in order to use it. So, button 1; Pen 1; send in 1 as the parameter.
-        Use the first int that this returns to add to the score,
-        and if the second is 1, add to the reached scoregoals, else, don't
-        */
         /// <summary>
         /// Destroys all boids within the specified pen.
         /// Takes the flock, the index of the rectangle the boid is in, and the current reached score goal as parameters
@@ -125,58 +120,68 @@ namespace BoidBash
                 if (flock.Boids[x].Pen == pen)
                 {
                     // Score Increment
+                    // Up the number of boids bashed for every bashed boid
                     boidsBashed++;
 
-                    if (bashBonus < 7)
+                    // Update the bash bonus with a maximum of 7
+                    if (bashBonus < 7 && bashBonus < scoregoal)
                     {
                         bashBonus++;
                     }
-                    if (bashBonus == 7)
-                    {
-                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus) * scoregoal;
-                    }
-                    else
+
+                    // Calculate the Score increase
+                    // Maximum of power of 7 to disallow incalculably high scores
+                    if (bashBonus >= 7)
                     {
                         scoreIncrease += (int)Math.Pow(scoregoal, bashBonus);
                     }
+                    else
+                    {
+                        scoreIncrease += (int)Math.Pow(boidsBashed, bashBonus);
+                    }
                     
+                    // Detect if a special boid was destroyed
                     if (flock.Boids[x].IsSpecial)
                     {
                         bashedSpecial = true;
                     }
 
                     // Checking if new score goal has been reached
-                    if (scoregoal <= bashBonus)
+                    if (scoregoal <= boidsBashed)
                     {
                         upScoreGoal = true;                      
                     }
                      
-                    // TODO - apply visuals
+                    // Adds a score print for every boid at the position it was destroyed at
                     if (bashBonus < 7)
                     {
                         scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (float)Math.Pow(scoregoal, bashBonus)));
+                        (int)Math.Pow(boidsBashed, bashBonus)));
                         ScoreTimers.Add(1);
                     }
                     else
                     {
                         scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (float)Math.Pow(scoregoal, bashBonus) * scoregoal));
+                        (int)Math.Pow(scoregoal, bashBonus)));
                         ScoreTimers.Add(1);
                     }
 
+                    // Add Score print for golden boid's timer increase
                     if (bashedSpecial)
                     {
                         SpecialScorePrints.Add(new Vector3(flock.Boids[x].Position.X + 3, flock.Boids[x].Position.Y - 3, 2));
                         SpecialScoreTimers.Add(2);
                     }
                     
+                    // Repositions the boid within the creation bounds
                     flock.RepositionBoid(flock.Boids[x]);
                 }
             }
 
+            // Deal with special and scoregoal increases
             if (bashedSpecial && upScoreGoal)
             {
+                // Play special boid sound
                 timeIncrease.Play();
                 ifScoreGoal = 3;
                 totalSpecialBoidsBashed++;
@@ -192,14 +197,17 @@ namespace BoidBash
                 ifScoreGoal = 1;
             }
 
+            // Adds boids if the scoregoal has been surpassed beyond 7
             if (boidsBashed > scoregoal && scoregoal >= 7)
             {
+                addBoids.Play();
                 flock.AddBoids((boidsBashed - scoregoal) * 2);
             }
 
             // Assemble Vector
             returnNums = new Vector2(scoreIncrease, ifScoreGoal);
 
+            // Play sound for number of boids bashed
             if (boidsBashed > 7)
             {
                 largeBash.Play();
@@ -213,8 +221,10 @@ namespace BoidBash
                 smallBash.Play();
             }
 
+            // increment total boids bashed
             totalBoidsBashed += boidsBashed;
 
+            // Return vector
             return returnNums;
         }
     }

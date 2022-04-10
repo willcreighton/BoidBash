@@ -67,6 +67,7 @@ namespace BoidBash
         private SoundEffect stateChange;
         private SoundEffect gameOverSound;
         private SoundEffect timeIncrease;
+        private SoundEffect addBoids;
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
@@ -182,8 +183,10 @@ namespace BoidBash
             largeBash = Content.Load<SoundEffect>("largeBash");
             gameOverSound = Content.Load<SoundEffect>("gameOverSound");
             timeIncrease = Content.Load<SoundEffect>("timeIncrease");
+            addBoids = Content.Load<SoundEffect>("boidsAdded");
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
+            
             //discoMusic = Content.Load<Song>("discoTheme");
 
             MediaPlayer.Play(menuMusic);
@@ -206,9 +209,9 @@ namespace BoidBash
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
             menuFlock.BackgroundColor = backgroundColor;
 
             foreach (Boid boid in menuFlock.Boids)
@@ -261,22 +264,6 @@ namespace BoidBash
 
             headerFont = Content.Load<SpriteFont>("headerFont");
 
-            // TEMPORARY TESTING
-            // Enable to test File IO
-
-            //player1Score = 2;
-            /*
-            UpdateScores(325306027);
-            UpdateScores(260714129);
-            UpdateScores(229811503);
-            UpdateScores(179622342);
-            UpdateScores(173690822);
-            UpdateScores(165747780);
-            UpdateScores(161942856);
-            UpdateScores(145060864);
-            UpdateScores(142758264);
-            UpdateScores(139509943);
-            */
             System.Diagnostics.Debug.WriteLine(GetScoreList());
 
             // Add buttons

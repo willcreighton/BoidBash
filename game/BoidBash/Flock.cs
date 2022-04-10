@@ -103,9 +103,9 @@ namespace BoidBash
         /// <param name="sb"></param>
         public Flock(int numBoids, Rectangle creationBounds,
             Texture2D asset, Vector2 size, Color defaultColor,
-            SpriteBatch sb, SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease)
+            SpriteBatch sb, SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease, SoundEffect addBoids)
         {
-            bashers = new Bashers(smallBash, mediumBash, largeBash, timeIncrease);
+            bashers = new Bashers(smallBash, mediumBash, largeBash, timeIncrease, addBoids);
 
             // Initialzie Random0
             rng = new Random();
