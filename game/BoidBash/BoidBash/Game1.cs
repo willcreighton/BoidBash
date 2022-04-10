@@ -379,6 +379,7 @@ namespace BoidBash
                     mainMenuUI.Draw(_spriteBatch);
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
                     break;
+
                 case GameState.Game:
                     //Draws the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
@@ -404,6 +405,7 @@ namespace BoidBash
                         (Color.Red.B + bInterval * (int)timer * -1)
                         );
 
+                    //Border lines for play area
                     _spriteBatch.Draw(blank, new Rectangle(200, 95, 150, 5), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(195, 95, 5, 455), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(350, 95, 5, 105), colorDrawn);
@@ -560,6 +562,7 @@ namespace BoidBash
                         }
                     }
                     break;
+
                 case GameState.PauseMenu:
                     //Draw the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
@@ -575,6 +578,7 @@ namespace BoidBash
                     _spriteBatch.Draw(gradient, new Rectangle(850, 700, 150, 100), penColor);
                     _spriteBatch.Draw(gradient, new Rectangle(100, 550, 100, 150), penColor);
 
+                    //Draws border lines for play area when paused
                     _spriteBatch.Draw(blank, new Rectangle(200, 95, 150, 5), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(195, 95, 5, 455), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(350, 95, 5, 105), colorDrawn);
@@ -611,6 +615,7 @@ namespace BoidBash
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
                     break;
+
                 case GameState.EndScreen:
                     endScreenUI.Draw(_spriteBatch);
                     // Draw amount of boids bashed
@@ -724,7 +729,7 @@ namespace BoidBash
                 MediaPlayer.Play(gameMusic);
                 MediaPlayer.IsRepeating = true;
                 stateChange.Play();
-                timer = 30;
+                timer = 2;
                 flock.Pens.ScoreTimers.Clear();
                 flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
@@ -820,7 +825,7 @@ namespace BoidBash
                 MediaPlayer.Play(gameMusic);
                 MediaPlayer.IsRepeating = true;
                 stateChange.Play();
-                timer = 30;
+                timer = 2;
                 flock.Pens.ScoreTimers.Clear();
                 flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
