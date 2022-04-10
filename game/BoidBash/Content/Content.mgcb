@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin bash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bash.wav
+
 #begin BashButton2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -49,6 +55,18 @@
 /processorParam:TextureFormat=Color
 /build:BoidSp4.png
 
+#begin click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:click.wav
+
+#begin clicked.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:clicked.wav
+
 #begin ContinuePrompt.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -73,6 +91,12 @@
 /processorParam:TextureFormat=Color
 /build:CustomCursor.png
 
+#begin gameMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:gameMusic.mp3
+
 #begin GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -85,12 +109,30 @@
 /processorParam:TextureFormat=Color
 /build:GameOver.png
 
+#begin gameOverSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:gameOverSound.wav
+
 #begin HeaderFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:HeaderFont.spritefont
+
+#begin mainMenuMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:mainMenuMusic.mp3
+
+#begin menuMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:menuMusic.mp3
 
 #begin Paused.png
 /importer:TextureImporter
@@ -159,6 +201,12 @@
 /processorParam:TextureFormat=Color
 /build:ReturnMainMenu.png
 
+#begin scoreIncrease.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:scoreIncrease.wav
+
 #begin SquareArt.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -206,6 +254,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:StartPrompt.png
+
+#begin stateChange.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:stateChange.wav
+
+#begin timeIncrease.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:timeIncrease.wav
 
 #begin WhiteSquare.png
 /importer:TextureImporter

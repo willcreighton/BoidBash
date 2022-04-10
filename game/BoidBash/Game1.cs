@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,9 +10,9 @@ using System.IO;
 namespace BoidBash
 {
     // This enumerator references the different states of the game
-    // TODO - Add Options
-    // TODO - Add Instructions
-    // TODO - Add Credits
+    // TODO: Add Options
+    // TODO: Add Instructions
+    // TODO: Add Credits
     enum GameState
     {
         MainMenu,
@@ -51,6 +53,16 @@ namespace BoidBash
         private Texture2D gameOver;
         private Texture2D pausedDisplay;
         private Texture2D customCursor;
+
+        // Sounds
+        SoundEffect bash;
+        SoundEffect clicked;
+        SoundEffect stateChange;
+        SoundEffect gameOverSound;
+        //SoundEffect timeIncrease;
+        //SoundEffect scored;
+        Song menuMusic;
+        Song gameMusic;
 
         // Screen size
         private int windowWidth;
@@ -148,6 +160,16 @@ namespace BoidBash
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
 
+            clicked = Content.Load<SoundEffect>("clicked");
+            stateChange = Content.Load<SoundEffect>("stateChange");
+            bash = Content.Load<SoundEffect>("bash");
+            gameOverSound = Content.Load<SoundEffect>("gameOverSound");
+            gameMusic = Content.Load<Song>("gameMusic");
+            menuMusic = Content.Load<Song>("mainMenuMusic");
+
+            MediaPlayer.Play(menuMusic);
+            MediaPlayer.IsRepeating = true;
+
             bashButton = Content.Load<Texture2D>("BashButton2");
             playPrompt = Content.Load<Texture2D>("StartPrompt");
             boidBashLogo = Content.Load<Texture2D>("BoidBashLogo");
@@ -164,14 +186,22 @@ namespace BoidBash
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, bash);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, bash);
 
             foreach (Boid boid in menuFlock.Boids)
             {
-                menuFlock.GiveColor(boid);
-                boid.UseDefaultColor = true;
+                if (boid.IsSpecial)
+                {
+                    boid.Color = Color.Gold;
+                    boid.UseDefaultColor = false;
+                }
+                else
+                {
+                    menuFlock.GiveColor(boid);
+                    boid.UseDefaultColor = true;
+                }
             }
 
             // Add boundaries for Game flock
@@ -235,7 +265,8 @@ namespace BoidBash
                     new Rectangle(110, 110, 80, 80),    // where to put the button
                     Color.DarkRed,                      // button color
                     0,                                  // pen number
-                    bashButton));                       // texture 
+                    bashButton,                         // texture
+                    clicked));                        
             buttons[0].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
@@ -243,7 +274,8 @@ namespace BoidBash
                     new Rectangle(1010, 110, 80, 80),   // where to put the button
                     Color.DarkRed,                      // button color
                     1,                                  // pen number
-                    bashButton));                       // texture 
+                    bashButton,                         // texture
+                    clicked));
             buttons[1].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
@@ -251,7 +283,8 @@ namespace BoidBash
                     new Rectangle(1010, 710, 80, 80),   // where to put the button
                     Color.DarkRed,                      // button color
                     2,                                  // pen number
-                    bashButton));                       // texture         
+                    bashButton,                         // texture
+                    clicked));
             buttons[2].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
@@ -259,7 +292,8 @@ namespace BoidBash
                     new Rectangle(110, 710, 80, 80),    // where to put the button
                     Color.DarkRed,                      // button color
                     3,                                  // pen number
-                    bashButton));                       // texture 
+                    bashButton,                         // texture
+                    clicked));
             buttons[3].OnButtonClick += this.Bashed;
         }
 
@@ -498,7 +532,14 @@ namespace BoidBash
 
                 foreach (Boid boid in menuFlock.Boids)
                 {
-                    boid.UseDefaultColor = true;
+                    if (boid.IsSpecial)
+                    {
+                        boid.UseDefaultColor = false;
+                    }
+                    else
+                    {
+                        boid.UseDefaultColor = true;
+                    }
                 }
             }
 
@@ -548,6 +589,9 @@ namespace BoidBash
         {
             if (IsSingleKeyPress(Keys.Space))
             {
+                MediaPlayer.Play(gameMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
                 timer = 30;
                 flock.Pens.ScoreTimers.Clear();
                 flock.Pens.ScorePrints.Clear();
@@ -568,11 +612,14 @@ namespace BoidBash
             }
             if (IsSingleKeyPress(Keys.Tab))
             {
+                MediaPlayer.Pause();
+                stateChange.Play();
                 currentState = GameState.PauseMenu;
             }
             // For toggling debug mode
             else if (IsSingleKeyPress(Keys.Back))
             {
+                stateChange.Play();
                 if (inDebug)
                 {
                     inDebug = false;
@@ -587,6 +634,8 @@ namespace BoidBash
                 UpdateScores(player1Score);
                 endScreenUI.Score = player1Score;
                 currentState = GameState.EndScreen;
+                gameOverSound.Play();
+                MediaPlayer.Stop();
             }
         }
 
@@ -597,10 +646,15 @@ namespace BoidBash
         {
             if (IsSingleKeyPress(Keys.Space))
             {
+                MediaPlayer.Resume();
+                stateChange.Play();
                 currentState = GameState.Game;
             }
             else if (IsSingleKeyPress(Keys.M))
             {
+                MediaPlayer.Play(menuMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
                 currentState = GameState.MainMenu;
                 predator.Position = new Rectangle(width / 2, height / 2, 25, 25);
                 player1Score = 0;
@@ -615,6 +669,9 @@ namespace BoidBash
         {
             if (IsSingleKeyPress(Keys.Space))
             {
+                MediaPlayer.Play(menuMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
                 currentState = GameState.MainMenu;
                 player1Score = 0;
                 scoreGoal = 1;

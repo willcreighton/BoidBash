@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -28,7 +29,7 @@ namespace BoidBash
         // List of all areas to avoid
         private List<Rectangle> boundaries = new List<Rectangle>();
         // List of Pens
-        private Bashers bashers = new Bashers();
+        private Bashers bashers;
 
         // Boid values
         private Texture2D asset;
@@ -92,8 +93,10 @@ namespace BoidBash
         /// <param name="defaultColor"></param>
         /// <param name="sb"></param>
         public Flock(int numBoids, Rectangle creationBounds,
-            Texture2D asset, Vector2 size, Color defaultColor, SpriteBatch sb)
+            Texture2D asset, Vector2 size, Color defaultColor, SpriteBatch sb, SoundEffect bash)
         {
+            bashers = new Bashers(bash);
+
             // Initialzie Random0
             rng = new Random();
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -22,6 +23,7 @@ namespace BoidBash
         private List<float> scoreTimers = new List<float>();
         private List<Vector3> specialScorePrints = new List<Vector3>();
         private List<float> specialScoreTimers = new List<float>();
+        private SoundEffect bash;
 
         // Properties
         public List<Rectangle> Pens
@@ -57,9 +59,9 @@ namespace BoidBash
         }
 
         // Constructor
-        public Bashers()
+        public Bashers(SoundEffect bash)
         {
-            
+            this.bash = bash;
         }
 
         /// <summary>
@@ -96,12 +98,14 @@ namespace BoidBash
             bool bashedSpecial = false;
             Vector2 returnNums;
 
-            for (int x = flock.Boids.Count -1; x >= 0; x--)
+            for (int x = flock.Boids.Count - 1; x >= 0; x--)
             {
                 if (flock.Boids[x].Pen == pen)
                 {
                     // Score Increment
                     boidsBashed++;
+                    bash.Play();
+
                     if (bashBonus < 7)
                     {
                         bashBonus++;
