@@ -377,72 +377,6 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
                     break;
                 case GameState.Game:
-                    // Draw total score increment
-                    if (totalScoreIncrementPrint.Count > 0)
-                    {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[0]), new Vector2(60, 60), Color.Yellow);
-                        totalScoreIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (totalScoreIncrementTimer[0] <= 0)
-                        {
-                            totalScoreIncrementPrint.RemoveAt(0);
-                            totalScoreIncrementTimer.RemoveAt(0);
-                        }
-                    }
-                    if (totalScoreIncrementPrint.Count > 1)
-                    {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[1]), new Vector2(80, 80), Color.Yellow);
-                        totalScoreIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (totalScoreIncrementTimer[1] <= 0)
-                        {
-                            totalScoreIncrementPrint.RemoveAt(1);
-                            totalScoreIncrementTimer.RemoveAt(1);
-                        }
-                    }
-                    if (totalScoreIncrementPrint.Count > 2)
-                    {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[2]), new Vector2(100, 100), Color.Yellow);
-                        totalScoreIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (totalScoreIncrementTimer[2] <= 0)
-                        {
-                            totalScoreIncrementPrint.RemoveAt(2);
-                            totalScoreIncrementTimer.RemoveAt(2);
-
-                        }
-                    }
-
-                    // Draw total time increment
-                    if (totalTimeIncrementPrint.Count > 0)
-                    {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[0]), new Vector2(1100, 60), Color.Magenta);
-                        totalTimeIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (totalTimeIncrementTimer[0] <= 0)
-                        {
-                            totalTimeIncrementPrint.RemoveAt(0);
-                            totalTimeIncrementTimer.RemoveAt(0);
-                        }
-                    }
-                    if (totalTimeIncrementPrint.Count > 1)
-                    {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[1]), new Vector2(1120, 80), Color.Magenta);
-                        totalTimeIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (totalTimeIncrementTimer[1] <= 0)
-                        {
-                            totalTimeIncrementPrint.RemoveAt(1);
-                            totalTimeIncrementTimer.RemoveAt(1);
-                        }
-                    }
-                    if (totalTimeIncrementPrint.Count > 2)
-                    {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[2]), new Vector2(1140, 100), Color.Magenta);
-                        totalTimeIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (totalTimeIncrementTimer[2] <= 0)
-                        {
-                            totalTimeIncrementPrint.RemoveAt(2);
-                            totalTimeIncrementTimer.RemoveAt(2);
-
-                        }
-                    }
-
                     //Draws the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
 
@@ -556,7 +490,72 @@ namespace BoidBash
                         b.Draw(_spriteBatch);
                     }
 
-                    // TODO: Make these messages appear for more than one frame
+
+                    // Draw total score increment
+                    if (totalScoreIncrementPrint.Count > 0)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[0]), new Vector2(60, 60), Color.Yellow);
+                        totalScoreIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalScoreIncrementTimer[0] <= 0)
+                        {
+                            totalScoreIncrementPrint.RemoveAt(0);
+                            totalScoreIncrementTimer.RemoveAt(0);
+                        }
+                    }
+                    if (totalScoreIncrementPrint.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[1]), new Vector2(80, 80), Color.Yellow);
+                        totalScoreIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalScoreIncrementTimer[1] <= 0)
+                        {
+                            totalScoreIncrementPrint.RemoveAt(1);
+                            totalScoreIncrementTimer.RemoveAt(1);
+                        }
+                    }
+                    if (totalScoreIncrementPrint.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[2]), new Vector2(100, 100), Color.Yellow);
+                        totalScoreIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalScoreIncrementTimer[2] <= 0)
+                        {
+                            totalScoreIncrementPrint.RemoveAt(2);
+                            totalScoreIncrementTimer.RemoveAt(2);
+
+                        }
+                    }
+
+                    // Draw total time increment
+                    if (totalTimeIncrementPrint.Count > 0)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[0]), new Vector2(1100, 60), Color.Magenta);
+                        totalTimeIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimer[0] <= 0)
+                        {
+                            totalTimeIncrementPrint.RemoveAt(0);
+                            totalTimeIncrementTimer.RemoveAt(0);
+                        }
+                    }
+                    if (totalTimeIncrementPrint.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[1]), new Vector2(1120, 80), Color.Magenta);
+                        totalTimeIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimer[1] <= 0)
+                        {
+                            totalTimeIncrementPrint.RemoveAt(1);
+                            totalTimeIncrementTimer.RemoveAt(1);
+                        }
+                    }
+                    if (totalTimeIncrementPrint.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[2]), new Vector2(1140, 100), Color.Magenta);
+                        totalTimeIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimer[2] <= 0)
+                        {
+                            totalTimeIncrementPrint.RemoveAt(2);
+                            totalTimeIncrementTimer.RemoveAt(2);
+
+                        }
+                    }
                     break;
                 case GameState.PauseMenu:
                     //Draw the main box area for the game

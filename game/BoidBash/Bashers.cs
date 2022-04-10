@@ -146,7 +146,7 @@ namespace BoidBash
                     }
 
                     // Checking if new score goal has been reached
-                    if (scoregoal <= bashBonus)
+                    if (scoregoal <= boidsBashed)
                     {
                         upScoreGoal = true;                      
                     }
