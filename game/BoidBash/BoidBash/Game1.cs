@@ -209,9 +209,9 @@ namespace BoidBash
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
             menuFlock.BackgroundColor = backgroundColor;
 
             foreach (Boid boid in menuFlock.Boids)
@@ -814,6 +814,25 @@ namespace BoidBash
                 currentState = GameState.MainMenu;
                 player1Score = 0;
                 scoreGoal = 1;
+            }
+            else if (IsSingleKeyPress(Keys.R))
+            {
+                MediaPlayer.Play(gameMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
+                timer = 30;
+                flock.Pens.ScoreTimers.Clear();
+                flock.Pens.ScorePrints.Clear();
+                currentState = GameState.Game;
+                flock.ClearFlock();
+                flock.AddBoids(50);
+                flock.Pens.TotalBoidsBashed = 0;
+                flock.Pens.TotalSpecialBoidsBashed = 0;
+
+                totalScoreIncrementPrint.Clear();
+                totalScoreIncrementTimer.Clear();
+                totalTimeIncrementPrint.Clear();
+                totalTimeIncrementTimer.Clear();
             }
         }
 
