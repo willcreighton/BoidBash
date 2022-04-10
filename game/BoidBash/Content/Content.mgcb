@@ -37,7 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:BoidBashLogo.png
 
-#begin BoidSprite.png
+#begin BoidSp4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:BoidSprite.png
+/build:BoidSp4.png
 
 #begin ContinuePrompt.png
 /importer:TextureImporter
@@ -116,7 +116,7 @@
 /processorParam:TextureFormat=Color
 /build:PausePrompt.png
 
-#begin PredatorSprite.png
+#begin PredSp.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -126,7 +126,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:PredatorSprite.png
+/build:PredSp.png
 
 #begin PrimaryFont.spritefont
 /importer:FontDescriptionImporter
@@ -158,6 +158,42 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ReturnMainMenu.png
+
+#begin SquareArt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SquareArt.png
+
+#begin SquareArt2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SquareArt2.png
+
+#begin SquareGlow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SquareGlow.png
 
 #begin StartPrompt.png
 /importer:TextureImporter

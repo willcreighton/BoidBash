@@ -10,6 +10,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Boid.png" />
+    <None Remove="Content\BoidSp3.png" />
+    <None Remove="Content\BoidSprite.png" />
+    <None Remove="Content\Predator.png" />
+    <None Remove="Content\PredatorSprite.png" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>

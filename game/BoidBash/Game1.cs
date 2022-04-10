@@ -25,6 +25,12 @@ namespace BoidBash
         private GameState currentState;
         private MouseState mouseState;
 
+        // Border timer sync
+        int rInterval;
+        int gInterval;
+        int bInterval;
+        Color colorDrawn;
+
         // Buttons
         private List<Button> buttons = new List<Button>();
         private Color bgColor = Color.White;
@@ -58,6 +64,7 @@ namespace BoidBash
         private Color backgroundColor = new Color(20, 20, 20);
         private Color boidColor = new Color(0, 200, 255);
         private Color penColor = new Color(70, 70, 70);
+        private Color playAreaColor = new Color(5, 5, 5);
 
         // State UI
         private MainMenuUI mainMenuUI;
@@ -85,6 +92,8 @@ namespace BoidBash
 
         // Debug
         private Texture2D blank;
+        private Texture2D gradient;
+        private Texture2D glowBorder;
         private List<Rectangle> bounds = new List<Rectangle>();
         private List<Rectangle> menuBounds = new List<Rectangle>();
         private bool inDebug = false;
@@ -146,12 +155,20 @@ namespace BoidBash
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
 
-            boidSprite = this.Content.Load<Texture2D>("BoidSprite");
-            blank = this.Content.Load<Texture2D>("WhiteSquare");
-            flock = new Flock(70, new Rectangle(300, 300, 400, 300),
-            boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
+            boidSprite = Content.Load<Texture2D>("BoidSp4");
+            blank = Content.Load<Texture2D>("WhiteSquare");
+            gradient = Content.Load<Texture2D>("SquareArt");
+            glowBorder = Content.Load<Texture2D>("SquareGlow");
+            flock = new Flock(70, new Rectangle(300, 300, 600, 300),
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(5, 7), boidColor, _spriteBatch);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+
+            foreach (Boid boid in menuFlock.Boids)
+            {
+                menuFlock.GiveColor(boid);
+                boid.UseDefaultColor = true;
+            }
 
             // Add boundaries for Game flock
             bounds.Add(new Rectangle(350, 100, 750, 100));
@@ -176,11 +193,11 @@ namespace BoidBash
             flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
             flock.Pens.AddPen(new Rectangle(100, 550, 100, 150));
 
-            predTexture = Content.Load<Texture2D>("PredatorSprite");
+            predTexture = Content.Load<Texture2D>("PredSp");
 
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
-                25, 25),
-                windowHeight, windowWidth, 25, 25);
+                35, 35),
+                windowHeight, windowWidth, 35, 35);
 
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont, playPrompt, boidBashLogo);
             gameUI = new GameUI(windowWidth, windowHeight, headerFont, boidBashLogo, pausePrompt);
@@ -304,7 +321,7 @@ namespace BoidBash
                 case GameState.Game:
 
                     //Draws the main box area for the game
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
 
                     /* Draws the Crushers from top to bottom
                      * Top Left
@@ -312,13 +329,33 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), penColor);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), penColor);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), penColor);
-                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(200, 100, 150, 100), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(1000, 200, 100, 150), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(850, 700, 150, 100), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(100, 550, 100, 150), penColor);
 
-                    //Adding some outlines to the game area - RYAN
-                    //ShapeBatch.Line(new Vector2(200f, 100f), 150f, 0f, 5f, Color.Green);
+                    // Epic color-changing border system
+                    rInterval = (Color.Red.R - Color.Lime.R) / 30;
+                    gInterval = (Color.Red.G - Color.Lime.G) / 30;
+                    bInterval = (Color.Red.B - Color.Lime.B) / 30;
+                    colorDrawn = new Color(
+                        (Color.Red.R + rInterval * (int)timer * -1),
+                        (Color.Red.G + gInterval * (int)timer * -1),
+                        (Color.Red.B + bInterval * (int)timer * -1)
+                        );
+
+                    _spriteBatch.Draw(blank, new Rectangle(200, 95, 150, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(195, 95, 5, 455), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(350, 95, 5, 105), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(350, 195, 750, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(1100, 195, 5, 160), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 100, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 5, 450), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 800, 155, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(845, 700, 5, 105), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 700, 750, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150 ), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 105, 5), colorDrawn);
 
                     // Draws items only meant to be seen in debug
                     if (inDebug)
@@ -338,7 +375,7 @@ namespace BoidBash
                     gameUI.DrawPausePrompt(_spriteBatch);
                     gameUI.DrawLogo(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(1050, 15),
+                    _spriteBatch.DrawString(headerFont, "Time: " + timer.ToString("0"), new Vector2(1060, 15),
                     Color.White);
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     flock.Draw();
@@ -384,7 +421,7 @@ namespace BoidBash
                     break;
                 case GameState.PauseMenu:
                     //Draws the main box area for the game
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
+                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
 
                     /* Draws the Crushers from top to bottom -
                      * Top Left
@@ -392,12 +429,25 @@ namespace BoidBash
                      * Bottom Right
                      * Bottom Left
                      */
-                    _spriteBatch.Draw(blank, new Rectangle(200, 100, 150, 100), penColor);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 200, 100, 150), penColor);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 700, 150, 100), penColor);
-                    _spriteBatch.Draw(blank, new Rectangle(100, 550, 100, 150), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(200, 100, 150, 100), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(1000, 200, 100, 150), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(850, 700, 150, 100), penColor);
+                    _spriteBatch.Draw(gradient, new Rectangle(100, 550, 100, 150), penColor);
 
-                    _spriteBatch.DrawString(headerFont, "Timer: " + timer.ToString("0"), new Vector2(1050, 15),
+                    _spriteBatch.Draw(blank, new Rectangle(200, 95, 150, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(195, 95, 5, 455), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(350, 95, 5, 105), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(350, 195, 750, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(1100, 195, 5, 160), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 100, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 5, 450), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(850, 800, 155, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(845, 700, 5, 105), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 700, 750, 5), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 105, 5), colorDrawn);
+
+                    _spriteBatch.DrawString(headerFont, "Time: " + timer.ToString("0"), new Vector2(1060, 15),
                     Color.White);
                     gameUI.DrawScore(_spriteBatch);
                     pauseMenuUI.Draw(_spriteBatch);
@@ -428,6 +478,11 @@ namespace BoidBash
                     new Rectangle(mouseState.X, mouseState.Y, 16, 16),
                     Disco()
                     );
+
+                foreach (Boid boid in menuFlock.Boids)
+                {
+                    boid.UseDefaultColor = false;
+                }
             }
             else
             {
@@ -436,6 +491,11 @@ namespace BoidBash
                     new Rectangle(mouseState.X, mouseState.Y, 16, 16),
                     Color.White
                     );
+
+                foreach (Boid boid in menuFlock.Boids)
+                {
+                    boid.UseDefaultColor = true;
+                }
             }
 
 

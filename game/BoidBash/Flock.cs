@@ -142,8 +142,9 @@ namespace BoidBash
                 b.Position = b.Position + b.Velocity;
 
                 
-                // Track if the boid is in a pen
+                // Track if the boid is in a pen & update trail list
                 InPen(b);
+                UpdateTrailList(b);
             }
         }
 
@@ -432,6 +433,10 @@ namespace BoidBash
             }
             // Set one special boid
             Boids[0].IsSpecial = true;
+            Boids[0].UseDefaultColor = false;
+            boids[0].Color = Color.Gold;
+            boids[0].HasTrail = true;
+
         }
         // Possibility: Change creation bounds to a circle
 
@@ -453,6 +458,78 @@ namespace BoidBash
             }
         }
 
+        public void DrawBoidTrails(Boid boid)
+        {
+            Color background = new Color(5, 5, 5);
+
+            if (boid.HasTrail && boid.Trail != null && boid.Trail.Count > 0)
+            {
+                int rInterval;
+                int gInterval;
+                int bInterval;
+
+                if (boid.UseDefaultColor)
+                {
+                    rInterval = (defaultColor.R - background.R) / boid.Trail.Count;
+                    gInterval = (defaultColor.G - background.G) / boid.Trail.Count;
+                    bInterval = (defaultColor.B - background.B) / boid.Trail.Count;
+                }
+                else
+                {
+                    rInterval = (boid.Color.R - background.R) / boid.Trail.Count;
+                    gInterval = (boid.Color.G - background.G) / boid.Trail.Count;
+                    bInterval = (boid.Color.B - background.B) / boid.Trail.Count;
+                }
+
+                for (int x = 0; x < boid.Trail.Count - 7; x++)
+                {
+                    ShapeBatch.Line(boid.Trail[x], boid.Trail[x + 1],
+                        new Color(background.R + (rInterval * x), background.G + (gInterval * x), background.B + (bInterval * x)));
+                }
+            }
+        }
+
+        public void GiveColor(Boid boid)
+        {
+            boid.UseDefaultColor = false;
+
+            int r = rng.Next(125, 256);
+            int g = rng.Next(125, 256);
+            int b = rng.Next(125, 256);
+
+            boid.Color = new Color(r, g, b);
+        }
+
+        public void UpdateTrailList(Boid boid)
+        {
+            if (boid.HasTrail)
+            {
+                boid.Trail.Add(boid.Position);
+
+                if (boid.Trail.Count > 50)
+                {
+                    boid.Trail.RemoveAt(0);
+                }
+            }
+        }
+
+        public void RepositionBoid(Boid boid)
+        {
+            Vector2 position;
+
+            // Randomize position to within creation bounds
+            position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
+                rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
+
+            if (boid.HasTrail)
+            {
+                boid.Trail.Clear();
+            }
+
+            // Add new boid to list
+            boid.Position = position;
+        }
+
         /// <summary>
         /// Draws each boid in the list
         /// </summary>
@@ -461,22 +538,28 @@ namespace BoidBash
             // Loop through all boids in list
             foreach (Boid b in boids)
             {
-                if (!b.IsSpecial)
+                float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
+
+                if (b.UseDefaultColor)
                 {
-                    // Calculate rotation in radians
-                    float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
                         null, defaultColor, angle, new Vector2(0, 0), SpriteEffects.None, 0);
                 }
-                else
+                else if (b.IsSpecial)
                 {
-                    // Calculate rotation in radians
-                    float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
                     // Draw the boid to the spritebatch
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X + 2, (int)size.Y + 2),
-                        null, Color.Gold, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                        null, b.Color, angle, new Vector2(0, 0), SpriteEffects.None, 0);
                 }
+                else
+                {
+                    // Draw the boid to the spritebatch
+                    sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
+                        null, b.Color, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                }
+
+                DrawBoidTrails(b);
             }
         }
 
@@ -513,34 +596,11 @@ namespace BoidBash
         /// </summary>
         public void RepositionBoids()
         {
-            Vector2 position;
             // Loop from 0 to desired number of boids
             foreach (Boid boid in boids)
             {
-                // Randomize position to within creation bounds
-                position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
-                    rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
-
-                // Add new boid to list
-                boid.Position = position;
+                RepositionBoid(boid);
             }
         }
-
-        /// <summary>
-        /// Changes the position of the specified boid to a random place within the creation bounds
-        /// </summary>
-        /// <param name="boid"></param>
-        public void RepositionBoid(Boid boid)
-        {
-            Vector2 position;
-
-            // Randomize position to within creation bounds
-            position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
-                rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
-
-            // Add new boid to list
-            boid.Position = position;
-        }
-
     }
 }

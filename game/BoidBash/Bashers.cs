@@ -121,11 +121,11 @@ namespace BoidBash
                     }
 
                     // Checking if new score goal has been reached
-                    if (scoregoal < bashBonus)
+                    if (scoregoal <= bashBonus)
                     {
                         upScoreGoal = true;                      
                     }
-
+                     
                     // TODO - apply visuals
                     if (bashBonus < 7)
                     {
