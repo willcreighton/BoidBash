@@ -70,7 +70,7 @@ namespace BoidBash
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
-        private Song discoMusic;
+        //private Song discoMusic;
 
         // Screen size
         private int windowWidth;
@@ -184,7 +184,7 @@ namespace BoidBash
             timeIncrease = Content.Load<SoundEffect>("timeIncrease");
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
-            discoMusic = Content.Load<Song>("discoTheme");
+            //discoMusic = Content.Load<Song>("discoTheme");
 
             MediaPlayer.Play(menuMusic);
             MediaPlayer.IsRepeating = true;
