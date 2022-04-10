@@ -68,9 +68,11 @@ namespace BoidBash
         private SoundEffect gameOverSound;
         private SoundEffect timeIncrease;
         private SoundEffect addBoids;
+
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
+
         //private Song discoMusic;
 
         // Screen size
@@ -118,6 +120,14 @@ namespace BoidBash
 
         // Timer
         private float timer = 30f;
+
+        //Update Score Fields
+        private List<ulong> scores = new List<ulong>();
+        private string line = null;
+        private StreamReader input = null;
+        private StreamWriter output = null;
+        private bool willAdd = false;
+        private bool added = false;
 
         // Debug
         private Texture2D blank;
@@ -264,22 +274,6 @@ namespace BoidBash
 
             headerFont = Content.Load<SpriteFont>("headerFont");
 
-            // TEMPORARY TESTING
-            // Enable to test File IO
-
-            //player1Score = 2;
-            /*
-            UpdateScores(325306027);
-            UpdateScores(260714129);
-            UpdateScores(229811503);
-            UpdateScores(179622342);
-            UpdateScores(173690822);
-            UpdateScores(165747780);
-            UpdateScores(161942856);
-            UpdateScores(145060864);
-            UpdateScores(142758264);
-            UpdateScores(139509943);
-            */
             System.Diagnostics.Debug.WriteLine(GetScoreList());
 
             // Add buttons
@@ -377,7 +371,9 @@ namespace BoidBash
                 case GameState.MainMenu:
                     menuFlock.Draw();
                     mainMenuUI.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
+                    _spriteBatch.DrawString(senRegular, String.Format("HighScores"), new Vector2(40, 15), Color.White);
+                    _spriteBatch.DrawString(senRegular, String.Format("______________"), new Vector2(30, 20), Color.White);
+                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(15, 45), Color.White);
                     break;
 
                 case GameState.Game:
@@ -850,12 +846,7 @@ namespace BoidBash
         /// </summary>
         private bool UpdateScores(ulong score)
         {
-            List<ulong> scores = new List<ulong>();
-            string line = null;
-            StreamReader input = null;
-            StreamWriter output = null;
-            bool willAdd = false;
-            bool added = false;
+            
 
             // Read through text file, add them to the list of scores
             try

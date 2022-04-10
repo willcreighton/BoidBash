@@ -38,7 +38,7 @@ namespace BoidBash
             // Paused display
             _spriteBatch.Draw(
                 pausedDisplay,
-                new Rectangle(500, 15, 200, 45),
+                new Rectangle(500, 400, 200, 45),
                 Color.White
                 );
 
