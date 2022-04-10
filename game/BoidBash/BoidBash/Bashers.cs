@@ -29,6 +29,7 @@ namespace BoidBash
         private SoundEffect mediumBash;
         private SoundEffect largeBash;
         private SoundEffect timeIncrease;
+        private SoundEffect addBoids;
 
         // Properties
         public List<Rectangle> Pens
@@ -78,12 +79,13 @@ namespace BoidBash
         }
 
         // Constructor
-        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease)
+        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease, SoundEffect addBoids)
         {
             this.smallBash = smallBash;
             this.mediumBash = mediumBash;
             this.largeBash = largeBash;
             this.timeIncrease = timeIncrease;
+            this.addBoids = addBoids;
         }
 
         /// <summary>
@@ -198,6 +200,7 @@ namespace BoidBash
             // Adds boids if the scoregoal has been surpassed beyond 7
             if (boidsBashed > scoregoal && scoregoal >= 7)
             {
+                addBoids.Play();
                 flock.AddBoids((boidsBashed - scoregoal) * 2);
             }
 
