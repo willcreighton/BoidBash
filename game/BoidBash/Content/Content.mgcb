@@ -55,6 +55,12 @@
 /processorParam:TextureFormat=Color
 /build:BoidBashLogo_.png
 
+#begin boidsAdded.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:boidsAdded.wav
+
 #begin BoidSp3_.png
 /importer:TextureImporter
 /processor:TextureProcessor

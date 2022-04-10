@@ -67,6 +67,7 @@ namespace BoidBash
         private SoundEffect stateChange;
         private SoundEffect gameOverSound;
         private SoundEffect timeIncrease;
+        private SoundEffect addBoids;
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
@@ -182,8 +183,10 @@ namespace BoidBash
             largeBash = Content.Load<SoundEffect>("largeBash");
             gameOverSound = Content.Load<SoundEffect>("gameOverSound");
             timeIncrease = Content.Load<SoundEffect>("timeIncrease");
+            addBoids = Content.Load<SoundEffect>("boidsAdded");
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
+            
             //discoMusic = Content.Load<Song>("discoTheme");
 
             MediaPlayer.Play(menuMusic);
