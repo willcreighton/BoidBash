@@ -8,14 +8,18 @@ using System.IO;
 namespace BoidBash
 {
     // This enumerator references the different states of the game
-    // TODO - Add in an instructions page
+    // TODO - Add Options
+    // TODO - Add Instructions
+    // TODO - Add Credits
     enum GameState
     {
         MainMenu,
         Game,
         PauseMenu,
         EndScreen,
-        Instructions
+        Options,
+        Instructions,
+        Credits
     }
 
     public class Game1 : Game
