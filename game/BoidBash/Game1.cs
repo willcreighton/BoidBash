@@ -827,6 +827,25 @@ namespace BoidBash
                 player1Score = 0;
                 scoreGoal = 1;
             }
+            else if (IsSingleKeyPress(Keys.R))
+            {
+                MediaPlayer.Play(gameMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
+                timer = 30;
+                flock.Pens.ScoreTimers.Clear();
+                flock.Pens.ScorePrints.Clear();
+                currentState = GameState.Game;
+                flock.ClearFlock();
+                flock.AddBoids(50);
+                flock.Pens.TotalBoidsBashed = 0;
+                flock.Pens.TotalSpecialBoidsBashed = 0;
+
+                totalScoreIncrementPrint.Clear();
+                totalScoreIncrementTimer.Clear();
+                totalTimeIncrementPrint.Clear();
+                totalTimeIncrementTimer.Clear();
+            }
         }
 
         // TODO - Add playernames to text file

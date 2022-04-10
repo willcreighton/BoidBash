@@ -12,6 +12,7 @@ namespace BoidBash
         // Fields
         private int predHeight;
         private int predWidth;
+
         //private float rotation;
         private Vector2 actualPosition;
         private Rectangle predatorBounds = new Rectangle(200, 200, 800, 500);
