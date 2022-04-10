@@ -729,7 +729,7 @@ namespace BoidBash
                 MediaPlayer.Play(gameMusic);
                 MediaPlayer.IsRepeating = true;
                 stateChange.Play();
-                timer = 2;
+                timer = 30;
                 flock.Pens.ScoreTimers.Clear();
                 flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
@@ -825,7 +825,7 @@ namespace BoidBash
                 MediaPlayer.Play(gameMusic);
                 MediaPlayer.IsRepeating = true;
                 stateChange.Play();
-                timer = 2;
+                timer = 30;
                 flock.Pens.ScoreTimers.Clear();
                 flock.Pens.ScorePrints.Clear();
                 currentState = GameState.Game;
