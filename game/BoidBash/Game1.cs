@@ -250,7 +250,7 @@ namespace BoidBash
 
             predTexture = Content.Load<Texture2D>("PredSp");
 
-            predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
+            predator = new Predator(predTexture, new Rectangle((width / 2) - 18, (height / 2) - 18,
                 35, 35),
                 windowHeight, windowWidth, 35, 35);
 
