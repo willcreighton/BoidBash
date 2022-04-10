@@ -77,6 +77,9 @@ namespace BoidBash
         // Fonts
         private SpriteFont primaryFont;
         private SpriteFont headerFont;
+        private SpriteFont senRegular;
+        private SpriteFont senBold;
+        private SpriteFont senExtraBold;
 
         // Colors
         private Color backgroundColor = new Color(20, 20, 20);
@@ -155,13 +158,16 @@ namespace BoidBash
 
             base.Initialize();
         }
-
+        
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
+            senRegular = Content.Load<SpriteFont>("SenRegular");
+            senBold = Content.Load<SpriteFont>("SenBoldFont");
+            senExtraBold = Content.Load<SpriteFont>("SenExtraBoldFont");
 
             clicked = Content.Load<SoundEffect>("clicked");
             stateChange = Content.Load<SoundEffect>("stateChange");
@@ -241,10 +247,10 @@ namespace BoidBash
                 35, 35),
                 windowHeight, windowWidth, 35, 35);
 
-            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, headerFont, primaryFont, playPrompt, boidBashLogo);
-            gameUI = new GameUI(windowWidth, windowHeight, headerFont, boidBashLogo, pausePrompt);
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo);
+            gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
-            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, headerFont);
+            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
 
             headerFont = Content.Load<SpriteFont>("headerFont");
 
@@ -361,7 +367,7 @@ namespace BoidBash
                 case GameState.MainMenu:
                     menuFlock.Draw();
                     mainMenuUI.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(primaryFont, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
+                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
                     break;
                 case GameState.Game:
 
@@ -418,25 +424,24 @@ namespace BoidBash
                     }
                     // Ususal items to be drawn
                     gameUI.DrawPausePrompt(_spriteBatch);
-                    gameUI.DrawLogo(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    _spriteBatch.DrawString(headerFont, "Time: " + timer.ToString("0"), new Vector2(1060, 15),
+                    _spriteBatch.DrawString(senBold, "Time: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
 
                     // Draw amount of boids bashed
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 265, 46, 60),
+                        new Rectangle(15, 290, 46, 60),
                         boidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 365, 46, 60),
+                        new Rectangle(15, 390, 46, 60),
                         Color.Gold
                         );
-                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalBoidsBashed, new Vector2(75, 275),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
-                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalSpecialBoidsBashed, new Vector2(75, 375),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
 
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
@@ -445,7 +450,7 @@ namespace BoidBash
                     // Draws and removes any new point numbers that show up after destroying boids
                     foreach (Vector3 info in flock.Pens.ScorePrints)
                     {
-                        _spriteBatch.DrawString(primaryFont, "+" + String.Format("{0:n0}", info.Z), new Vector2(info.X, info.Y), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+" + String.Format("{0:n0}", info.Z), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     // Change the amount of time left on the timers
                     for (int x = flock.Pens.ScoreTimers.Count - 1; x >= 0; x--)
@@ -461,7 +466,7 @@ namespace BoidBash
                     // Draws and removes any new point numbers that show up after destroying special boids
                     foreach (Vector3 info in flock.Pens.SpecialScorePrints)
                     {
-                        _spriteBatch.DrawString(primaryFont, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Magenta);
                     }
                     // Change the amount of time left on the special timers
                     for (int x = flock.Pens.SpecialScoreTimers.Count - 1; x >= 0; x--)
@@ -509,27 +514,27 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(95, 550, 105, 5), colorDrawn);
 
-                    _spriteBatch.DrawString(headerFont, "Time: " + timer.ToString("0"), new Vector2(1060, 15),
+                    _spriteBatch.DrawString(senBold, "Time: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
                     gameUI.DrawScore(_spriteBatch);
+                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     pauseMenuUI.Draw(_spriteBatch);
-                    gameUI.DrawLogo(_spriteBatch);
                     flock.Draw();
                     predator.Draw(_spriteBatch);
                     // Draw amount of boids bashed
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 265, 46, 60),
+                        new Rectangle(15, 290, 46, 60),
                         boidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 365, 46, 60),
+                        new Rectangle(15, 390, 46, 60),
                         Color.Gold
                         );
-                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalBoidsBashed, new Vector2(75, 275),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
-                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalSpecialBoidsBashed, new Vector2(75, 375),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
                     break;
                 case GameState.EndScreen:
@@ -545,9 +550,9 @@ namespace BoidBash
                         new Rectangle(905, 400, 46, 60),
                         Color.Gold
                         );
-                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalBoidsBashed, new Vector2(230, 470),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(230, 470),
                     Color.White);
-                    _spriteBatch.DrawString(headerFont, "x " + flock.Pens.TotalSpecialBoidsBashed, new Vector2(905, 470),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(905, 470),
                     Color.White);
                     break;
                 default:

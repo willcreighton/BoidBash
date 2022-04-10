@@ -15,18 +15,14 @@ namespace BoidBash
         // Fields
         private int windowWidth;
         private int windowHeight;
-        private SpriteFont headerFont;
-        private SpriteFont primaryFont;
         private Texture2D playPrompt;
         private Texture2D boidBashLogo;
 
         // Constructor
-        public MainMenuUI(int windowWidth, int windowHeight, SpriteFont headerFont, SpriteFont primaryFont, Texture2D playPrompt, Texture2D boidBashLogo)
+        public MainMenuUI(int windowWidth, int windowHeight, Texture2D playPrompt, Texture2D boidBashLogo)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.headerFont = headerFont;
-            this.primaryFont = primaryFont;
             this.playPrompt = playPrompt;
             this.boidBashLogo = boidBashLogo;
         }

@@ -16,18 +16,20 @@ namespace BoidBash
         // Fields
         private int windowWidth;
         private int windowHeight;
-        private SpriteFont headerFont;
+        private SpriteFont senBold;
+        private SpriteFont senExtraBold;
         private Texture2D boidBashLogo;
         private Texture2D pausePrompt;
 
         private ulong score = 0;
 
         // Constructor
-        public GameUI(int windowWidth, int windowHeight, SpriteFont headerFont, Texture2D boidBashLogo, Texture2D pausePrompt)
+        public GameUI(int windowWidth, int windowHeight, SpriteFont senBold, SpriteFont senExtraBold, Texture2D boidBashLogo, Texture2D pausePrompt)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.headerFont = headerFont;
+            this.senBold = senBold;
+            this.senExtraBold = senExtraBold;
             this.boidBashLogo = boidBashLogo;
             this.pausePrompt = pausePrompt;
         }
@@ -80,7 +82,7 @@ namespace BoidBash
         {
             // Score display
             _spriteBatch.DrawString(
-                headerFont,
+                senBold,
                 String.Format("Score: {0:n0}", score),
                 new Vector2(15, 15),
                 Color.White
@@ -95,9 +97,9 @@ namespace BoidBash
         {
             // Score Goal display
             _spriteBatch.DrawString(
-                headerFont,
+                senExtraBold,
                 "Bash Goal: " + scoreGoal,
-                new Vector2(505, 115),
+                new Vector2(475, 115),
                 Color.White
                 );
         }
