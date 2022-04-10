@@ -85,6 +85,12 @@
 /processorParam:TextureFormat=Color
 /build:CustomCursor.png
 
+#begin discoTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:discoTheme.mp3
+
 #begin DisplayBoid.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -31,6 +31,11 @@ namespace BoidBash
         private GameState currentState;
         private MouseState mouseState;
 
+        private List<int> totalScoreIncrementPrint = new List<int>();
+        private List<float> totalScoreIncrementTimer = new List<float>();
+        private List<int> totalTimeIncrementPrint = new List<int>();
+        private List<float> totalTimeIncrementTimer = new List<float>();
+
         // Border timer sync
         private int rInterval;
         private int gInterval;
@@ -65,6 +70,7 @@ namespace BoidBash
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
+        private Song discoMusic;
 
         // Screen size
         private int windowWidth;
@@ -158,7 +164,7 @@ namespace BoidBash
 
             base.Initialize();
         }
-        
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -178,6 +184,7 @@ namespace BoidBash
             timeIncrease = Content.Load<SoundEffect>("timeIncrease");
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
+            discoMusic = Content.Load<Song>("discoTheme");
 
             MediaPlayer.Play(menuMusic);
             MediaPlayer.IsRepeating = true;
@@ -279,7 +286,7 @@ namespace BoidBash
                     Color.DarkRed,                      // button color
                     0,                                  // pen number
                     bashButton,                         // texture
-                    clicked));                        
+                    clicked));
             buttons[0].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
@@ -370,6 +377,71 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
                     break;
                 case GameState.Game:
+                    // Draw total score increment
+                    if (totalScoreIncrementPrint.Count > 0)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[0]), new Vector2(60, 60), Color.Yellow);
+                        totalScoreIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalScoreIncrementTimer[0] <= 0)
+                        {
+                            totalScoreIncrementPrint.RemoveAt(0);
+                            totalScoreIncrementTimer.RemoveAt(0);
+                        }
+                    }
+                    if (totalScoreIncrementPrint.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[1]), new Vector2(80, 80), Color.Yellow);
+                        totalScoreIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalScoreIncrementTimer[1] <= 0)
+                        {
+                            totalScoreIncrementPrint.RemoveAt(1);
+                            totalScoreIncrementTimer.RemoveAt(1);
+                        }
+                    }
+                    if (totalScoreIncrementPrint.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[2]), new Vector2(100, 100), Color.Yellow);
+                        totalScoreIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalScoreIncrementTimer[2] <= 0)
+                        {
+                            totalScoreIncrementPrint.RemoveAt(2);
+                            totalScoreIncrementTimer.RemoveAt(2);
+
+                        }
+                    }
+
+                    // Draw total time increment
+                    if (totalTimeIncrementPrint.Count > 0)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[0]), new Vector2(1100, 60), Color.Magenta);
+                        totalTimeIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimer[0] <= 0)
+                        {
+                            totalTimeIncrementPrint.RemoveAt(0);
+                            totalTimeIncrementTimer.RemoveAt(0);
+                        }
+                    }
+                    if (totalTimeIncrementPrint.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[1]), new Vector2(1120, 80), Color.Magenta);
+                        totalTimeIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimer[1] <= 0)
+                        {
+                            totalTimeIncrementPrint.RemoveAt(1);
+                            totalTimeIncrementTimer.RemoveAt(1);
+                        }
+                    }
+                    if (totalTimeIncrementPrint.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrint[2]), new Vector2(1140, 100), Color.Magenta);
+                        totalTimeIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimer[2] <= 0)
+                        {
+                            totalTimeIncrementPrint.RemoveAt(2);
+                            totalTimeIncrementTimer.RemoveAt(2);
+
+                        }
+                    }
 
                     //Draws the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
@@ -405,7 +477,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, new Rectangle(850, 800, 155, 5), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(845, 700, 5, 105), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(95, 700, 750, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150 ), colorDrawn);
+                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150), colorDrawn);
                     _spriteBatch.Draw(blank, new Rectangle(95, 550, 105, 5), colorDrawn);
 
                     // Draws items only meant to be seen in debug
@@ -425,7 +497,7 @@ namespace BoidBash
                     // Ususal items to be drawn
                     gameUI.DrawPausePrompt(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    _spriteBatch.DrawString(senBold, "Time: " + timer.ToString("0"), new Vector2(1050, 15),
+                    _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", timer.ToString("0")), new Vector2(1050, 15),
                     Color.White);
 
                     // Draw amount of boids bashed
@@ -484,13 +556,13 @@ namespace BoidBash
                         b.Draw(_spriteBatch);
                     }
 
-                    // TODO - Make these messages appear for more than one frame
+                    // TODO: Make these messages appear for more than one frame
                     break;
                 case GameState.PauseMenu:
-                    //Draws the main box area for the game
+                    //Draw the main box area for the game
                     _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
 
-                    /* Draws the Crushers from top to bottom -
+                    /* Draw the Crushers from top to bottom
                      * Top Left
                      * Top Right
                      * Bottom Right
@@ -602,7 +674,6 @@ namespace BoidBash
                 }
             }
 
-
             // End the Sprite Batch and the ShapeBatch
             _spriteBatch.End();
             ShapeBatch.End();
@@ -659,6 +730,11 @@ namespace BoidBash
                 flock.AddBoids(50);
                 flock.Pens.TotalBoidsBashed = 0;
                 flock.Pens.TotalSpecialBoidsBashed = 0;
+
+                totalScoreIncrementPrint.Clear();
+                totalScoreIncrementTimer.Clear();
+                totalTimeIncrementPrint.Clear();
+                totalTimeIncrementTimer.Clear();
             }
         }
 
@@ -890,6 +966,11 @@ namespace BoidBash
             dataReturn = flock.Pens.DestroyContainedBoids(flock, pen, scoreGoal);
 
             player1Score += (ulong)dataReturn.X;
+            if (dataReturn.X > 0)
+            {
+                totalScoreIncrementPrint.Add((int)dataReturn.X);
+                totalScoreIncrementTimer.Add(2);
+            }
 
             if (dataReturn.Y == 1)
             {
@@ -897,10 +978,14 @@ namespace BoidBash
             }
             else if (dataReturn.Y == 2)
             {
+                totalTimeIncrementPrint.Add(2);
+                totalTimeIncrementTimer.Add(2);
                 timer += 2;
             }
             else if (dataReturn.Y == 3)
             {
+                totalTimeIncrementPrint.Add(2);
+                totalTimeIncrementTimer.Add(2);
                 timer += 2;
                 scoreGoal++;
             }
