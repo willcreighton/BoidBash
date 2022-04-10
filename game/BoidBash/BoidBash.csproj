@@ -10,12 +10,48 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\BashButton2_.png" />
     <None Remove="Content\Boid.png" />
+    <None Remove="Content\BoidBashLogo_.png" />
     <None Remove="Content\BoidSp3.png" />
+    <None Remove="Content\BoidSp3_.png" />
+    <None Remove="Content\BoidSp4_.png" />
     <None Remove="Content\BoidSprite.png" />
+    <None Remove="Content\BoidSprite_.png" />
+    <None Remove="Content\Boid_.png" />
     <None Remove="Content\click.wav" />
+    <None Remove="Content\clicked_.wav" />
+    <None Remove="Content\ContinuePrompt_.png" />
+    <None Remove="Content\CustomCursor_.png" />
+    <None Remove="Content\DisplayBoid_.png" />
+    <None Remove="Content\gameMusic_.mp3" />
+    <None Remove="Content\gameOverSound_.wav" />
+    <None Remove="Content\GameOver_.png" />
+    <None Remove="Content\HeaderFont_.spritefont" />
+    <None Remove="Content\largeBash_.wav" />
+    <None Remove="Content\mainMenuMusic_.mp3" />
+    <None Remove="Content\mediumBash_.wav" />
+    <None Remove="Content\Paused_.png" />
+    <None Remove="Content\PausePrompt_.png" />
     <None Remove="Content\Predator.png" />
     <None Remove="Content\PredatorSprite.png" />
+    <None Remove="Content\PredSp_.png" />
+    <None Remove="Content\PrimaryFont_.spritefont" />
+    <None Remove="Content\ResumePrompt_.png" />
+    <None Remove="Content\ReturnMainMenu_.png" />
+    <None Remove="Content\SenBoldFont_.spritefont" />
+    <None Remove="Content\SenBold_.spritefont" />
+    <None Remove="Content\SenExtraBoldFont_.spritefont" />
+    <None Remove="Content\SenExtraBold_.spritefont" />
+    <None Remove="Content\SenRegular_.spritefont" />
+    <None Remove="Content\smallBash_.wav" />
+    <None Remove="Content\SquareArt2_.png" />
+    <None Remove="Content\SquareArt_.png" />
+    <None Remove="Content\SquareGlow_.png" />
+    <None Remove="Content\StartPrompt_.png" />
+    <None Remove="Content\stateChange_.wav" />
+    <None Remove="Content\timeIncrease_.wav" />
+    <None Remove="Content\WhiteSquare_.png" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>

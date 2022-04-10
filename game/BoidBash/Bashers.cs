@@ -127,17 +127,20 @@ namespace BoidBash
                     // Score Increment
                     boidsBashed++;
 
-                    if (bashBonus < 7)
+                    // Update the bash bonus with a maximum of 7
+                    if (bashBonus < 7 && bashBonus < scoregoal)
                     {
                         bashBonus++;
                     }
-                    if (bashBonus == 7)
+
+                    // Calculate the Score increase
+                    if (bashBonus >= 7)
                     {
-                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus) * scoregoal;
+                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus);
                     }
                     else
                     {
-                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus);
+                        scoreIncrease += (int)Math.Pow(boidsBashed, bashBonus);
                     }
                     
                     if (flock.Boids[x].IsSpecial)
@@ -155,13 +158,13 @@ namespace BoidBash
                     if (bashBonus < 7)
                     {
                         scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (float)Math.Pow(scoregoal, bashBonus)));
+                        scoreIncrease += (int)Math.Pow(boidsBashed, bashBonus)));
                         ScoreTimers.Add(1);
                     }
                     else
                     {
                         scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (float)Math.Pow(scoregoal, bashBonus) * scoregoal));
+                        (int)Math.Pow(scoregoal, bashBonus)));
                         ScoreTimers.Add(1);
                     }
 
