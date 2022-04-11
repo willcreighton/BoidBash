@@ -122,6 +122,7 @@ namespace BoidBash
         // Text Input
         private string name = "";
         private Keys key;
+        private List<Keys> excludedKeys = new List<Keys>();
 
         // Timer
         private float timer = 30f;
@@ -359,6 +360,29 @@ namespace BoidBash
                     bashButton,                         // texture
                     clicked));
             buttons[3].OnButtonClick += this.Bashed;
+
+            // Add Excluded keys for names
+            excludedKeys.Add(Keys.Space);
+            excludedKeys.Add(Keys.LeftShift);
+            excludedKeys.Add(Keys.RightShift);
+            excludedKeys.Add(Keys.LeftControl);
+            excludedKeys.Add(Keys.RightControl);
+            excludedKeys.Add(Keys.LeftAlt);
+            excludedKeys.Add(Keys.RightAlt);
+            excludedKeys.Add(Keys.Up);
+            excludedKeys.Add(Keys.Down);
+            excludedKeys.Add(Keys.Left);
+            excludedKeys.Add(Keys.Right);
+            excludedKeys.Add(Keys.Back);
+            excludedKeys.Add(Keys.Enter);
+            excludedKeys.Add(Keys.Tab);
+            excludedKeys.Add(Keys.CapsLock);
+            excludedKeys.Add(Keys.Delete);
+            excludedKeys.Add(Keys.Insert);
+            excludedKeys.Add(Keys.Home);
+            excludedKeys.Add(Keys.End);
+            excludedKeys.Add(Keys.PageDown);
+            excludedKeys.Add(Keys.PageUp);           
         }
 
         protected override void Update(GameTime gameTime)
@@ -1020,15 +1044,19 @@ namespace BoidBash
             // If only one key is being pressed
             if (keyboardState.GetPressedKeys().Length == 1)
             {
+                // Set key to the key that was pressed
                 key = keyboardState.GetPressedKeys()[0];
                 // If it is a single key press of that key
                 if (IsSingleKeyPress(key))
                 {
+                    // If the string has characters and you hit backspace
                     if (key == Keys.Back && name.Length > 0)
                     {
+                        // Take off the last letter in the string
                         name = name.Substring(0, name.Length - 1);
                     }
-                    if (name.Length <= 2 && key != Keys.Back && key != Keys.Space)
+                    // If the name isn't at max length, and it is a valid key, add to string
+                    if (name.Length <= 2 && !excludedKeys.Contains(key))
                     {
                         name += key.ToString();
                     }
