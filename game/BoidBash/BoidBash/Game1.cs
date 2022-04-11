@@ -31,6 +31,7 @@ namespace BoidBash
         private GameState currentState;
         private MouseState mouseState;
 
+        // Total addition print lists
         private List<int> totalScoreIncrementPrint = new List<int>();
         private List<float> totalScoreIncrementTimer = new List<float>();
         private List<int> totalTimeIncrementPrint = new List<int>();
@@ -73,7 +74,6 @@ namespace BoidBash
         //private SoundEffect scored;
         private Song menuMusic;
         private Song gameMusic;
-
         //private Song discoMusic;
 
         // Screen size
@@ -119,11 +119,16 @@ namespace BoidBash
         private ulong player1Score = 0;
         private int scoreGoal = 1;
 
+        // Text Input
+        private string name = "";
+        private Keys key;
+
         // Timer
         private float timer = 30f;
 
-        //Update Score Fields
+        // Update Score Fields
         private List<ulong> scores = new List<ulong>();
+        private List<string> names = new List<string>();
         private string line = null;
         private StreamReader input = null;
         private StreamWriter output = null;
@@ -691,7 +696,18 @@ namespace BoidBash
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalSpecialBoidsBashed), new Vector2(905, 470),
                     Color.White);
 
+                    // Draw Name input
+                    if (CompareToList(player1Score))
+                    {
+                        _spriteBatch.DrawString(senBold, "New notable Score!", new Vector2(460, 500),
+                    Color.White);
+                        _spriteBatch.DrawString(senBold, "Input Name: " + name + "|", new Vector2(460, 530),
+                    Color.White);
+                    }
+                    
+
                     break;
+
                 default:
                     break;
             }
@@ -865,9 +881,7 @@ namespace BoidBash
 
             // End game when timer is up 
             if (timer < 0.01f)
-            {
-                // Update player highscores
-                UpdateScores(player1Score);
+            {      
                 // Update End screen UI
                 endScreenUI.Score = player1Score;
                 // Change state
@@ -931,6 +945,16 @@ namespace BoidBash
             // If space is pressed, go back to main menu
             if (IsSingleKeyPress(Keys.Space))
             {
+                // Update player highscores
+                if (CompareToList(player1Score))
+                {
+                    if (name == "")
+                    {
+                        name = "UNNAMED";
+                    }
+                    UpdateScores(player1Score);
+                }
+
                 // Play menu music
                 MediaPlayer.Play(menuMusic);
                 MediaPlayer.IsRepeating = true;
@@ -940,6 +964,8 @@ namespace BoidBash
                 // Reset player score and score goal
                 player1Score = 0;
                 scoreGoal = 1;
+
+                name = "";
             }
             // Otherwise, if R is pressed, go back to game
             else if (IsSingleKeyPress(Keys.R))
@@ -975,9 +1001,40 @@ namespace BoidBash
                 flock.Bashers.TotalBoidsBashed = 0;
                 flock.Bashers.TotalSpecialBoidsBashed = 0;
 
+                // Update player highscores
+                if (CompareToList(player1Score))
+                {
+                    if (name == "")
+                    {
+                        name = "UNNAMED";
+                    }
+                    UpdateScores(player1Score);
+                }
+
+                name = "";
                 // Change Game state
                 currentState = GameState.Game;
             }
+
+            // Name input
+            // If only one key is being pressed
+            if (keyboardState.GetPressedKeys().Length == 1)
+            {
+                key = keyboardState.GetPressedKeys()[0];
+                // If it is a single key press of that key
+                if (IsSingleKeyPress(key))
+                {
+                    if (key == Keys.Back && name.Length > 0)
+                    {
+                        name = name.Substring(0, name.Length - 1);
+                    }
+                    if (name.Length <= 2 && key != Keys.Back && key != Keys.Space)
+                    {
+                        name += key.ToString();
+                    }
+                }
+            }
+
         }
 
         // TODO - Add playernames to text file
@@ -985,8 +1042,10 @@ namespace BoidBash
         /// This method updates the high scores text file
         /// Returns true if the score was added to the list
         /// </summary>
-        private bool UpdateScores(ulong score)
+        private void UpdateScores(ulong score)
         {
+            string[] splits = new string[2];
+
             // Read through text file, add them to the list of scores
             try
             {
@@ -994,7 +1053,9 @@ namespace BoidBash
 
                 while ((line = input.ReadLine()) != null)
                 {
-                    scores.Add(ulong.Parse(line));
+                    splits = line.Split(',');
+                    scores.Add(ulong.Parse(splits[0]));
+                    names.Add(splits[1]);
                 }
             }
             catch (Exception e)
@@ -1026,6 +1087,7 @@ namespace BoidBash
                 else if ((score < scores[x] || score == scores[x]) && willAdd)
                 {
                     scores.Insert(x + 1, score);
+                    names.Insert(x + 1, name);
                     added = true;
                     break;
                 }
@@ -1040,6 +1102,7 @@ namespace BoidBash
             if (willAdd && !added)
             {
                 scores.Insert(0, score);
+                names.Insert(0, name);
             }
 
             // If the score was added, and there are more than 10 items in the list,
@@ -1047,6 +1110,7 @@ namespace BoidBash
             if (willAdd && scores.Count > 10)
             {
                 scores.RemoveAt(scores.Count - 1);
+                names.RemoveAt(names.Count - 1);
             }
 
             // If the score was added, write the new text file
@@ -1057,9 +1121,9 @@ namespace BoidBash
                     output = new StreamWriter("..//..//..//Highscores.txt");
 
                     // Write a line for each score
-                    foreach (ulong num in scores)
+                    for (int x = 0; x < 10; x++)
                     {
-                        output.WriteLine(num);
+                        output.WriteLine(scores[x] + "," + names[x]);
                     }
                 }
                 catch (Exception e)
@@ -1070,8 +1134,53 @@ namespace BoidBash
                 output.Close();
             }
 
+            scores.Clear();
+            names.Clear();
+        }
+
+        /// <summary>
+        /// Compares the score to the list of scores to see if it will be added
+        /// </summary>
+        /// <returns></returns>
+        private bool CompareToList(ulong score)
+        {
+            bool willAdd = false;
+            string[] splits = new string[2];
+            // Read through text file, add them to the list of scores
+            try
+            {
+                input = new StreamReader("..//..//..//Highscores.txt");
+
+                while ((line = input.ReadLine()) != null)
+                {
+                    splits = line.Split(',');
+                    scores.Add(ulong.Parse(splits[0]));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            if (input != null)
+            {
+                input.Close();
+            }
+
+            // Comparison
+            if (scores.Count < 10)
+            {
+                willAdd = true;
+            }
+            if (score >= scores[scores.Count - 1])
+            {
+                willAdd = true;
+            }
+
+            scores.Clear();
             return willAdd;
         }
+
 
         /// <summary>
         /// Returns a string containing a formatted list of the top scores
@@ -1081,6 +1190,7 @@ namespace BoidBash
         {
             string scores = "";
             string line = null;
+            string[] splits = new string[2];
             StreamReader input = null;
 
             try
@@ -1091,12 +1201,13 @@ namespace BoidBash
                 // Loop through the 10 or less scores in the list
                 for (int x = 0; x < 10 && ((line = input.ReadLine()) != null); x++)
                 {
+                    splits = line.Split(",");
                     if (x < 9)
                     {
                         scores += "  ";
                     }
-                    // Add which place they are in, then the score, then a new line
-                    scores += ((x + 1) + ". " + String.Format("{0:n0}", long.Parse(line)) + "\n");
+                    // Add which place they are in, then the score, then name, then a new line
+                    scores += ((x + 1) + ". " + String.Format("{0:n0}", ulong.Parse(splits[0])) + " - " + splits[1] + "\n");
                 }
             }
             catch (Exception e)
