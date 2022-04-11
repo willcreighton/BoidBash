@@ -52,15 +52,23 @@ namespace BoidBash
             // Continue to Main Menu prompt
             _spriteBatch.Draw(
                 continuePrompt,
-                new Vector2(460, windowHeight - 400),
+                new Vector2(460, windowHeight - 50),
                 Color.White
                 );
 
             // Draw the score achieved
             _spriteBatch.DrawString(
                 senBold,
-                String.Format("Score: {0:n0}", score),
+                String.Format("Score = {0:n0}", score),
                 new Vector2(15, 15),
+                Color.White
+                );
+
+            //Restarts the Game without going back to the main menu
+            _spriteBatch.DrawString(
+                senBold,
+                String.Format("Press R to Restart"),
+                new Vector2(460, windowHeight - 450),
                 Color.White
                 );
         }

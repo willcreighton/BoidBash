@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 // Uses many references
+// https://www.youtube.com/watch?v=bqtqltqcQhw
+// https://www.youtube.com/watch?v=QbUPfMXXQIY
+// https://www.youtube.com/watch?v=mhjuuHl6qHM
+// https://www.youtube.com/watch?v=x-GwBH4dhko
 // http://www.kfish.org/boids/pseudocode.html
 
 namespace BoidBash
@@ -78,7 +82,7 @@ namespace BoidBash
         /// <summary>
         /// Accesses the pens that the flock has
         /// </summary>
-        public Bashers Pens
+        public Bashers Bashers
         {
             get { return bashers; }
         }
@@ -103,10 +107,8 @@ namespace BoidBash
         /// <param name="sb"></param>
         public Flock(int numBoids, Rectangle creationBounds,
             Texture2D asset, Vector2 size, Color defaultColor,
-            SpriteBatch sb, SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease, SoundEffect addBoids)
+            SpriteBatch sb)
         {
-            bashers = new Bashers(smallBash, mediumBash, largeBash, timeIncrease, addBoids);
-
             // Initialzie Random0
             rng = new Random();
 
@@ -119,6 +121,9 @@ namespace BoidBash
 
             // Add the inital amount of boids to the list
             AddBoids(numBoids);
+
+            // Initialize bashers
+            bashers = new Bashers();
         }
 
         /// <summary>
@@ -137,6 +142,7 @@ namespace BoidBash
             // Loop through the list for each boid
             foreach (Boid b in boids)
             {
+                // Calculate Velocity
                 // Fetch the appropriate values for the boids
                 cohesion = Cohesion(b);
                 separation = Separation(b);
@@ -154,9 +160,10 @@ namespace BoidBash
                 // Update position based on rules being applied
                 b.Position = b.Position + b.Velocity;
 
-                
+                // Update necessary boid values
                 // Track if the boid is in a pen & update trail list
                 InPen(b);
+                // Update all Boid Trails
                 UpdateTrailList(b);
             }
         }
@@ -461,26 +468,33 @@ namespace BoidBash
         {
             boids.Remove(boid);
         }
-        // To Do: Determine if boid is in any of specified zones, so crushers can function
 
+        /// <summary>
+        /// Removes all boids from the flock
+        /// </summary>
         public void ClearFlock()
         {
-            for (int x = boids.Count - 1; x >= 0; x--)
-            {
-                RemoveBoid(boids[x]);
-            }
+            boids.Clear();
         }
 
-        public void DrawBoidTrails(Boid boid)
+        /// <summary>
+        /// Draws the trails of all boids with trails
+        /// </summary>
+        /// <param name="boid"></param>
+        public void DrawTrail(Boid boid)
         {
+            // If the boid has a trail, and the trail has points
             if (boid.HasTrail && boid.Trail != null && boid.Trail.Count > 0)
             {
+                // Initialize interval integers
                 int rInterval;
                 int gInterval;
                 int bInterval;
 
+                // Determine what color interval to use
                 if (boid.UseDefaultColor)
                 {
+                    // Calculate the difference in color and divide by the number of points in the trail
                     rInterval = (defaultColor.R - backgroundColor.R) / boid.Trail.Count;
                     gInterval = (defaultColor.G - backgroundColor.G) / boid.Trail.Count;
                     bInterval = (defaultColor.B - backgroundColor.B) / boid.Trail.Count;
@@ -492,31 +506,48 @@ namespace BoidBash
                     bInterval = (boid.Color.B - backgroundColor.B) / boid.Trail.Count;
                 }
 
+                // Draw the lines
+                // Add a blank space leading up to the boid so that they can't tell it doesn't exactly match up
                 for (int x = 0; x < boid.Trail.Count - 7; x++)
                 {
                     ShapeBatch.Line(boid.Trail[x], boid.Trail[x + 1],
-                        new Color(backgroundColor.R + (rInterval * x), backgroundColor.G + (gInterval * x), backgroundColor.B + (bInterval * x)));
+                        new Color(backgroundColor.R + (rInterval * x), backgroundColor.G
+                        + (gInterval * x), backgroundColor.B + (bInterval * x)));
                 }
             }
         }
 
+        /// <summary>
+        /// Gives a random color value to the boid and sets tells it to use it
+        /// </summary>
+        /// <param name="boid"></param>
         public void GiveColor(Boid boid)
         {
+            // Tell to draw with this color
             boid.UseDefaultColor = false;
 
+            // Random pastel values
             int r = rng.Next(125, 256);
             int g = rng.Next(125, 256);
             int b = rng.Next(125, 256);
 
+            // Assign color
             boid.Color = new Color(r, g, b);
         }
 
+        /// <summary>
+        /// Updates the list of points for the trail
+        /// </summary>
+        /// <param name="boid"></param>
         public void UpdateTrailList(Boid boid)
         {
+            // If the trail has a trail
             if (boid.HasTrail)
             {
+                // Add current position to the list
                 boid.Trail.Add(boid.Position);
 
+                // Keep trail to specified length
                 if (boid.Trail.Count > 50)
                 {
                     boid.Trail.RemoveAt(0);
@@ -524,6 +555,10 @@ namespace BoidBash
             }
         }
 
+        /// <summary>
+        /// Places boid at random place within the creation bounds
+        /// </summary>
+        /// <param name="boid"></param>
         public void RepositionBoid(Boid boid)
         {
             Vector2 position;
@@ -532,6 +567,7 @@ namespace BoidBash
             position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
                 rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
 
+            // Clears trail for no awkward movement
             if (boid.HasTrail)
             {
                 boid.Trail.Clear();
@@ -569,8 +605,8 @@ namespace BoidBash
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
                         null, b.Color, angle, new Vector2(0, 0), SpriteEffects.None, 0);
                 }
-
-                DrawBoidTrails(b);
+                // Draw the boid trail
+                DrawTrail(b);
             }
         }
 
