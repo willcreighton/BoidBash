@@ -7,14 +7,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BoidBash
 {
-    
-    // Determines if the player is playing Singleplayer mode or the Versus mode
-    enum GameMode
-    {
-        Single,
-        Versus
-    }
-
     // Holds the different control schemes
     enum ControlScheme
     {
@@ -30,7 +22,6 @@ namespace BoidBash
         private Vector2 actualPosition;
         private Rectangle predatorBounds = new Rectangle(200, 200, 800, 500);
 
-        private GameMode currentMode = GameMode.Single;
         private ControlScheme currentScheme = ControlScheme.WASDArrows;
 
         // Properties
@@ -82,19 +73,9 @@ namespace BoidBash
 
         // Movement
         public override void Update(GameTime gameTime)
-        {
-            KeyboardState keyBState = Keyboard.GetState();
-
-            switch (currentMode)
-            {
-                case GameMode.Single:                    
-                    ChooseScheme(ControlScheme.WASDArrows);
-                    break;
-                case GameMode.Versus:
-                    ChooseScheme(currentScheme);
-                    break;
-            }            
-
+        {                 
+            ChooseScheme(ControlScheme.WASDArrows);
+          
             actualPosition = new Vector2(position.Center.X, position.Center.Y);
         }
 
