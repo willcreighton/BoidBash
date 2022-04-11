@@ -1044,7 +1044,11 @@ namespace BoidBash
                     UpdateScores(player1Score);
                 }
 
+                // Clear Game data
                 name = "";
+                player1Score = 0;
+                scoreGoal = 1;
+
                 // Change Game state
                 currentState = GameState.Game;
             }
