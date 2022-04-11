@@ -68,7 +68,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 senBold,
                 String.Format("Press SPACE to Play Again"),
-                new Vector2(460, windowHeight - 450),
+                new Vector2(400, windowHeight - 450),
                 Color.White
                 );
         }
