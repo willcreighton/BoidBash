@@ -16,7 +16,8 @@ namespace BoidBash
     enum GameState
     {
         MainMenu,
-        Game,
+        SingleGame,
+        VersusGame,
         PauseMenu,
         EndScreen,
         Options,
@@ -59,7 +60,6 @@ namespace BoidBash
         private Texture2D gameOver;
         private Texture2D pausedDisplay;
         private Texture2D customCursor;
-        private Texture2D insertCoin;
 
         // Sounds
         private SoundEffect smallBash;
@@ -110,7 +110,9 @@ namespace BoidBash
         private Texture2D displayBoid;
 
         // Predator
-        private Predator predator;
+        private Predator predatorWASD;
+        private Predator predatorArrows;
+        private Predator predatorWASDArrows;
         private Texture2D predTexture;
         private int width;
         private int height;
@@ -244,7 +246,6 @@ namespace BoidBash
             returnPrompt = Content.Load<Texture2D>("ReturnMainMenu");
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
-            insertCoin = Content.Load<Texture2D>("insertCoin");
             boidSprite = Content.Load<Texture2D>("BoidSp4");
             displayBoid = Content.Load<Texture2D>("DisplayBoid");
             blank = Content.Load<Texture2D>("WhiteSquare");
@@ -315,12 +316,18 @@ namespace BoidBash
             flock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 150));
   
             // Create the predator
-            predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
+            predatorWASDArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, 35, 35);
+                windowHeight, windowWidth, 35, 35, ControlScheme.WASDArrows);
+            predatorWASD = new Predator(predTexture, new Rectangle(width / 2, height / 2,
+                35, 35),
+                windowHeight, windowWidth, 35, 35, ControlScheme.WASD);
+            predatorArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
+                35, 35),
+                windowHeight, windowWidth, 35, 35, ControlScheme.Arrows);
 
             // Initialize all UI Objects
-            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, insertCoin, senBold);
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
@@ -404,10 +411,14 @@ namespace BoidBash
                     ProcessMainMenu(gameTime);
                     break;
 
-                // Game
-                case GameState.Game:
+                // Single Mode
+                case GameState.SingleGame:
                     // Apply Game processing
                     ProcessGame(gameTime);               
+                    break;
+
+                // Versus Mode
+                case GameState.VersusGame:
                     break;
 
                 // Pause Menu
@@ -461,7 +472,7 @@ namespace BoidBash
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Game State
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                case GameState.Game:
+                case GameState.SingleGame:
 
                     //Draws the main play area for the game
                     _spriteBatch.Draw(blank, singlePlayerPlayArea, playAreaColor);
@@ -539,7 +550,7 @@ namespace BoidBash
 
                     // Call Draw functions on the player and AI
                     flock.Draw();
-                    predator.Draw(_spriteBatch);
+                    predatorWASDArrows.Draw(_spriteBatch);
 
                     // Draws and removes any new point numbers that show up after destroying boids
                     foreach (Vector3 info in flock.Bashers.ScorePrints)
@@ -655,6 +666,11 @@ namespace BoidBash
                     }
                     break;
 
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Versus Mode 
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.VersusGame:
+                    break;
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Pause Menu
@@ -702,7 +718,7 @@ namespace BoidBash
 
                     // Draw player and AI
                     flock.Draw();
-                    predator.Draw(_spriteBatch);
+                    predatorWASDArrows.Draw(_spriteBatch);
 
                     break;
 
@@ -870,7 +886,7 @@ namespace BoidBash
                 flock.Bashers.TotalSpecialBoidsBashed = 0;
 
                 // Change Game state
-                currentState = GameState.Game; 
+                currentState = GameState.SingleGame; 
             }
 
             // Process Menuflock boids
@@ -927,6 +943,8 @@ namespace BoidBash
             }
 
             // Process Boids and predator
+            flock.ProcessBoids(predatorWASDArrows.ActualPosition);
+            predatorWASDArrows.Update(gameTime);
             flock.ProcessBoids(new Vector2[1] { predator.ActualPosition });
             predator.Update(gameTime);
 
@@ -952,7 +970,7 @@ namespace BoidBash
                 MediaPlayer.Resume();
                 stateChange.Play();
                 // Change game state
-                currentState = GameState.Game;
+                currentState = GameState.SingleGame;
             }
             // Otherwise, if M is pressed, go to main menu
             else if (IsSingleKeyPress(Keys.M))
@@ -964,7 +982,7 @@ namespace BoidBash
                 // Change game state
                 currentState = GameState.MainMenu;
                 // Put predator back in center
-                predator.Position = new Rectangle(width / 2, height / 2, 25, 25);
+                predatorWASDArrows.Position = new Rectangle(width / 2, height / 2, 25, 25);
                 // Reset player score
                 player1Score = 0;
                 // Reset Score goal
@@ -1052,7 +1070,7 @@ namespace BoidBash
                 scoreGoal = 1;
 
                 // Change Game state
-                currentState = GameState.Game;
+                currentState = GameState.SingleGame;
             }
 
             // Name input
@@ -1080,7 +1098,6 @@ namespace BoidBash
 
         }
 
-        // TODO - Add playernames to text file
         /// <summary>
         /// This method updates the high scores text file
         /// Returns true if the score was added to the list
