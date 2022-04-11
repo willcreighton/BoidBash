@@ -193,15 +193,8 @@ namespace BoidBash
                     // Maximum of power of 7 to disallow incalculably high scores
                     if (bashBonus >= 7)
                     {
-                        scoreIncrease += (int)Math.Pow(scoregoal, bashBonus);
+                        scoreIncrease += (int)Math.Pow(scoregoal, 7);
                     }
-                    // Part of possible solution
-                    /*
-                    else if (boidsBashed >= 14)
-                    {
-                        scoreIncrease += (int)Math.Pow(14, bashBonus);
-                    }
-                    */
                     else
                     {
                         scoreIncrease += (int)Math.Pow(boidsBashed, bashBonus);
