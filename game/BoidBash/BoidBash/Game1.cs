@@ -16,7 +16,8 @@ namespace BoidBash
     enum GameState
     {
         MainMenu,
-        Game,
+        SingleGame,
+        VersusGame,
         PauseMenu,
         EndScreen,
         Options,
@@ -317,7 +318,7 @@ namespace BoidBash
             // Create the predator
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, 35, 35);
+                windowHeight, windowWidth, 35, 35, ControlScheme.WASD);
 
             // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, insertCoin, senBold);
@@ -405,7 +406,7 @@ namespace BoidBash
                     break;
 
                 // Game
-                case GameState.Game:
+                case GameState.SingleGame:
                     // Apply Game processing
                     ProcessGame(gameTime);               
                     break;
@@ -461,7 +462,7 @@ namespace BoidBash
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Game State
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                case GameState.Game:
+                case GameState.SingleGame:
 
                     //Draws the main play area for the game
                     _spriteBatch.Draw(blank, singlePlayerPlayArea, playAreaColor);
@@ -870,7 +871,7 @@ namespace BoidBash
                 flock.Bashers.TotalSpecialBoidsBashed = 0;
 
                 // Change Game state
-                currentState = GameState.Game; 
+                currentState = GameState.SingleGame; 
             }
 
             // Process Menuflock boids
@@ -952,7 +953,7 @@ namespace BoidBash
                 MediaPlayer.Resume();
                 stateChange.Play();
                 // Change game state
-                currentState = GameState.Game;
+                currentState = GameState.SingleGame;
             }
             // Otherwise, if M is pressed, go to main menu
             else if (IsSingleKeyPress(Keys.M))
@@ -1048,7 +1049,7 @@ namespace BoidBash
 
                 name = "";
                 // Change Game state
-                currentState = GameState.Game;
+                currentState = GameState.SingleGame;
             }
 
             // Name input

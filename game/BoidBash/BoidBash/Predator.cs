@@ -14,8 +14,15 @@ namespace BoidBash
         Single,
         Versus
     }
-    class Predator : GameObject   
 
+    // Holds the different control schemes
+    enum ControlScheme
+    {
+        WASD,
+        Arrows,
+        WASDArrows
+    }
+    class Predator : GameObject   
     {
         // Fields
         private int predHeight;
@@ -24,6 +31,7 @@ namespace BoidBash
         private Rectangle predatorBounds = new Rectangle(200, 200, 800, 500);
 
         private GameMode currentMode = GameMode.Single;
+        private ControlScheme currentScheme = ControlScheme.WASDArrows;
 
         // Properties
         public int PredHeight
@@ -62,13 +70,14 @@ namespace BoidBash
         /// <param name="windowWidth"></param>
         /// <param name="predHeight"></param>
         /// <param name="predWidth"></param>
-        public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth) :
+        public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth, ControlScheme scheme) :
             base(texture, position, windowHeight, windowWidth)
         {
             this.texture = texture;
             this.position = position;
             this.predHeight = predHeight;
             this.predWidth = predWidth;
+            currentScheme = scheme;
         }
 
         // Movement
@@ -78,8 +87,23 @@ namespace BoidBash
 
             switch (currentMode)
             {
-                case GameMode.Single:
-                    // Each if statement keeps the predator inside a set of boundaries
+                case GameMode.Single:                    
+                    ChooseScheme(ControlScheme.WASDArrows);
+                    break;
+                case GameMode.Versus:
+                    ChooseScheme(currentScheme);
+                    break;
+            }            
+
+            actualPosition = new Vector2(position.Center.X, position.Center.Y);
+        }
+
+        private void ChooseScheme(ControlScheme scheme)
+        {
+            KeyboardState keyBState = Keyboard.GetState();
+            switch (currentScheme)
+            {
+                case ControlScheme.WASDArrows:
                     if (keyBState.IsKeyDown(Keys.Left) || keyBState.IsKeyDown(Keys.A))
                     {
                         //rotation = 0;
@@ -116,13 +140,83 @@ namespace BoidBash
                         }
                     }
                     break;
-                case GameMode.Versus:
+
+                case ControlScheme.WASD:
+                    if (keyBState.IsKeyDown(Keys.A))
+                    {
+                        //rotation = 0;
+                        if (position.X > predatorBounds.X)
+                        {
+                            position.X -= 5;
+                        }
+                    }
+
+                    if (keyBState.IsKeyDown(Keys.W))
+                    {
+                        //rotation = MathHelper.ToRadians(-90);
+                        if (position.Y > predatorBounds.Y)
+                        {
+                            position.Y -= 5;
+                        }
+                    }
+
+                    if (keyBState.IsKeyDown(Keys.D))
+                    {
+                        //rotation = MathHelper.ToRadians(90);
+                        if (position.X + predWidth < predatorBounds.X + predatorBounds.Width)
+                        {
+                            position.X += 5;
+                        }
+                    }
+
+                    if (keyBState.IsKeyDown(Keys.S))
+                    {
+                        //rotation = MathHelper.ToRadians(180);
+                        if (position.Y + predHeight < predatorBounds.Y + predatorBounds.Height)
+                        {
+                            position.Y += 5;
+                        }
+                    }
+                    break;
+
+                case ControlScheme.Arrows:
+                    if (keyBState.IsKeyDown(Keys.Left))
+                    {
+                        //rotation = 0;
+                        if (position.X > predatorBounds.X)
+                        {
+                            position.X -= 5;
+                        }
+                    }
+
+                    if (keyBState.IsKeyDown(Keys.Up))
+                    {
+                        //rotation = MathHelper.ToRadians(-90);
+                        if (position.Y > predatorBounds.Y)
+                        {
+                            position.Y -= 5;
+                        }
+                    }
+
+                    if (keyBState.IsKeyDown(Keys.Right))
+                    {
+                        //rotation = MathHelper.ToRadians(90);
+                        if (position.X + predWidth < predatorBounds.X + predatorBounds.Width)
+                        {
+                            position.X += 5;
+                        }
+                    }
+
+                    if (keyBState.IsKeyDown(Keys.Down))
+                    {
+                        //rotation = MathHelper.ToRadians(180);
+                        if (position.Y + predHeight < predatorBounds.Y + predatorBounds.Height)
+                        {
+                            position.Y += 5;
+                        }
+                    }
                     break;
             }
-
-            
-
-            actualPosition = new Vector2(position.Center.X, position.Center.Y);
         }
     }
 }
