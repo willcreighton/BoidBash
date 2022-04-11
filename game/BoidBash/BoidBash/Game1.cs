@@ -874,7 +874,7 @@ namespace BoidBash
             }
 
             // Process Menuflock boids
-            menuFlock.ProcessBoids(new Vector2(-300, -300));
+            menuFlock.ProcessBoids(new Vector2[1] { new Vector2(-300, -300) });
             // Update the UI for main menu
             mainMenuUI.Update(gameTime);
         }
@@ -927,7 +927,7 @@ namespace BoidBash
             }
 
             // Process Boids and predator
-            flock.ProcessBoids(predator.ActualPosition);
+            flock.ProcessBoids(new Vector2[1] { predator.ActualPosition });
             predator.Update(gameTime);
 
             // Update Game timer

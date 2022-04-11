@@ -129,15 +129,15 @@ namespace BoidBash
         /// <summary>
         /// Processes the next frame of boids. Should be put in update method
         /// </summary>
-        /// <param name="predatorPosition"></param>
-        public void ProcessBoids(Vector2 predatorPosition)
+        /// <param name="predatorPositions"></param>
+        public void ProcessBoids(Vector2[] predatorPositions)
         {
             // Vectors determining the decisions of the boids
             // These are the rules the boids follow to determine their behavior
             Vector2 cohesion;
             Vector2 separation;
             Vector2 alignment;
-            Vector2 predatorAvoidance;
+            Vector2[] predatorAvoidance = new Vector2[predatorPositions.Length];
 
             // Loop through the list for each boid
             foreach (Boid b in boids)
@@ -147,10 +147,17 @@ namespace BoidBash
                 cohesion = Cohesion(b);
                 separation = Separation(b);
                 alignment = Alignment(b);
-                predatorAvoidance = PredatorAvoidance(b, predatorPosition);
+                for (int x = 0; x < predatorPositions.Length; x++)
+                {
+                    predatorAvoidance[x] = PredatorAvoidance(b, predatorPositions[x]);
+                }
 
                 // Add all velocity modifiers to the boid
-                b.Velocity = b.Velocity + cohesion + separation + alignment + predatorAvoidance;
+                b.Velocity = b.Velocity + cohesion + separation + alignment;
+                foreach (Vector2 avoidance in predatorAvoidance)
+                {
+                    b.Velocity += avoidance;
+                }
                 // Limit the speed of boids so they don't go too fast
                 LimitVelocity(b);
 
