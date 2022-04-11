@@ -19,7 +19,7 @@ namespace BoidBash
         private Texture2D boidBashLogo;
         private Texture2D insertCoin;
         private SpriteFont senBold;
-        private float time = 3000f;
+        private float time = 2f;
 
         // Constructor
         public MainMenuUI(int windowWidth, int windowHeight, Texture2D playPrompt, Texture2D boidBashLogo, Texture2D insertCoin, SpriteFont senBold)
@@ -37,6 +37,10 @@ namespace BoidBash
             if (time > 0)
             {
                 time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else if (time <= 0)
+            {
+                time = 2f;
             }
             
         }
@@ -62,28 +66,24 @@ namespace BoidBash
                 Color.White
                 );
 
-            //Insert coin text
-            _spriteBatch.Draw(
-                insertCoin,
-                new Vector2(475, windowHeight - 50),
-                Color.White
-                );
+            
 
             //TRYING TO MAKE THE INSERT COIN PROMPT BLINK - RYAN
-            /*
-             * Note from brian: Since it's a float, it won't work with modulus, since it is almost never exactly % 2 == 0
-             * Instead, maybe detect if the decimal part of the value is > or < .5? that might work
-            if (time % 2f == 0f)
+            
+              //Note from brian: Since it's a float, it won't work with modulus, since it is almost never exactly % 2 == 0
+             // Instead, maybe detect if the decimal part of the value is > or < .5? that might work
+            if (time > 1)
             {
                 //Insert coin text
-                _spriteBatch.Draw(
-                    insertCoin,
+                _spriteBatch.DrawString(
+                    senBold, 
+                    "Insert Coin",
                     new Vector2(475, windowHeight - 50),
-                    Color.White
+                    Color.Gold
                     );
             }
-            _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", time.ToString("0")), new Vector2(900, 15),Color.White);
-            */
+            //_spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", time.ToString("0")), new Vector2(900, 15),Color.White);
+            
         }
     }
 }
