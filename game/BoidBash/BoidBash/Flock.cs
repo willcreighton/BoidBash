@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 // Uses many references
+// https://www.youtube.com/watch?v=bqtqltqcQhw
+// https://www.youtube.com/watch?v=QbUPfMXXQIY
+// https://www.youtube.com/watch?v=mhjuuHl6qHM
+// https://www.youtube.com/watch?v=x-GwBH4dhko
 // http://www.kfish.org/boids/pseudocode.html
 
 namespace BoidBash
