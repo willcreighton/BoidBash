@@ -58,6 +58,7 @@ namespace BoidBash
         private Texture2D gameOver;
         private Texture2D pausedDisplay;
         private Texture2D customCursor;
+        private Texture2D insertCoin;
 
         // Sounds
         private SoundEffect smallBash;
@@ -197,6 +198,7 @@ namespace BoidBash
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
             
+            
             //discoMusic = Content.Load<Song>("discoTheme");
 
             MediaPlayer.Play(menuMusic);
@@ -212,6 +214,7 @@ namespace BoidBash
             returnPrompt = Content.Load<Texture2D>("ReturnMainMenu");
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
+            insertCoin = Content.Load<Texture2D>("insertCoin");
 
             boidSprite = Content.Load<Texture2D>("BoidSp4");
             displayBoid = Content.Load<Texture2D>("DisplayBoid");
@@ -267,7 +270,7 @@ namespace BoidBash
                 35, 35),
                 windowHeight, windowWidth, 35, 35);
 
-            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo);
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, insertCoin, senBold);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
@@ -327,6 +330,7 @@ namespace BoidBash
                 case GameState.MainMenu:
                     ProcessMainMenu();
                     menuFlock.ProcessBoids(new Vector2(-300, -300));
+                    mainMenuUI.Update(gameTime);
                     break;
                 case GameState.Game:
                     ProcessGame();
@@ -360,8 +364,9 @@ namespace BoidBash
             GraphicsDevice.Clear(backgroundColor);
 
             // Begin the Sprite Batch and the ShapeBatch
-            _spriteBatch.Begin();
             ShapeBatch.Begin(GraphicsDevice);
+            _spriteBatch.Begin();
+            
 
             mouseState = Mouse.GetState();
 

@@ -784,3 +784,15 @@
 /processorParam:TextureFormat=Color
 /build:WhiteSquare_.png
 
+#begin Z:/IGMProfile/Documents/Assets/insertCoin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Z:/IGMProfile/Documents/Assets/insertCoin.png;insertCoin.png
+
