@@ -543,18 +543,24 @@ namespace BoidBash
                     // Draw total score increment
                     if (totalScoreIncrementPrint.Count > 0)
                     {
+                        // Draw the string
                         _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[0]), new Vector2(60, 60), Color.Yellow);
+                        // Increment timer
                         totalScoreIncrementTimer[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        // Remove if timer is over
                         if (totalScoreIncrementTimer[0] <= 0)
                         {
                             totalScoreIncrementPrint.RemoveAt(0);
                             totalScoreIncrementTimer.RemoveAt(0);
                         }
                     }
+                    // Do same for other prints
                     if (totalScoreIncrementPrint.Count > 1)
                     {
                         _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[1]), new Vector2(80, 80), Color.Yellow);
+                        
                         totalScoreIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        
                         if (totalScoreIncrementTimer[1] <= 0)
                         {
                             totalScoreIncrementPrint.RemoveAt(1);
@@ -564,7 +570,9 @@ namespace BoidBash
                     if (totalScoreIncrementPrint.Count > 2)
                     {
                         _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[2]), new Vector2(100, 100), Color.Yellow);
+                        
                         totalScoreIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        
                         if (totalScoreIncrementTimer[2] <= 0)
                         {
                             totalScoreIncrementPrint.RemoveAt(2);
