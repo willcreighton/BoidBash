@@ -59,7 +59,6 @@ namespace BoidBash
         private Texture2D gameOver;
         private Texture2D pausedDisplay;
         private Texture2D customCursor;
-        private Texture2D insertCoin;
 
         // Sounds
         private SoundEffect smallBash;
@@ -244,7 +243,6 @@ namespace BoidBash
             returnPrompt = Content.Load<Texture2D>("ReturnMainMenu");
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
-            insertCoin = Content.Load<Texture2D>("insertCoin");
             boidSprite = Content.Load<Texture2D>("BoidSp4");
             displayBoid = Content.Load<Texture2D>("DisplayBoid");
             blank = Content.Load<Texture2D>("WhiteSquare");
@@ -320,7 +318,7 @@ namespace BoidBash
                 windowHeight, windowWidth, 35, 35);
 
             // Initialize all UI Objects
-            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, insertCoin, senBold);
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
@@ -1076,7 +1074,6 @@ namespace BoidBash
 
         }
 
-        // TODO - Add playernames to text file
         /// <summary>
         /// This method updates the high scores text file
         /// Returns true if the score was added to the list
