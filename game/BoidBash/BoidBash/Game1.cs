@@ -37,7 +37,7 @@ namespace BoidBash
         private List<int> totalTimeIncrementPrint = new List<int>();
         private List<float> totalTimeIncrementTimer = new List<float>();
 
-        // Border color timer sync
+        // Border color & timer sync
         private int rInterval;
         private int gInterval;
         private int bInterval;
@@ -71,7 +71,7 @@ namespace BoidBash
         private SoundEffect timeIncrease;
         private SoundEffect addBoids;
 
-        //private SoundEffect scored;
+        // Songs
         private Song menuMusic;
         private Song gameMusic;
         //private Song discoMusic;
@@ -206,7 +206,7 @@ namespace BoidBash
             // Initialize spritebatch
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load all Spritefonts
+            // Load all SpriteFonts
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
             senRegular = Content.Load<SpriteFont>("SenRegular");
@@ -214,7 +214,7 @@ namespace BoidBash
             senExtraBold = Content.Load<SpriteFont>("SenExtraBoldFont");
             headerFont = Content.Load<SpriteFont>("headerFont");
 
-            // Load all SoundEffects
+            // Load all Sound Effects
             clicked = Content.Load<SoundEffect>("clicked");
             stateChange = Content.Load<SoundEffect>("stateChange");
             smallBash = Content.Load<SoundEffect>("smallBash");
@@ -223,6 +223,7 @@ namespace BoidBash
             gameOverSound = Content.Load<SoundEffect>("gameOverSound");
             timeIncrease = Content.Load<SoundEffect>("timeIncrease");
             addBoids = Content.Load<SoundEffect>("boidsAdded");
+
             // Load all Songs
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
@@ -258,10 +259,10 @@ namespace BoidBash
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
-            // Set menu flock backgroundcolor
+            // Set menu flock backgroundColor
             menuFlock.BackgroundColor = backgroundColor;
 
-            // Assign sfx to bashers
+            // Assign SFX to bashers
             flock.Bashers.SmallBash = smallBash;
             flock.Bashers.MediumBash =  mediumBash;
             flock.Bashers.LargeBash = largeBash;
@@ -326,38 +327,38 @@ namespace BoidBash
            
             // Add buttons
             buttons.Add(new Button(
-                    _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(110, 110, 80, 80),    // where to put the button
-                    Color.DarkRed,                      // button color
-                    0,                                  // pen number
-                    bashButton,                         // texture
+                    _graphics.GraphicsDevice,           // Device to create a custom texture
+                    new Rectangle(110, 110, 80, 80),    // Where to put the button
+                    Color.DarkRed,                      // Button color
+                    0,                                  // Pen number
+                    bashButton,                         // Texture
                     clicked));
             buttons[0].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
-                    _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(1010, 110, 80, 80),   // where to put the button
-                    Color.DarkRed,                      // button color
-                    1,                                  // pen number
-                    bashButton,                         // texture
+                    _graphics.GraphicsDevice,           // Device to create a custom texture
+                    new Rectangle(1010, 110, 80, 80),   // Where to put the button
+                    Color.DarkRed,                      // Button color
+                    1,                                  // Pen number
+                    bashButton,                         // Texture
                     clicked));
             buttons[1].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
-                    _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(1010, 710, 80, 80),   // where to put the button
-                    Color.DarkRed,                      // button color
-                    2,                                  // pen number
-                    bashButton,                         // texture
+                    _graphics.GraphicsDevice,           // Device to create a custom texture
+                    new Rectangle(1010, 710, 80, 80),   // Where to put the button
+                    Color.DarkRed,                      // Button color
+                    2,                                  // Pen number
+                    bashButton,                         // Texture
                     clicked));
             buttons[2].OnButtonClick += this.Bashed;
 
             buttons.Add(new Button(
-                    _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(110, 710, 80, 80),    // where to put the button
-                    Color.DarkRed,                      // button color
-                    3,                                  // pen number
-                    bashButton,                         // texture
+                    _graphics.GraphicsDevice,           // Device to create a custom texture
+                    new Rectangle(110, 710, 80, 80),    // Where to put the button
+                    Color.DarkRed,                      // Button color
+                    3,                                  // Pen number
+                    bashButton,                         // Texture
                     clicked));
             buttons[3].OnButtonClick += this.Bashed;
 
@@ -397,9 +398,9 @@ namespace BoidBash
             // GameState switches
             switch (currentState)
             {
-                // Main menu
+                // Main Menu
                 case GameState.MainMenu:
-                    // Apply all main menu processing
+                    // Apply Main Menu processing
                     ProcessMainMenu(gameTime);
                     break;
 
@@ -409,15 +410,15 @@ namespace BoidBash
                     ProcessGame(gameTime);               
                     break;
 
-                // Pause
+                // Pause Menu
                 case GameState.PauseMenu:
-                    // Apply pause processing
+                    // Apply Pause Menu processing
                     ProcessPauseMenu();
                     break;
 
                 // End Screen
                 case GameState.EndScreen:
-                    // Apply End screen processing
+                    // Apply End Screen processing
                     ProcessEndScreen();
                     break;
 
@@ -452,8 +453,8 @@ namespace BoidBash
                 case GameState.MainMenu:
                     menuFlock.Draw();
                     mainMenuUI.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(senRegular, String.Format("HighScores"), new Vector2(40, 15), Color.White);
-                    _spriteBatch.DrawString(senRegular, String.Format("______________"), new Vector2(30, 20), Color.White);
+                    _spriteBatch.DrawString(senRegular, String.Format("HIGH SCORES"), new Vector2(40, 15), Color.White);
+                    _spriteBatch.DrawString(senRegular, String.Format("________________"), new Vector2(30, 20), Color.White);
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(15, 45), Color.White);
                     break;
 
@@ -966,8 +967,8 @@ namespace BoidBash
         /// </summary>
         private void ProcessEndScreen()
         {
-            // If space is pressed, go back to main menu
-            if (IsSingleKeyPress(Keys.Space))
+            // If M is pressed, go back to Main Menu
+            if (IsSingleKeyPress(Keys.M))
             {
                 // Update player highscores
                 if (CompareToList(player1Score))
@@ -991,8 +992,8 @@ namespace BoidBash
 
                 name = "";
             }
-            // Otherwise, if R is pressed, go back to game
-            else if (IsSingleKeyPress(Keys.R))
+            // Otherwise, if Space is pressed, go back to Game
+            else if (IsSingleKeyPress(Keys.Space))
             {
                 // Play game music
                 MediaPlayer.Play(gameMusic);

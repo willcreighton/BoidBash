@@ -59,15 +59,15 @@ namespace BoidBash
             // Draw the score achieved
             _spriteBatch.DrawString(
                 senBold,
-                String.Format("Score = {0:n0}", score),
+                String.Format("Score: {0:n0}", score),
                 new Vector2(15, 15),
                 Color.White
                 );
 
-            //Restarts the Game without going back to the main menu
+            // Allows the user to play again instantly
             _spriteBatch.DrawString(
                 senBold,
-                String.Format("Press R to Restart"),
+                String.Format("Press SPACE to Play Again"),
                 new Vector2(460, windowHeight - 450),
                 Color.White
                 );
