@@ -635,6 +635,16 @@ namespace BoidBash
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(905, 470),
                     Color.White);
                     break;
+
+                case GameState.Credits:
+                    break;
+
+                case GameState.Instructions:
+                    break;
+
+                case GameState.Options:
+                    break;
+
                 default:
                     break;
             }
