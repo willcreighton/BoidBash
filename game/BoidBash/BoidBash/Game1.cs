@@ -507,6 +507,8 @@ namespace BoidBash
                     gameUI.DrawPausePrompt(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
+
+                    //Draws the clock red at 5 seconds
                     if (timer > 5)
                     {
                         _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", timer.ToString("0")), new Vector2(1050, 15),
@@ -517,7 +519,6 @@ namespace BoidBash
                         _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", timer.ToString("0")), new Vector2(1050, 15),
                          Color.Red);
                     }
-                    
 
                     // Draw display boid pictures
                     _spriteBatch.Draw(
