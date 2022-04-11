@@ -71,6 +71,8 @@ namespace BoidBash
 
             //TRYING TO MAKE THE INSERT COIN PROMPT BLINK - RYAN
             /*
+             * Note from brian: Since it's a float, it won't work with modulus, since it is almost never exactly % 2 == 0
+             * 
             if (time % 2f == 0f)
             {
                 //Insert coin text
