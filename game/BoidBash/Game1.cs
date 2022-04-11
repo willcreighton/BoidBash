@@ -121,6 +121,12 @@ namespace BoidBash
         // Timer
         private float timer = 30f;
 
+        // Rectangles to be Drawn
+        private Rectangle[] singlePlayerBashers = Rectangle[4] {new Rectangle(0, 0, 0, 0)};
+        private Rectangle[] singePlayerBorders = Rectangle[12];
+        private Rectangle[] singlePlayerPlayArea;
+        private Rectangle[] DisplayBoids = Rectangle[2];
+
         // Debug
         private Texture2D blank;
         private Texture2D gradient;
@@ -128,6 +134,7 @@ namespace BoidBash
         private List<Rectangle> bounds = new List<Rectangle>();
         private List<Rectangle> menuBounds = new List<Rectangle>();
         private bool inDebug = false;
+        private Rectangle creationBounds;
 
         public int Width
         {
@@ -419,7 +426,6 @@ namespace BoidBash
                         {
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
-                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
                         foreach (Rectangle pen in flock.Pens.Pens)
                         {
                             _spriteBatch.Draw(blank, pen, Color.Red);

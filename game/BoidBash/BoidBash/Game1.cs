@@ -119,6 +119,23 @@ namespace BoidBash
         // Timer
         private float timer = 30f;
 
+        // Rectangles to draw
+        private Rectangle[] singlePlayerBashers = new Rectangle[4] 
+            { new Rectangle(200, 100, 150, 100), new Rectangle(1000, 200, 100, 150),
+             new Rectangle(850, 700, 150, 100), new Rectangle(100, 550, 100, 150)};
+
+        private Rectangle[] singlePlayerBorders = new Rectangle[12]
+            { new Rectangle(200, 95, 150, 5), new Rectangle(195, 95, 5, 455), new Rectangle(350, 95, 5, 105),
+              new Rectangle(350, 195, 750, 5), new Rectangle(1100, 195, 5, 160), new Rectangle(1000, 350, 100, 5),
+              new Rectangle(1000, 350, 5, 450), new Rectangle(850, 800, 155, 5), new Rectangle(845, 700, 5, 105),
+              new Rectangle(95, 700, 750, 5), new Rectangle(95, 550, 5, 150), new Rectangle(95, 550, 105, 5)};
+
+        private Rectangle singlePlayerPlayArea = new Rectangle(200, 200, 800, 500);
+
+        private Rectangle[] displayBoids = new Rectangle[4]
+            { new Rectangle(15, 290, 46, 60), new Rectangle(15, 390, 46, 60),
+            new Rectangle(240, 400, 46, 60), new Rectangle(905, 400, 46, 60)};
+
         // Debug
         private Texture2D blank;
         private Texture2D gradient;
@@ -126,6 +143,7 @@ namespace BoidBash
         private List<Rectangle> bounds = new List<Rectangle>();
         private List<Rectangle> menuBounds = new List<Rectangle>();
         private bool inDebug = false;
+        private Rectangle creationBounds = new Rectangle(300, 300, 600, 300);
 
         public int Width
         {
@@ -264,22 +282,6 @@ namespace BoidBash
 
             headerFont = Content.Load<SpriteFont>("headerFont");
 
-            // TEMPORARY TESTING
-            // Enable to test File IO
-
-            //player1Score = 2;
-            /*
-            UpdateScores(325306027);
-            UpdateScores(260714129);
-            UpdateScores(229811503);
-            UpdateScores(179622342);
-            UpdateScores(173690822);
-            UpdateScores(165747780);
-            UpdateScores(161942856);
-            UpdateScores(145060864);
-            UpdateScores(142758264);
-            UpdateScores(139509943);
-            */
             System.Diagnostics.Debug.WriteLine(GetScoreList());
 
             // Add buttons
@@ -363,6 +365,7 @@ namespace BoidBash
 
         protected override void Draw(GameTime gameTime)
         {
+            // Apply the background in the back
             GraphicsDevice.Clear(backgroundColor);
 
             // Begin the Sprite Batch and the ShapeBatch
@@ -374,28 +377,30 @@ namespace BoidBash
             // GameState switches
             switch (currentState)
             {
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Main Menu
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.MainMenu:
                     menuFlock.Draw();
                     mainMenuUI.Draw(_spriteBatch);
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(500, windowHeight - 280), Color.White);
                     break;
 
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Game State
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.Game:
-                    //Draws the main box area for the game
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
 
-                    /* Draws the Crushers from top to bottom
-                     * Top Left
-                     * Top Right
-                     * Bottom Right
-                     * Bottom Left
-                     */
-                    _spriteBatch.Draw(gradient, new Rectangle(200, 100, 150, 100), penColor);
-                    _spriteBatch.Draw(gradient, new Rectangle(1000, 200, 100, 150), penColor);
-                    _spriteBatch.Draw(gradient, new Rectangle(850, 700, 150, 100), penColor);
-                    _spriteBatch.Draw(gradient, new Rectangle(100, 550, 100, 150), penColor);
+                    //Draws the main play area for the game
+                    _spriteBatch.Draw(blank, singlePlayerPlayArea, playAreaColor);
 
-                    // Epic color-changing border system
+                    // Draws the Bashers from top to bottom
+                    foreach (Rectangle basher in singlePlayerBashers)
+                    {
+                        _spriteBatch.Draw(gradient, basher, penColor);
+                    }          
+
+                    // Calculate border colors
                     rInterval = (Color.Red.R - Color.Lime.R) / 30;
                     gInterval = (Color.Red.G - Color.Lime.G) / 30;
                     bInterval = (Color.Red.B - Color.Lime.B) / 30;
@@ -405,59 +410,55 @@ namespace BoidBash
                         (Color.Red.B + bInterval * (int)timer * -1)
                         );
 
-                    //Border lines for play area
-                    _spriteBatch.Draw(blank, new Rectangle(200, 95, 150, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(195, 95, 5, 455), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(350, 95, 5, 105), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(350, 195, 750, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(1100, 195, 5, 160), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 100, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 5, 450), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 800, 155, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(845, 700, 5, 105), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 700, 750, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 105, 5), colorDrawn);
+                    // Draw Border
+                    foreach (Rectangle border in singlePlayerBorders)
+                    {
+                        _spriteBatch.Draw(blank, border, colorDrawn);
+                    }
 
-                    // Draws items only meant to be seen in debug
+                    // Draws debug view if in debug mode
                     if (inDebug)
                     {
+                        // Grabbing actual values from the flock to make sure they line up
                         foreach (Rectangle bound in flock.Boundaries)
                         {
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
-                        _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), Color.Black);
                         foreach (Rectangle pen in flock.Pens.Pens)
                         {
                             _spriteBatch.Draw(blank, pen, Color.Red);
                         }
-                        _spriteBatch.Draw(blank, new Rectangle(300, 300, 600, 300), Color.Blue);
+                        _spriteBatch.Draw(blank, creationBounds, Color.Blue);
                     }
-                    // Ususal items to be drawn
+
+                    // Draw all text on screen
                     gameUI.DrawPausePrompt(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
+                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
                     _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", timer.ToString("0")), new Vector2(1050, 15),
                     Color.White);
 
-                    // Draw amount of boids bashed
+                    // Draw display boid pictures
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 290, 46, 60),
+                        displayBoids[0],
                         boidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 390, 46, 60),
+                        displayBoids[1],
                         Color.Gold
                         );
+                    // Draw the number of types of boids bashed
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
 
-                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
+                    // Call Draw functions on the player and AI
                     flock.Draw();
                     predator.Draw(_spriteBatch);
+
                     // Draws and removes any new point numbers that show up after destroying boids
                     foreach (Vector3 info in flock.Pens.ScorePrints)
                     {
@@ -490,6 +491,7 @@ namespace BoidBash
                         }
                     }
 
+                    // Draw Bashing buttons
                     foreach (Button b in buttons)
                     {
                         b.Draw(_spriteBatch);
@@ -563,77 +565,84 @@ namespace BoidBash
                     }
                     break;
 
-                case GameState.PauseMenu:
-                    //Draw the main box area for the game
-                    _spriteBatch.Draw(blank, new Rectangle(200, 200, 800, 500), playAreaColor);
 
-                    /* Draw the Crushers from top to bottom
-                     * Top Left
-                     * Top Right
-                     * Bottom Right
-                     * Bottom Left
-                     */
-                    _spriteBatch.Draw(gradient, new Rectangle(200, 100, 150, 100), penColor);
-                    _spriteBatch.Draw(gradient, new Rectangle(1000, 200, 100, 150), penColor);
-                    _spriteBatch.Draw(gradient, new Rectangle(850, 700, 150, 100), penColor);
-                    _spriteBatch.Draw(gradient, new Rectangle(100, 550, 100, 150), penColor);
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Pause Menu
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.PauseMenu:
+
+                    //Draw the main play area for the game
+                    _spriteBatch.Draw(blank, singlePlayerPlayArea, playAreaColor);
+
+                    // Draw the bashers from top to bottom
+                    foreach (Rectangle basher in singlePlayerBashers)
+                    {
+                        _spriteBatch.Draw(gradient, basher, penColor);
+                    }
 
                     //Draws border lines for play area when paused
-                    _spriteBatch.Draw(blank, new Rectangle(200, 95, 150, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(195, 95, 5, 455), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(350, 95, 5, 105), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(350, 195, 750, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(1100, 195, 5, 160), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 100, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(1000, 350, 5, 450), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(850, 800, 155, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(845, 700, 5, 105), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 700, 750, 5), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 5, 150), colorDrawn);
-                    _spriteBatch.Draw(blank, new Rectangle(95, 550, 105, 5), colorDrawn);
+                    foreach (Rectangle border in singlePlayerBorders)
+                    {
+                        _spriteBatch.Draw(blank, border, colorDrawn);
+                    }
 
+                    // Draw Text on the screen
                     _spriteBatch.DrawString(senBold, "Time: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
                     gameUI.DrawScore(_spriteBatch);
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
-                    pauseMenuUI.Draw(_spriteBatch);
-                    flock.Draw();
-                    predator.Draw(_spriteBatch);
-                    // Draw amount of boids bashed
+                    pauseMenuUI.Draw(_spriteBatch); 
+
+                    // Draw Display boids
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 290, 46, 60),
+                        displayBoids[0],
                         boidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(15, 390, 46, 60),
+                        displayBoids[1],
                         Color.Gold
                         );
+                    // Draw number of types of boids bashed
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
+
+                    // Draw player and AI
+                    flock.Draw();
+                    predator.Draw(_spriteBatch);
+
                     break;
 
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         End Screen
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.EndScreen:
+
+                    // Draw text on screen
                     endScreenUI.Draw(_spriteBatch);
-                    // Draw amount of boids bashed
+
+                    // Draw Display boids
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(240, 400, 46, 60),
+                       displayBoids[2],
                         boidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
-                        new Rectangle(905, 400, 46, 60),
+                        displayBoids[3],
                         Color.Gold
                         );
+                    // Draw number of types of boids bashed
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(230, 470),
                     Color.White);
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(905, 470),
                     Color.White);
+
                     break;
+
                 default:
                     break;
             }
