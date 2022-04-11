@@ -195,6 +195,13 @@ namespace BoidBash
                     {
                         scoreIncrease += (int)Math.Pow(scoregoal, bashBonus);
                     }
+                    // Part of possible solution
+                    /*
+                    else if (boidsBashed >= 14)
+                    {
+                        scoreIncrease += (int)Math.Pow(14, bashBonus);
+                    }
+                    */
                     else
                     {
                         scoreIncrease += (int)Math.Pow(boidsBashed, bashBonus);
