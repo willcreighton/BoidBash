@@ -78,7 +78,7 @@ namespace BoidBash
         /// <summary>
         /// Accesses the pens that the flock has
         /// </summary>
-        public Bashers Pens
+        public Bashers Bashers
         {
             get { return bashers; }
         }
@@ -103,10 +103,8 @@ namespace BoidBash
         /// <param name="sb"></param>
         public Flock(int numBoids, Rectangle creationBounds,
             Texture2D asset, Vector2 size, Color defaultColor,
-            SpriteBatch sb, SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease, SoundEffect addBoids)
+            SpriteBatch sb)
         {
-            bashers = new Bashers(smallBash, mediumBash, largeBash, timeIncrease, addBoids);
-
             // Initialzie Random0
             rng = new Random();
 
@@ -119,6 +117,9 @@ namespace BoidBash
 
             // Add the inital amount of boids to the list
             AddBoids(numBoids);
+
+            // Initialize bashers
+            bashers = new Bashers();
         }
 
         /// <summary>

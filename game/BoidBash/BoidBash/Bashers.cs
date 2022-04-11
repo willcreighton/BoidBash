@@ -32,69 +32,120 @@ namespace BoidBash
         private SoundEffect addBoids;
 
         // Properties
+        /// <summary>
+        /// Returns the list of Pens
+        /// </summary>
         public List<Rectangle> Pens
         {
             get { return pens;  }
         }
-        // Clear after drawing all scores in draw method
+
+        /// <summary>
+        /// Sets and returns the list of score prints
+        /// </summary>
         public List<Vector3> ScorePrints
         {
             get { return scorePrints; }
             set { scorePrints = value; }
         }
 
-        // Timers for all the scoreprints
+        /// <summary>
+        /// Sets and returns the list of score timers
+        /// </summary>
         public List<float> ScoreTimers
         {
             get { return scoreTimers; }
             set { scoreTimers = value; }
         }
 
-        // All special score prints
+        /// <summary>
+        /// Sets and returns the list of special score prints
+        /// </summary>
         public List<Vector3> SpecialScorePrints
         {
             get { return specialScorePrints; }
             set { specialScorePrints = value; }
         }
 
-        // All special score timers
+        /// <summary>
+        /// Sets and returns the list of special score timers
+        /// </summary>
         public List<float> SpecialScoreTimers
         {
             get { return specialScoreTimers; }
             set { specialScoreTimers = value; }
         }
 
-        // Total boids bashed
+        /// <summary>
+        /// Sets and returns the total boids bashed
+        /// </summary>
         public int TotalBoidsBashed
         {
             get { return totalBoidsBashed; }
             set { totalBoidsBashed = value; }
         }
 
-        // Total special boids bashed
+        /// <summary>
+        /// Sets and returns the total special boids bashed
+        /// </summary>
         public int TotalSpecialBoidsBashed
         {
             get { return totalSpecialBoidsBashed; }
             set { totalSpecialBoidsBashed = value; }
         }
 
-        // Constructor
-        public Bashers(SoundEffect smallBash, SoundEffect mediumBash, SoundEffect largeBash, SoundEffect timeIncrease, SoundEffect addBoids)
+        // Sound Effect Properties
+        /// <summary>
+        /// Sets the smallbash sfx
+        /// </summary>
+        public SoundEffect SmallBash
         {
-            this.smallBash = smallBash;
-            this.mediumBash = mediumBash;
-            this.largeBash = largeBash;
-            this.timeIncrease = timeIncrease;
-            this.addBoids = addBoids;
+            set { smallBash = value; }
         }
 
         /// <summary>
-        /// Adds a new pen to detect for the basher
+        /// Sets the smallbash sfx
         /// </summary>
-        /// <param name="pen"></param>
-        public void AddPen(Rectangle pen)
+        public SoundEffect MediumBash
         {
-            pens.Add(pen);
+            set { mediumBash = value; }
+        }
+
+        /// <summary>
+        /// Sets the smallbash sfx
+        /// </summary>
+        public SoundEffect LargeBash
+        {
+            set { largeBash = value; }
+        }
+
+        /// <summary>
+        /// Sets the smallbash sfx
+        /// </summary>
+        public SoundEffect TimeIncrease
+        {
+            set { timeIncrease = value; }
+        }
+
+        /// <summary>
+        /// Sets the smallbash sfx
+        /// </summary>
+        public SoundEffect AddBoids
+        {
+            set { addBoids = value; }
+        }
+
+        /// <summary>
+        /// Constructs a new Basher
+        /// </summary>
+        /// <param name="smallBash"></param>
+        /// <param name="mediumBash"></param>
+        /// <param name="largeBash"></param>
+        /// <param name="timeIncrease"></param>
+        /// <param name="addBoids"></param>
+        public Bashers()
+        {
+
         }
 
         // Methods
@@ -105,18 +156,27 @@ namespace BoidBash
         /// </summary>
         /// <param name="flock"></param>
         /// <param name="pen"></param>
-        public Vector2 DestroyContainedBoids(Flock flock, int pen, int scoregoal)
+        public Vector2 BashContainedBoids(Flock flock, int pen, int scoregoal)
         {
+            // Create necessary values
+            // The value the score will be increased by
             int scoreIncrease = 0;
+            // number of boids that have been bashed
             int boidsBashed = 0;
+            // The bonus based on boids bashed, capping at 7
             int bashBonus = 0;
+            // Value passed through Vector2 to determine if the score goal is increased
             int ifScoreGoal = -1;
+            // Bools to perform actions outside the loop
             bool upScoreGoal = false;
             bool bashedSpecial = false;
+            // Vector to be returned
             Vector2 returnNums;
 
+            // Loop through all boids that are in the pen
             for (int x = flock.Boids.Count - 1; x >= 0; x--)
             {
+                // If in the pen that is bashing
                 if (flock.Boids[x].Pen == pen)
                 {
                     // Score Increment

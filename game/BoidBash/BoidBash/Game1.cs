@@ -197,14 +197,18 @@ namespace BoidBash
 
         protected override void LoadContent()
         {
+            // Initialize spritebatch
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Load all Spritefonts
             primaryFont = Content.Load<SpriteFont>("PrimaryFont");
             headerFont = Content.Load<SpriteFont>("HeaderFont");
             senRegular = Content.Load<SpriteFont>("SenRegular");
             senBold = Content.Load<SpriteFont>("SenBoldFont");
             senExtraBold = Content.Load<SpriteFont>("SenExtraBoldFont");
+            headerFont = Content.Load<SpriteFont>("headerFont");
 
+            // Load all SoundEffects
             clicked = Content.Load<SoundEffect>("clicked");
             stateChange = Content.Load<SoundEffect>("stateChange");
             smallBash = Content.Load<SoundEffect>("smallBash");
@@ -213,15 +217,16 @@ namespace BoidBash
             gameOverSound = Content.Load<SoundEffect>("gameOverSound");
             timeIncrease = Content.Load<SoundEffect>("timeIncrease");
             addBoids = Content.Load<SoundEffect>("boidsAdded");
+            // Load all Songs
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
-            
-            
             //discoMusic = Content.Load<Song>("discoTheme");
 
+            // Play music
             MediaPlayer.Play(menuMusic);
             MediaPlayer.IsRepeating = true;
 
+            // Load all textures
             bashButton = Content.Load<Texture2D>("BashButton2");
             playPrompt = Content.Load<Texture2D>("StartPrompt");
             boidBashLogo = Content.Load<Texture2D>("BoidBashLogo");
@@ -233,18 +238,37 @@ namespace BoidBash
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
             insertCoin = Content.Load<Texture2D>("insertCoin");
-
             boidSprite = Content.Load<Texture2D>("BoidSp4");
             displayBoid = Content.Load<Texture2D>("DisplayBoid");
             blank = Content.Load<Texture2D>("WhiteSquare");
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
+            predTexture = Content.Load<Texture2D>("PredSp");
+
+            // Create flocks
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
-            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch, smallBash, mediumBash, largeBash, timeIncrease, addBoids);
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+
+            // Set menu flock backgroundcolor
             menuFlock.BackgroundColor = backgroundColor;
 
+            // Assign sfx to bashers
+            flock.Bashers.SmallBash = smallBash;
+            flock.Bashers.MediumBash =  mediumBash;
+            flock.Bashers.LargeBash = largeBash;
+            flock.Bashers.TimeIncrease = timeIncrease;
+            flock.Bashers.AddBoids = addBoids;
+
+            menuFlock.Bashers.SmallBash = smallBash;
+            menuFlock.Bashers.MediumBash = mediumBash;
+            menuFlock.Bashers.LargeBash = largeBash;
+            menuFlock.Bashers.TimeIncrease = timeIncrease;
+            menuFlock.Bashers.AddBoids = addBoids;
+
+            // Apply Disco mode colors to menu boids but do not activate
             foreach (Boid boid in menuFlock.Boids)
             {
                 if (boid.IsSpecial)
@@ -277,26 +301,23 @@ namespace BoidBash
             menuBounds.Add(new Rectangle(1200, 0, 100, 900));
             menuFlock.Boundaries = menuBounds;
 
-            flock.Pens.AddPen(new Rectangle(200, 100, 150, 100));
-            flock.Pens.AddPen(new Rectangle(1000, 200, 100, 150));
-            flock.Pens.AddPen(new Rectangle(850, 700, 150, 100));
-            flock.Pens.AddPen(new Rectangle(100, 550, 100, 150));
-
-            predTexture = Content.Load<Texture2D>("PredSp");
-
+            // Add bashing pens to flock's bashers
+            flock.Bashers.Pens.Add(new Rectangle(200, 100, 150, 100));
+            flock.Bashers.Pens.Add(new Rectangle(1000, 200, 100, 150));
+            flock.Bashers.Pens.Add(new Rectangle(850, 700, 150, 100));
+            flock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 150));
+  
+            // Create the predator
             predator = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
                 windowHeight, windowWidth, 35, 35);
 
+            // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, insertCoin, senBold);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
-
-            headerFont = Content.Load<SpriteFont>("headerFont");
-
-            System.Diagnostics.Debug.WriteLine(GetScoreList());
-
+           
             // Add buttons
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
@@ -337,41 +358,45 @@ namespace BoidBash
 
         protected override void Update(GameTime gameTime)
         {
+            // Exit if Escape is pressed
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Update keyboard state
             keyboardState = Keyboard.GetState();
 
             // GameState switches
             switch (currentState)
             {
+                // Main menu
                 case GameState.MainMenu:
-                    ProcessMainMenu();
-                    menuFlock.ProcessBoids(new Vector2(-300, -300));
-                    mainMenuUI.Update(gameTime);
+                    // Apply all main menu processing
+                    ProcessMainMenu(gameTime);
                     break;
+
+                // Game
                 case GameState.Game:
-                    ProcessGame();
-                    flock.ProcessBoids(predator.ActualPosition);
-                    predator.Update(gameTime);
-
-                    if (timer > 0)
-                    {
-                        timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    }
-
-                    gameUI.ScoreUpdater(player1Score);
+                    // Apply Game processing
+                    ProcessGame(gameTime);               
                     break;
+
+                // Pause
                 case GameState.PauseMenu:
+                    // Apply pause processing
                     ProcessPauseMenu();
                     break;
+
+                // End Screen
                 case GameState.EndScreen:
+                    // Apply End screen processing
                     ProcessEndScreen();
                     break;
+
                 default:
                     break;
             }
 
+            // Update previous keyboard state
             lastKeyboardState = keyboardState;
 
             base.Update(gameTime);
@@ -441,7 +466,7 @@ namespace BoidBash
                         {
                             _spriteBatch.Draw(blank, bound, Color.Green);
                         }
-                        foreach (Rectangle pen in flock.Pens.Pens)
+                        foreach (Rectangle pen in flock.Bashers.Pens)
                         {
                             _spriteBatch.Draw(blank, pen, Color.Red);
                         }
@@ -467,9 +492,9 @@ namespace BoidBash
                         Color.Gold
                         );
                     // Draw the number of types of boids bashed
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(75, 300),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
 
                     // Call Draw functions on the player and AI
@@ -477,34 +502,34 @@ namespace BoidBash
                     predator.Draw(_spriteBatch);
 
                     // Draws and removes any new point numbers that show up after destroying boids
-                    foreach (Vector3 info in flock.Pens.ScorePrints)
+                    foreach (Vector3 info in flock.Bashers.ScorePrints)
                     {
                         _spriteBatch.DrawString(senRegular, "+" + String.Format("{0:n0}", info.Z), new Vector2(info.X, info.Y), Color.Yellow);
                     }
                     // Change the amount of time left on the timers
-                    for (int x = flock.Pens.ScoreTimers.Count - 1; x >= 0; x--)
+                    for (int x = flock.Bashers.ScoreTimers.Count - 1; x >= 0; x--)
                     {
-                        flock.Pens.ScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (flock.Pens.ScoreTimers[x] <= 0)
+                        flock.Bashers.ScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (flock.Bashers.ScoreTimers[x] <= 0)
                         {
-                            flock.Pens.ScorePrints.RemoveAt(x);
-                            flock.Pens.ScoreTimers.RemoveAt(x);
+                            flock.Bashers.ScorePrints.RemoveAt(x);
+                            flock.Bashers.ScoreTimers.RemoveAt(x);
                         }
                     }
 
                     // Draws and removes any new point numbers that show up after destroying special boids
-                    foreach (Vector3 info in flock.Pens.SpecialScorePrints)
+                    foreach (Vector3 info in flock.Bashers.SpecialScorePrints)
                     {
                         _spriteBatch.DrawString(senRegular, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Magenta);
                     }
                     // Change the amount of time left on the special timers
-                    for (int x = flock.Pens.SpecialScoreTimers.Count - 1; x >= 0; x--)
+                    for (int x = flock.Bashers.SpecialScoreTimers.Count - 1; x >= 0; x--)
                     {
-                        flock.Pens.SpecialScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (flock.Pens.SpecialScoreTimers[x] <= 0)
+                        flock.Bashers.SpecialScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (flock.Bashers.SpecialScoreTimers[x] <= 0)
                         {
-                            flock.Pens.SpecialScorePrints.RemoveAt(x);
-                            flock.Pens.SpecialScoreTimers.RemoveAt(x);
+                            flock.Bashers.SpecialScorePrints.RemoveAt(x);
+                            flock.Bashers.SpecialScoreTimers.RemoveAt(x);
                         }
                     }
 
@@ -622,9 +647,9 @@ namespace BoidBash
                         Color.Gold
                         );
                     // Draw number of types of boids bashed
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(75, 300),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(75, 400),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalSpecialBoidsBashed), new Vector2(75, 400),
                     Color.White);
 
                     // Draw player and AI
@@ -653,9 +678,9 @@ namespace BoidBash
                         Color.Gold
                         );
                     // Draw number of types of boids bashed
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalBoidsBashed), new Vector2(230, 470),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalBoidsBashed), new Vector2(230, 470),
                     Color.White);
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Pens.TotalSpecialBoidsBashed), new Vector2(905, 470),
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalSpecialBoidsBashed), new Vector2(905, 470),
                     Color.White);
 
                     break;
@@ -720,12 +745,14 @@ namespace BoidBash
         /// <returns></returns>
         private Color Disco()
         {
+            // Create new color from random values
             Color color = new Color(
                 rng.Next(0, 256),
                 rng.Next(0, 256),
                 rng.Next(0, 256)
                 );
 
+            // Return color
             return color;
         }
 
@@ -747,44 +774,73 @@ namespace BoidBash
         /// <summary>
         /// This method processes the Main Menu state
         /// </summary>
-        private void ProcessMainMenu()
+        private void ProcessMainMenu(GameTime gameTime)
         {
+            // If they start the game with space bar
             if (IsSingleKeyPress(Keys.Space))
             {
+                // Play game music
                 MediaPlayer.Play(gameMusic);
                 MediaPlayer.IsRepeating = true;
-                stateChange.Play();
-                timer = 30;
-                flock.Pens.ScoreTimers.Clear();
-                flock.Pens.ScorePrints.Clear();
-                currentState = GameState.Game;
-                flock.ClearFlock();
-                flock.AddBoids(50);
-                flock.Pens.TotalBoidsBashed = 0;
-                flock.Pens.TotalSpecialBoidsBashed = 0;
 
+                // Play state change SFX
+                stateChange.Play();
+
+                // Reset timer to 30
+                timer = 30;
+
+                // Clear all prints and timers
+                flock.Bashers.ScoreTimers.Clear();
+                flock.Bashers.ScorePrints.Clear();
                 totalScoreIncrementPrint.Clear();
                 totalScoreIncrementTimer.Clear();
                 totalTimeIncrementPrint.Clear();
                 totalTimeIncrementTimer.Clear();
+
+                // Clear the Game flock of all excess boids above 50
+                // This is more efficient than clearing and adding all back in
+                for (int x = flock.Boids.Count - 1; x >= 50; x--)
+                {
+                    flock.RemoveBoid(flock.Boids[x]);
+                }
+                // Reposition all boids
+                flock.RepositionBoids();
+
+                // Reset bash totals
+                flock.Bashers.TotalBoidsBashed = 0;
+                flock.Bashers.TotalSpecialBoidsBashed = 0;
+
+                // Change Game state
+                currentState = GameState.Game; 
             }
+
+            // Process Menuflock boids
+            menuFlock.ProcessBoids(new Vector2(-300, -300));
+            // Update the UI for main menu
+            mainMenuUI.Update(gameTime);
         }
 
         /// <summary>
         /// This method processes the Game state
         /// </summary>
-        private void ProcessGame()
+        private void ProcessGame(GameTime gameTime)
         {
+            // Call each button's update method
             foreach (Button button in buttons)
             {
                 button.Update();
             }
+
+            // Pause if tab is pressed
             if (IsSingleKeyPress(Keys.Tab))
             {
+                // Pause music
                 MediaPlayer.Pause();
                 stateChange.Play();
+                // Change game state
                 currentState = GameState.PauseMenu;
             }
+
             // For toggling debug mode
             else if (IsSingleKeyPress(Keys.Back))
             {
@@ -798,14 +854,33 @@ namespace BoidBash
                     inDebug = true;
                 }
             }
+
+            // End game when timer is up 
             if (timer < 0.01f)
             {
+                // Update player highscores
                 UpdateScores(player1Score);
+                // Update End screen UI
                 endScreenUI.Score = player1Score;
+                // Change state
                 currentState = GameState.EndScreen;
+                // Stop music and play sound
                 gameOverSound.Play();
                 MediaPlayer.Stop();
             }
+
+            // Process Boids and predator
+            flock.ProcessBoids(predator.ActualPosition);
+            predator.Update(gameTime);
+
+            // Update Game timer
+            if (timer > 0)
+            {
+                timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            // Update score for game UI
+            gameUI.ScoreUpdater(player1Score);
         }
 
         /// <summary>
@@ -813,20 +888,29 @@ namespace BoidBash
         /// </summary>
         private void ProcessPauseMenu()
         {
+            // If space is pressed, resume game
             if (IsSingleKeyPress(Keys.Space))
             {
+                // Resume music
                 MediaPlayer.Resume();
                 stateChange.Play();
+                // Change game state
                 currentState = GameState.Game;
             }
+            // Otherwise, if M is pressed, go to main menu
             else if (IsSingleKeyPress(Keys.M))
             {
+                // Play main menu music
                 MediaPlayer.Play(menuMusic);
                 MediaPlayer.IsRepeating = true;
                 stateChange.Play();
+                // Change game state
                 currentState = GameState.MainMenu;
+                // Put predator back in center
                 predator.Position = new Rectangle(width / 2, height / 2, 25, 25);
+                // Reset player score
                 player1Score = 0;
+                // Reset Score goal
                 scoreGoal = 1;
             }
         }
@@ -836,35 +920,55 @@ namespace BoidBash
         /// </summary>
         private void ProcessEndScreen()
         {
+            // If space is pressed, go back to main menu
             if (IsSingleKeyPress(Keys.Space))
             {
+                // Play menu music
                 MediaPlayer.Play(menuMusic);
                 MediaPlayer.IsRepeating = true;
                 stateChange.Play();
+                // Change game state
                 currentState = GameState.MainMenu;
+                // Reset player score and score goal
                 player1Score = 0;
                 scoreGoal = 1;
             }
+            // Otherwise, if R is pressed, go back to game
             else if (IsSingleKeyPress(Keys.R))
             {
+                // Play game music
                 MediaPlayer.Play(gameMusic);
                 MediaPlayer.IsRepeating = true;
-                stateChange.Play();
-                timer = 30;
-                flock.Pens.ScoreTimers.Clear();
-                flock.Pens.ScorePrints.Clear();
-                currentState = GameState.Game;
-                flock.ClearFlock();
-                flock.AddBoids(50);
-                flock.Pens.TotalBoidsBashed = 0;
-                flock.Pens.TotalSpecialBoidsBashed = 0;
-                player1Score = 0;
-                scoreGoal = 1;
 
+                // Play state change SFX
+                stateChange.Play();
+
+                // Reset timer to 30
+                timer = 30;
+
+                // Clear all prints and timers
+                flock.Bashers.ScoreTimers.Clear();
+                flock.Bashers.ScorePrints.Clear();
                 totalScoreIncrementPrint.Clear();
                 totalScoreIncrementTimer.Clear();
                 totalTimeIncrementPrint.Clear();
                 totalTimeIncrementTimer.Clear();
+
+                // Clear the Game flock of all excess boids above 50
+                // This is more efficient than clearing and adding all back in
+                for (int x = flock.Boids.Count - 1; x >= 50; x--)
+                {
+                    flock.RemoveBoid(flock.Boids[x]);
+                }
+                // Reposition all boids
+                flock.RepositionBoids();
+
+                // Reset bash totals
+                flock.Bashers.TotalBoidsBashed = 0;
+                flock.Bashers.TotalSpecialBoidsBashed = 0;
+
+                // Change Game state
+                currentState = GameState.Game;
             }
         }
 
@@ -875,8 +979,6 @@ namespace BoidBash
         /// </summary>
         private bool UpdateScores(ulong score)
         {
-            
-
             // Read through text file, add them to the list of scores
             try
             {
@@ -1006,32 +1108,44 @@ namespace BoidBash
 
         /// <summary>
         /// Called When a button is clicked in order to bash the boids in the pen
+        /// ~~~ Note from Brian -> When we update this for multiplayer, we'll have to pass in which player score to increment
         /// </summary>
         /// <param name="pen"></param>
         public void Bashed(int pen)
         {
+            // Bash boids in pen, and get the data from it
             Vector2 dataReturn;
-            dataReturn = flock.Pens.DestroyContainedBoids(flock, pen, scoreGoal);
+            dataReturn = flock.Bashers.BashContainedBoids(flock, pen, scoreGoal);
 
+            // Add score increment to player score
             player1Score += (ulong)dataReturn.X;
+
+            // Add total to totalscoreincrementprints, as long as points were added
             if (dataReturn.X > 0)
             {
                 totalScoreIncrementPrint.Add((int)dataReturn.X);
                 totalScoreIncrementTimer.Add(2);
             }
 
+            // Determine if score goal, timer, or both are being incremented
+            // 1 - > up score goal
+            // 2 - > timer goes up
+            // 3 - > both go up
+            // Anything else -> no effect
             if (dataReturn.Y == 1)
             {
                 scoreGoal++;
             }
             else if (dataReturn.Y == 2)
             {
+                // Add to timerincrementprints and timers
                 totalTimeIncrementPrint.Add(2);
                 totalTimeIncrementTimer.Add(2);
                 timer += 2;
             }
             else if (dataReturn.Y == 3)
             {
+                // Add to timerincrementprints and timers
                 totalTimeIncrementPrint.Add(2);
                 totalTimeIncrementTimer.Add(2);
                 timer += 2;
