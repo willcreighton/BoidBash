@@ -76,7 +76,7 @@ namespace BoidBash
         /// </summary>
         public List<Boid> Boids
         {
-            get { return boids;  }
+            get { return boids; }
         }
 
         /// <summary>
@@ -314,25 +314,16 @@ namespace BoidBash
         {
             // This will Take the velocity, and change it to make sure it does not pass through the boundaries
 
-            // Bool to track if the boid must be repositioned
-            bool repositionBoid = false;
-
-            // Use Separation method to keep them away from the walls
-            // If within a certain distance of boundary, separate with same method as boids
-
-            // If not within that distance but stil close, start steering towards creation bounds
+            // Check for each boundary
             foreach (Rectangle bound in boundaries)
             {
-                
+
                 // If within a boundary, break and start repositioning
                 if (bound.Contains(boid.Position))
                 {
-                    repositionBoid = true;
+                    RepositionBoid(boid);
                     break;
                 }
-
-                /*
-                // Find the nearest point on the bound
 
                 // Find the left, right, height and width
                 float left = bound.X;
@@ -340,8 +331,7 @@ namespace BoidBash
                 float width = bound.Width;
                 float height = bound.Height;
 
-                // Nearest point variable
-                Vector2 result;
+                Vector2 newVelocity = boid.Velocity;
 
                 // New variables referring to initial point
                 float x = boid.Position.X;
@@ -365,52 +355,26 @@ namespace BoidBash
                 float m = Math.Min(Math.Min(dl, dr), Math.Min(dt, db));
 
                 // If the minimum distance is one of the sides,
-                //  return the side and the value the clamped value of the opposite axis
-                if (m == dt)
+                // Apply Bouncing
+                if (m == dt && bound.Contains(boid.Position + boid.Velocity))
                 {
-                    result = new Vector2(x, top);
+                    newVelocity = Vector2.Reflect((boid.Velocity), new Vector2(0, 1));
                 }
-                else if (m == db)
+                else if (m == db && bound.Contains(boid.Position + boid.Velocity))
                 {
-                    result = new Vector2(x, bottom);
+                    newVelocity = Vector2.Reflect((boid.Velocity), new Vector2(0, -1));
                 }
-                else if (m == dl)
+                else if (m == dl && bound.Contains(boid.Position + boid.Velocity))
                 {
-                    result = new Vector2(left, y);
+                    newVelocity = Vector2.Reflect((boid.Velocity), new Vector2(-1, 0));
                 }
-                else
+                else if (bound.Contains(boid.Position + boid.Velocity))
                 {
-                    result = new Vector2(right, y);
+                    newVelocity = Vector2.Reflect((boid.Velocity), new Vector2(1, 0));
                 }
 
-                // Calculate distance to nearest point
-                float distance = Vector2.Distance(boid.Position, result);
-                */
-
-                // **Currently, Bounds is rudementary, and only needs this**
-
-                // If the boundary contains the position plus the velocity, set velocity not to go past the 
-                //  distance to the object
-                if (bound.Contains(boid.Position + boid.Velocity))
-                {
-                    boid.Velocity *= -1;
-                }
-                
-                // If the boundary is within distance of bounds avoidance, add extra to boid velocity in opposite 
-                // direction of boundary
+                boid.Velocity = newVelocity;
             }
-            
-            // If within a boundary, reposition the boid within the creation bounds
-            if (repositionBoid)
-            {
-                // Set Velocity to 0
-                boid.Velocity = new Vector2(0,0);
-                // Set new position within the creationbounds
-                Vector2 position = new Vector2(rng.Next(creationBounds.X, creationBounds.X + creationBounds.Width),
-                        rng.Next(creationBounds.Y, creationBounds.Y + creationBounds.Height));
-                boid.Position = position;
-            }
-
         }
 
         /// <summary>
@@ -432,8 +396,8 @@ namespace BoidBash
             // predatorAvoidance scalar determines the distance boids try to keep from the predator
             if (distance < predatorAvoidance)
             {
-                  // If too close, move away appropriate amount
-                  predatorAvoidanceVector -= (predatorPos - boid.Position);
+                // If too close, move away appropriate amount
+                predatorAvoidanceVector -= (predatorPos - boid.Position);
             }
 
             // Return Predator avoidance

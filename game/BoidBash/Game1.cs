@@ -156,30 +156,32 @@ namespace BoidBash
             new Rectangle(240, 400, 46, 60), new Rectangle(905, 400, 46, 60)};
 
         private Rectangle musicSlider = new Rectangle(100, 140, 320, 10);
+        private Rectangle soundSlider = new Rectangle(100, 240, 320, 10);
 
         private Rectangle[] boidColorSelectors = new Rectangle[7] 
-        { new Rectangle(105, 235, 40, 40), new Rectangle(205, 235, 40, 40), new Rectangle(305, 235, 40, 40),
-          new Rectangle(405, 235, 40, 40), new Rectangle(505, 235, 40, 40), new Rectangle(605, 235, 40, 40),
-          new Rectangle(705, 235, 40, 40) };
+        { new Rectangle(105, 335, 40, 40), new Rectangle(205, 335, 40, 40), new Rectangle(305, 335, 40, 40),
+          new Rectangle(405, 335, 40, 40), new Rectangle(505, 335, 40, 40), new Rectangle(605, 335, 40, 40),
+          new Rectangle(705, 335, 40, 40) };
 
         private Rectangle[] predatorColorSelectors = new Rectangle[7]
-            {new Rectangle(105, 335, 40, 40), new Rectangle(205, 335, 40, 40), new Rectangle(305, 335, 40, 40),
-             new Rectangle(405, 335, 40, 40), new Rectangle(505, 335, 40, 40), new Rectangle(605, 335, 40, 40),
-             new Rectangle(705, 335, 40, 40)};
+            {new Rectangle(105, 435, 40, 40), new Rectangle(205, 435, 40, 40), new Rectangle(305, 435, 40, 40),
+             new Rectangle(405, 435, 40, 40), new Rectangle(505, 435, 40, 40), new Rectangle(605, 435, 40, 40),
+             new Rectangle(705, 435, 40, 40)};
 
         private Rectangle[] borderColorSelectors = new Rectangle[8]
-            { new Rectangle(105, 435, 40, 40), new Rectangle(145, 435, 40, 40), new Rectangle(255, 435, 40, 40),
-              new Rectangle(295, 435, 40, 40), new Rectangle(405, 435, 40, 40), new Rectangle(445, 435, 40, 40),
-              new Rectangle(555, 435, 40, 40), new Rectangle(595, 435, 40, 40)};
+            { new Rectangle(105, 535, 40, 40), new Rectangle(145, 535, 40, 40), new Rectangle(255, 535, 40, 40),
+              new Rectangle(295, 535, 40, 40), new Rectangle(405, 535, 40, 40), new Rectangle(445, 535, 40, 40),
+              new Rectangle(555, 535, 40, 40), new Rectangle(595, 535, 40, 40)};
 
         // Options
         private float musicVolume = 1;
+        private float soundVolume = 1;
         private int optionsSelection = 1;
         private int boidColorSelection = 1;
         private int predatorColorSelection = 4;
         private int borderFadeSelection = 1;
         private Color fadeStart = Color.Lime;
-        private Color fadeEnd = Color.Red;
+        private Color fadeEnd = Color.Red;        
 
         // Debug
         private Texture2D blank;
@@ -786,9 +788,7 @@ namespace BoidBash
                     Color.White);
                         _spriteBatch.DrawString(senBold, "Input Name: " + name + "|", new Vector2(460, 530),
                     Color.White);
-                    }
-                    
-
+                    }                 
                     break;
 
 
@@ -813,15 +813,29 @@ namespace BoidBash
                         _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 100, 130, 30, 30), Color.White);
                     }
 
-                    // Boid Color Selection
-                    _spriteBatch.DrawString(senRegular, "Boid Color", new Vector2(100, 185), Color.White);
+                    // Sound Volume Selection
+                    _spriteBatch.DrawString(senRegular, "0", new Vector2(110, 205), Color.White);
+                    _spriteBatch.DrawString(senRegular, "100", new Vector2(395, 205), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Sound Volume", new Vector2(190, 185), Color.White);
+                    _spriteBatch.Draw(blank, soundSlider, Color.Gray);
                     if (optionsSelection == 2)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 230, 50, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle((int)(soundVolume * 300) + 100, 230, 30, 30), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 230, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle((int)(soundVolume * 300) + 100, 230, 30, 30), Color.White);
+                    }
+
+                    // Boid Color Selection
+                    _spriteBatch.DrawString(senRegular, "Boid Color", new Vector2(100, 285), Color.White);
+                    if (optionsSelection == 3)
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 330, 50, 50), Color.Yellow);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 330, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, boidColorSelectors[0], boidColor);
                     _spriteBatch.Draw(blank, boidColorSelectors[1], Color.Green);
@@ -832,14 +846,14 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, boidColorSelectors[6], Color.White);
 
                     // Predator Color Selection
-                    _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(100, 290), Color.White);
-                    if (optionsSelection == 3)
+                    _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(100, 390), Color.White);
+                    if (optionsSelection == 4)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 330, 50, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 430, 50, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 330, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 430, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, predatorColorSelectors[0], boidColor);
                     _spriteBatch.Draw(blank, predatorColorSelectors[1], Color.Green);
@@ -850,14 +864,14 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, predatorColorSelectors[6], Color.White);
 
                     // Border Color Selection
-                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(100, 390), Color.White);
-                    if (optionsSelection == 4)
+                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(100, 490), Color.White);
+                    if (optionsSelection == 5)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 430, 90, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 530, 90, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 430, 90, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 530, 90, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, borderColorSelectors[0], Color.Lime);
                     _spriteBatch.Draw(blank, borderColorSelectors[1], Color.Red);
@@ -867,7 +881,6 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, borderColorSelectors[5], Color.OrangeRed);
                     _spriteBatch.Draw(blank, borderColorSelectors[6], Color.Orange);
                     _spriteBatch.Draw(blank, borderColorSelectors[7], Color.Purple);
-
                     break;
 
                 default:
@@ -1223,7 +1236,7 @@ namespace BoidBash
                 clicked.Play();
                 optionsSelection--;
             }
-            if (IsSingleKeyPress(Keys.S) && optionsSelection < 4)
+            if (IsSingleKeyPress(Keys.S) && optionsSelection < 5)
             {
                 clicked.Play();
                 optionsSelection++;
@@ -1245,6 +1258,18 @@ namespace BoidBash
                     }
                     break;
                 case 2:
+                    if (IsSingleKeyPress(Keys.A) && soundVolume > 0.2f)
+                    {
+                        clicked.Play();
+                        soundVolume -= 0.2f;
+                    }
+                    if (IsSingleKeyPress(Keys.D) && soundVolume < 1)
+                    {
+                        clicked.Play();
+                        soundVolume += 0.2f;
+                    }
+                    break;
+                case 3:
                     // Change Boid Color
                     if (IsSingleKeyPress(Keys.A) && boidColorSelection > 1)
                     {
@@ -1296,7 +1321,7 @@ namespace BoidBash
                     }
 
                     break;
-                case 3:
+                case 4:
                     // Change Predator Color
                     if (IsSingleKeyPress(Keys.A) && predatorColorSelection > 1)
                     {
@@ -1354,7 +1379,7 @@ namespace BoidBash
                             break;
                     }
                     break;
-                case 4:
+                case 5:
                     // Change Border Fade
                     if (IsSingleKeyPress(Keys.A) && borderFadeSelection > 1)
                     {
@@ -1393,7 +1418,7 @@ namespace BoidBash
                 stateChange.Play();
                 currentState = GameState.MainMenu;
             }
-
+            SoundEffect.MasterVolume = soundVolume;
             MediaPlayer.Volume = musicVolume;
         }
 
