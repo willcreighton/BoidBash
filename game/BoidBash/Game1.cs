@@ -154,6 +154,32 @@ namespace BoidBash
             { new Rectangle(15, 290, 46, 60), new Rectangle(15, 390, 46, 60),
             new Rectangle(240, 400, 46, 60), new Rectangle(905, 400, 46, 60)};
 
+        private Rectangle musicSlider = new Rectangle(100, 140, 320, 10);
+
+        private Rectangle[] boidColorSelectors = new Rectangle[7] 
+        { new Rectangle(105, 235, 40, 40), new Rectangle(205, 235, 40, 40), new Rectangle(305, 235, 40, 40),
+          new Rectangle(405, 235, 40, 40), new Rectangle(505, 235, 40, 40), new Rectangle(605, 235, 40, 40),
+          new Rectangle(705, 235, 40, 40) };
+
+        private Rectangle[] predatorColorSelectors = new Rectangle[7]
+            {new Rectangle(105, 335, 40, 40), new Rectangle(205, 335, 40, 40), new Rectangle(305, 335, 40, 40),
+             new Rectangle(405, 335, 40, 40), new Rectangle(505, 335, 40, 40), new Rectangle(605, 335, 40, 40),
+             new Rectangle(705, 335, 40, 40)};
+
+        private Rectangle[] borderColorSelectors = new Rectangle[8]
+            { new Rectangle(105, 435, 40, 40), new Rectangle(145, 435, 40, 40), new Rectangle(255, 435, 40, 40),
+              new Rectangle(295, 435, 40, 40), new Rectangle(405, 435, 40, 40), new Rectangle(445, 435, 40, 40),
+              new Rectangle(555, 435, 40, 40), new Rectangle(595, 435, 40, 40)};
+
+        // Options
+        private float musicVolume = 1;
+        private int optionsSelection = 1;
+        private int boidColorSelection = 1;
+        private int predatorColorSelection = 4;
+        private int borderFadeSelection = 1;
+        private Color fadeStart = Color.Lime;
+        private Color fadeEnd = Color.Red;
+
         // Debug
         private Texture2D blank;
         private Texture2D gradient;
@@ -316,13 +342,13 @@ namespace BoidBash
             // Create the predator
             predatorWASDArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, 35, 35, ControlScheme.WASDArrows);
+                windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.WASDArrows);
             predatorWASD = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, 35, 35, ControlScheme.WASD);
+                windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.WASD);
             predatorArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, 35, 35, ControlScheme.Arrows);
+                windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.Arrows);
 
             // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold);
@@ -415,6 +441,12 @@ namespace BoidBash
                     ProcessGame(gameTime);               
                     break;
 
+                // Options
+                case GameState.Options:
+                    // Apply Options processing
+                    ProcessOptions();
+                    break;
+
                 // Versus Mode
                 case GameState.VersusGame:
                     break;
@@ -482,13 +514,13 @@ namespace BoidBash
                     }          
 
                     // Calculate border colors
-                    rInterval = (Color.Red.R - Color.Lime.R) / 30;
-                    gInterval = (Color.Red.G - Color.Lime.G) / 30;
-                    bInterval = (Color.Red.B - Color.Lime.B) / 30;
+                    rInterval = (fadeEnd.R - fadeStart.R) / 30;
+                    gInterval = (fadeEnd.G - fadeStart.G) / 30;
+                    bInterval = (fadeEnd.B - fadeStart.B) / 30;
                     colorDrawn = new Color(
-                        (Color.Red.R + rInterval * (int)timer * -1),
-                        (Color.Red.G + gInterval * (int)timer * -1),
-                        (Color.Red.B + bInterval * (int)timer * -1)
+                        (fadeEnd.R + rInterval * (int)timer * -1),
+                        (fadeEnd.G + gInterval * (int)timer * -1),
+                        (fadeEnd.B + bInterval * (int)timer * -1)
                         );
 
                     // Draw Border
@@ -757,6 +789,85 @@ namespace BoidBash
 
                     break;
 
+
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Options
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.Options:
+                    // Title
+                    _spriteBatch.DrawString(senExtraBold, "Options", new Vector2(500, 20), Color.White);
+
+                    // Music Volume Selection
+                    _spriteBatch.DrawString(senRegular, "0", new Vector2(110, 105), Color.White);
+                    _spriteBatch.DrawString(senRegular, "100", new Vector2(395, 105), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Music Volume", new Vector2(190, 85), Color.White);
+                    _spriteBatch.Draw(blank, musicSlider, Color.Gray);
+                    if (optionsSelection == 1)
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 100, 130, 30, 30), Color.Yellow);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 100, 130, 30, 30), Color.White);
+                    }
+
+                    // Boid Color Selection
+                    _spriteBatch.DrawString(senRegular, "Boid Color", new Vector2(100, 185), Color.White);
+                    if (optionsSelection == 2)
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 230, 50, 50), Color.Yellow);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 230, 50, 50), Color.White);
+                    }
+                    _spriteBatch.Draw(blank, boidColorSelectors[0], boidColor);
+                    _spriteBatch.Draw(blank, boidColorSelectors[1], Color.Green);
+                    _spriteBatch.Draw(blank, boidColorSelectors[2], Color.Orange);
+                    _spriteBatch.Draw(blank, boidColorSelectors[3], Color.Red);
+                    _spriteBatch.Draw(blank, boidColorSelectors[4], Color.Magenta);
+                    _spriteBatch.Draw(blank, boidColorSelectors[5], Color.Blue);
+                    _spriteBatch.Draw(blank, boidColorSelectors[6], Color.White);
+
+                    // Predator Color Selection
+                    _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(100, 290), Color.White);
+                    if (optionsSelection == 3)
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 330, 50, 50), Color.Yellow);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 330, 50, 50), Color.White);
+                    }
+                    _spriteBatch.Draw(blank, predatorColorSelectors[0], boidColor);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[1], Color.Green);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[2], Color.Orange);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[3], Color.Red);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[4], Color.Magenta);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[5], Color.Blue);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[6], Color.White);
+
+                    // Border Color Selection
+                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(100, 390), Color.White);
+                    if (optionsSelection == 4)
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 430, 90, 50), Color.Yellow);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 430, 90, 50), Color.White);
+                    }
+                    _spriteBatch.Draw(blank, borderColorSelectors[0], Color.Lime);
+                    _spriteBatch.Draw(blank, borderColorSelectors[1], Color.Red);
+                    _spriteBatch.Draw(blank, borderColorSelectors[2], Color.White);
+                    _spriteBatch.Draw(blank, borderColorSelectors[3], Color.Black);
+                    _spriteBatch.Draw(blank, borderColorSelectors[4], Color.Blue);
+                    _spriteBatch.Draw(blank, borderColorSelectors[5], Color.OrangeRed);
+                    _spriteBatch.Draw(blank, borderColorSelectors[6], Color.Orange);
+                    _spriteBatch.Draw(blank, borderColorSelectors[7], Color.Purple);
+
+                    break;
+
                 default:
                     break;
             }
@@ -886,6 +997,12 @@ namespace BoidBash
                 // Change Game state
                 currentState = GameState.SingleGame; 
             }
+            // Swap to options menu
+            if (IsSingleKeyPress(Keys.O))
+            {
+                stateChange.Play();
+                currentState = GameState.Options;
+            }
 
             // Process Menuflock boids
             menuFlock.ProcessBoids(new Vector2[1] { new Vector2(-300, -300) });
@@ -942,7 +1059,7 @@ namespace BoidBash
 
             // Process Boids and predator
             predatorWASDArrows.Update(gameTime);
-            flock.ProcessBoids(new Vector2[1] { predatorWASD.ActualPosition });
+            flock.ProcessBoids(new Vector2[1] { predatorWASDArrows.ActualPosition });
 
             // Update Game timer.
             if (timer > 0)
@@ -999,7 +1116,7 @@ namespace BoidBash
                 {
                     if (name == "")
                     {
-                        name = "UNNAMED";
+                        name = "---";
                     }
                     UpdateScores(player1Score);
                 }
@@ -1055,7 +1172,7 @@ namespace BoidBash
                 {
                     if (name == "")
                     {
-                        name = "UNNAMED";
+                        name = "---";
                     }
                     UpdateScores(player1Score);
                 }
@@ -1093,6 +1210,191 @@ namespace BoidBash
             }
 
         }
+
+        private void ProcessOptions()
+        {
+            // Select volume setting
+
+            // Change what option is selected
+            if (IsSingleKeyPress(Keys.W) && optionsSelection > 1)
+            {
+                clicked.Play();
+                optionsSelection--;
+            }
+            if (IsSingleKeyPress(Keys.S) && optionsSelection < 4)
+            {
+                clicked.Play();
+                optionsSelection++;
+            }
+
+            switch (optionsSelection)
+            {
+                case 1:
+                    // Change Music Volume
+                    if (IsSingleKeyPress(Keys.A) && musicVolume > 0.2f)
+                    {
+                        clicked.Play();
+                        musicVolume -= 0.2f;
+                    }
+                    if (IsSingleKeyPress(Keys.D) && musicVolume < 1)
+                    {
+                        clicked.Play();
+                        musicVolume += 0.2f;
+                    }
+                    break;
+                case 2:
+                    // Change Boid Color
+                    if (IsSingleKeyPress(Keys.A) && boidColorSelection > 1)
+                    {
+                        clicked.Play();
+                        boidColorSelection--;
+                    }
+                    if (IsSingleKeyPress(Keys.D) && boidColorSelection < 7)
+                    {
+                        clicked.Play();
+                        boidColorSelection++;
+                    }
+                    // Apply Color
+                    switch (boidColorSelection)
+                    {
+                        case 1:
+                            flock.DefaultColor = boidColor;
+                            menuFlock.DefaultColor = boidColor;
+                            break;
+
+                        case 2:
+                            flock.DefaultColor = Color.Green;
+                            menuFlock.DefaultColor = Color.Green;
+                            break;
+
+                        case 3:
+                            flock.DefaultColor = Color.Orange;
+                            menuFlock.DefaultColor = Color.Orange;
+                            break;
+
+                        case 4:
+                            flock.DefaultColor = Color.Red;
+                            menuFlock.DefaultColor = Color.Red;
+                            break;
+
+                        case 5:
+                            flock.DefaultColor = Color.Magenta;
+                            menuFlock.DefaultColor = Color.Magenta;
+                            break;
+
+                        case 6:
+                            flock.DefaultColor = Color.Blue;
+                            menuFlock.DefaultColor = Color.Blue;
+                            break;
+
+                        case 7:
+                            flock.DefaultColor = Color.White;
+                            menuFlock.DefaultColor = Color.White;
+                            break;
+                    }
+
+                    break;
+                case 3:
+                    // Change Predator Color
+                    if (IsSingleKeyPress(Keys.A) && predatorColorSelection > 1)
+                    {
+                        clicked.Play();
+                        predatorColorSelection--;
+                    }
+                    if (IsSingleKeyPress(Keys.D) && predatorColorSelection < 7)
+                    {
+                        clicked.Play();
+                        predatorColorSelection++;
+                    }
+                    // Apply Color
+                    switch (predatorColorSelection)
+                    {
+                        case 1:
+                            predatorWASD.Color = boidColor;
+                            predatorWASDArrows.Color = boidColor;
+                            predatorArrows.Color = boidColor;
+                            break;
+
+                        case 2:
+                            predatorWASD.Color = Color.Green;
+                            predatorWASDArrows.Color = Color.Green;
+                            predatorArrows.Color = Color.Green;
+                            break;
+
+                        case 3:
+                            predatorWASD.Color = Color.Orange;
+                            predatorWASDArrows.Color = Color.Orange;
+                            predatorArrows.Color = Color.Orange;
+                            break;
+
+                        case 4:
+                            predatorWASD.Color = Color.Red;
+                            predatorWASDArrows.Color = Color.Red;
+                            predatorArrows.Color = Color.Red;
+                            break;
+
+                        case 5:
+                            predatorWASD.Color = Color.Magenta;
+                            predatorWASDArrows.Color = Color.Magenta;
+                            predatorArrows.Color = Color.Magenta;
+                            break;
+
+                        case 6:
+                            predatorWASD.Color = Color.Blue;
+                            predatorWASDArrows.Color = Color.Blue;
+                            predatorArrows.Color = Color.Blue;
+                            break;
+
+                        case 7:
+                            predatorWASD.Color = Color.White;
+                            predatorWASDArrows.Color = Color.White;
+                            predatorArrows.Color = Color.White;
+                            break;
+                    }
+                    break;
+                case 4:
+                    // Change Border Fade
+                    if (IsSingleKeyPress(Keys.A) && borderFadeSelection > 1)
+                    {
+                        clicked.Play();
+                        borderFadeSelection--;
+                    }
+                    if (IsSingleKeyPress(Keys.D) && borderFadeSelection < 4)
+                    {
+                        clicked.Play();
+                        borderFadeSelection++;
+                    }
+                    switch (borderFadeSelection)
+                    {
+                        case 1:
+                            fadeStart = Color.Lime;
+                            fadeEnd = Color.Red;
+                            break;
+                        case 2:
+                            fadeStart = Color.White;
+                            fadeEnd = Color.Black;
+                            break;
+                        case 3:
+                            fadeStart = Color.Blue;
+                            fadeEnd = Color.OrangeRed;
+                            break;
+                        case 4:
+                            fadeStart = Color.Orange;
+                            fadeEnd = Color.Purple;
+                            break;
+                    }
+                    break;
+            }
+
+            if (IsSingleKeyPress(Keys.M))
+            {
+                stateChange.Play();
+                currentState = GameState.MainMenu;
+            }
+
+            MediaPlayer.Volume = musicVolume;
+        }
+
 
         /// <summary>
         /// This method updates the high scores text file

@@ -30,7 +30,7 @@ namespace BoidBash
         private SoundEffect largeBash;
         private SoundEffect timeIncrease;
         private SoundEffect addBoids;
-
+        
         // Properties
         /// <summary>
         /// Returns the list of Pens
@@ -145,7 +145,7 @@ namespace BoidBash
         /// <param name="addBoids"></param>
         public Bashers()
         {
-
+            
         }
 
         // Methods

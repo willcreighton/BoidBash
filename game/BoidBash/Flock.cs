@@ -96,6 +96,15 @@ namespace BoidBash
         }
 
         /// <summary>
+        /// Sets and returns default boid color
+        /// </summary>
+        public Color DefaultColor
+        {
+            get { return defaultColor; }
+            set { defaultColor = value; }
+        }
+
+        /// <summary>
         /// Creates a Flock
         /// </summary>
         /// <param name="numBoids"></param>
