@@ -85,7 +85,7 @@ namespace BoidBash
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw the button itself
-            spriteBatch.Draw(buttonImg, position, Color.White);
+            spriteBatch.Draw(buttonImg, position, Color.Red);
         }
     }
 }
