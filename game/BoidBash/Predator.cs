@@ -48,6 +48,14 @@ namespace BoidBash
         }
 
         /// <summary>
+        /// Sets the predator color
+        /// </summary>
+        public Color Color
+        {
+            set { color = value; }
+        }
+
+        /// <summary>
         /// Parameterized Constructor
         /// 
         /// Predator Constructor that takes in a Texture2D for the predator texture, 
@@ -61,13 +69,14 @@ namespace BoidBash
         /// <param name="windowWidth"></param>
         /// <param name="predHeight"></param>
         /// <param name="predWidth"></param>
-        public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, int predHeight, int predWidth, ControlScheme scheme) :
+        public Predator(Texture2D texture, Rectangle position, int windowHeight, int windowWidth, Color color, int predHeight, int predWidth, ControlScheme scheme) :
             base(texture, position, windowHeight, windowWidth)
         {
             this.texture = texture;
             this.position = position;
             this.predHeight = predHeight;
             this.predWidth = predWidth;
+            this.color = color;
             currentScheme = scheme;
         }
 
@@ -199,5 +208,11 @@ namespace BoidBash
                     break;
             }
         }
+
+        public void Draw(SpriteBatch sb)
+        {
+            sb.Draw(texture, position, color);
+        }
+
     }
 }

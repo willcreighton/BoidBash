@@ -13,6 +13,7 @@ namespace BoidBash
         protected Rectangle position;
         protected int windowHeight;
         protected int windowWidth;
+        protected Color color;
 
         // Properties
         /// <summary>
@@ -43,6 +44,7 @@ namespace BoidBash
             this.windowWidth = windowWidth;
         }
 
+        /*
         // Methods
         /// <summary>
         /// Draws the GameObject SpriteBatch
@@ -52,6 +54,8 @@ namespace BoidBash
         {
             sb.Draw(texture, position, Color.Red);
         }
+        */
+
         /// <summary>
         /// Updates GameObject with GameTime
         /// </summary>
