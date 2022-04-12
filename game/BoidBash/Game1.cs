@@ -944,7 +944,7 @@ namespace BoidBash
 
             // Process Boids and predator
             predatorWASDArrows.Update(gameTime);
-            flock.ProcessBoids(new Vector2[1] { predatorWASD.ActualPosition });
+            flock.ProcessBoids(new Vector2[1] { predatorWASDArrows.ActualPosition });
 
             // Update Game timer.
             if (timer > 0)
