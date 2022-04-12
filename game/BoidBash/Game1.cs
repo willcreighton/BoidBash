@@ -167,10 +167,15 @@ namespace BoidBash
              new Rectangle(405, 435, 40, 40), new Rectangle(505, 435, 40, 40), new Rectangle(605, 435, 40, 40),
              new Rectangle(705, 435, 40, 40)};
 
+        private Rectangle[] buttonColorSelectors = new Rectangle[7]
+            {new Rectangle(105, 535, 40, 40), new Rectangle(205, 535, 40, 40), new Rectangle(305, 535, 40, 40),
+             new Rectangle(405, 535, 40, 40), new Rectangle(505, 535, 40, 40), new Rectangle(605, 535, 40, 40),
+             new Rectangle(705, 535, 40, 40)};
+
         private Rectangle[] borderColorSelectors = new Rectangle[8]
-            { new Rectangle(105, 535, 40, 40), new Rectangle(145, 535, 40, 40), new Rectangle(255, 535, 40, 40),
-              new Rectangle(295, 535, 40, 40), new Rectangle(405, 535, 40, 40), new Rectangle(445, 535, 40, 40),
-              new Rectangle(555, 535, 40, 40), new Rectangle(595, 535, 40, 40)};
+            { new Rectangle(105, 635, 40, 40), new Rectangle(145, 635, 40, 40), new Rectangle(255, 635, 40, 40),
+              new Rectangle(295, 635, 40, 40), new Rectangle(405, 635, 40, 40), new Rectangle(445, 635, 40, 40),
+              new Rectangle(555, 635, 40, 40), new Rectangle(595, 635, 40, 40)};
 
         // Options
         private float musicVolume = 1;
@@ -179,6 +184,7 @@ namespace BoidBash
         private int boidColorSelection = 1;
         private int predatorColorSelection = 4;
         private int borderFadeSelection = 1;
+        private int buttonColorSelection = 4;
         private Color fadeStart = Color.Lime;
         private Color fadeEnd = Color.Red;        
 
@@ -861,15 +867,33 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, predatorColorSelectors[5], Color.Blue);
                     _spriteBatch.Draw(blank, predatorColorSelectors[6], Color.White);
 
-                    // Border Color Selection
-                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(100, 490), Color.White);
+                    // Button Color Selection
+                    _spriteBatch.DrawString(senRegular, "Button Color", new Vector2(100, 490), Color.White);
                     if (optionsSelection == 5)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 530, 90, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100, 530, 50, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 530, 90, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100, 530, 50, 50), Color.White);
+                    }
+                    _spriteBatch.Draw(blank, buttonColorSelectors[0], boidColor);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[1], Color.Green);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[2], Color.Orange);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[3], Color.Red);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[4], Color.Magenta);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[5], Color.Blue);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[6], Color.White);
+
+                    // Border Color Selection
+                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(100, 590), Color.White);
+                    if (optionsSelection == 6)
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 630, 90, 50), Color.Yellow);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 630, 90, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, borderColorSelectors[0], Color.Lime);
                     _spriteBatch.Draw(blank, borderColorSelectors[1], Color.Red);
@@ -1234,7 +1258,7 @@ namespace BoidBash
                 clicked.Play();
                 optionsSelection--;
             }
-            if (IsSingleKeyPress(Keys.S) && optionsSelection < 5)
+            if (IsSingleKeyPress(Keys.S) && optionsSelection < 6)
             {
                 clicked.Play();
                 optionsSelection++;
@@ -1377,7 +1401,65 @@ namespace BoidBash
                             break;
                     }
                     break;
+                    // Change Button Color
                 case 5:
+                    if (IsSingleKeyPress(Keys.A) && buttonColorSelection > 1)
+                    {
+                        clicked.Play();
+                        buttonColorSelection--;
+                    }
+                    if (IsSingleKeyPress(Keys.D) && buttonColorSelection < 7)
+                    {
+                        clicked.Play();
+                        buttonColorSelection++;
+                    }
+                    switch (buttonColorSelection)
+                    {
+                        case 1:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = boidColor;
+                            }
+                            break;
+                        case 2:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = Color.Green;
+                            }
+                            break;
+                        case 3:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = Color.Orange;
+                            }
+                            break;
+                        case 4:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = Color.Red;
+                            }
+                            break;
+                        case 5:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = Color.Magenta;
+                            }
+                            break;
+                        case 6:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = Color.Blue;
+                            }
+                            break;
+                        case 7:
+                            foreach (Button button in buttons)
+                            {
+                                button.Color = Color.White;
+                            }
+                            break;
+                    }
+                    break;
+                case 6:
                     // Change Border Fade
                     if (IsSingleKeyPress(Keys.A) && borderFadeSelection > 1)
                     {

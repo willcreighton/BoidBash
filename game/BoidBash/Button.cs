@@ -26,7 +26,16 @@ namespace BoidBash
         private Texture2D buttonImg;
         private int pen;
         private SoundEffect clicked;
+        private Color color;
 
+        /// <summary>
+        /// Sets the button's color
+        /// </summary>
+        public Color Color
+        {
+            set { color = value; }
+        }
+        
         /// <summary>
         /// If the client wants to be notified when a button is clicked, it must
         /// implement a method matching OnButtonClickDelegate and then tie that method to
@@ -48,7 +57,7 @@ namespace BoidBash
             this.position = position;
             this.pen = pen;
             this.clicked = clicked;
-
+            this.color = color;
             // Load in the button's texture
             buttonImg = texture;
         }
@@ -85,7 +94,7 @@ namespace BoidBash
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw the button itself
-            spriteBatch.Draw(buttonImg, position, Color.Red);
+            spriteBatch.Draw(buttonImg, position, color);
         }
     }
 }
