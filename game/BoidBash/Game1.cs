@@ -74,7 +74,6 @@ namespace BoidBash
         // Songs
         private Song menuMusic;
         private Song gameMusic;
-        //private Song discoMusic;
 
         // Screen size
         private int windowWidth;
@@ -229,14 +228,13 @@ namespace BoidBash
             // Load all Songs
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
-            //discoMusic = Content.Load<Song>("discoTheme");
 
             // Play music
             MediaPlayer.Play(menuMusic);
             MediaPlayer.IsRepeating = true;
 
             // Load all textures
-            bashButton = Content.Load<Texture2D>("BashButton2");
+            bashButton = Content.Load<Texture2D>("BashButtonNew");
             playPrompt = Content.Load<Texture2D>("StartPrompt");
             boidBashLogo = Content.Load<Texture2D>("BoidBashLogo");
             continuePrompt = Content.Load<Texture2D>("ContinuePrompt");
