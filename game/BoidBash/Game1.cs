@@ -903,6 +903,9 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, borderColorSelectors[5], Color.OrangeRed);
                     _spriteBatch.Draw(blank, borderColorSelectors[6], Color.Orange);
                     _spriteBatch.Draw(blank, borderColorSelectors[7], Color.Purple);
+
+                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu", new Vector2(190, 700), Color.White);
+
                     break;
 
                 default:
