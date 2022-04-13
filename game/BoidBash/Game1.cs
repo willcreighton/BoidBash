@@ -368,7 +368,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(110, 110, 80, 80),    // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     0,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -377,7 +377,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(1010, 110, 80, 80),   // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     1,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -386,7 +386,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(1010, 710, 80, 80),   // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     2,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -395,7 +395,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(110, 710, 80, 80),    // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     3,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
