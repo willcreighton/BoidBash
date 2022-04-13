@@ -539,16 +539,10 @@ namespace BoidBash
                     ProcessEndScreen();
                     break;
 
-                // Instructions Screen
-                case GameState.Instructions:
-                    // Apply Instructions processing
-                    ProcessInstructions();
-                    break;
-
                 // Credits Screen
                 case GameState.Credits:
                     // Apply Credits processing
-                    ProcessCredits();
+                    //ProcessCredits();
                     break;
 
                 default:
