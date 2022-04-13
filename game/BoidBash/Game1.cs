@@ -74,6 +74,7 @@ namespace BoidBash
         // Songs
         private Song menuMusic;
         private Song gameMusic;
+        private Song raveMusic;
 
         // Screen size
         private int windowWidth;
@@ -122,8 +123,11 @@ namespace BoidBash
 
         // Text Input
         private string name = "";
+        private string code = "";
         private Keys key;
         private List<Keys> excludedKeys = new List<Keys>();
+        private float raveTimer = 9.5f;
+        private bool rave = false;
 
         // Timer
         private float timer = 30f;
@@ -138,7 +142,7 @@ namespace BoidBash
         private bool added = false;
 
         // Rectangles to draw
-        private Rectangle[] singlePlayerBashers = new Rectangle[4] 
+        private Rectangle[] singlePlayerBashers = new Rectangle[4]
             { new Rectangle(200, 100, 150, 100), new Rectangle(1000, 200, 100, 150),
              new Rectangle(850, 700, 150, 100), new Rectangle(100, 550, 100, 150)};
 
@@ -157,7 +161,7 @@ namespace BoidBash
         private Rectangle musicSlider = new Rectangle(100, 140, 320, 10);
         private Rectangle soundSlider = new Rectangle(100, 240, 320, 10);
 
-        private Rectangle[] boidColorSelectors = new Rectangle[7] 
+        private Rectangle[] boidColorSelectors = new Rectangle[7]
         { new Rectangle(105, 335, 40, 40), new Rectangle(205, 335, 40, 40), new Rectangle(305, 335, 40, 40),
           new Rectangle(405, 335, 40, 40), new Rectangle(505, 335, 40, 40), new Rectangle(605, 335, 40, 40),
           new Rectangle(705, 335, 40, 40) };
@@ -186,7 +190,7 @@ namespace BoidBash
         private int borderFadeSelection = 1;
         private int buttonColorSelection = 4;
         private Color fadeStart = Color.Lime;
-        private Color fadeEnd = Color.Red;        
+        private Color fadeEnd = Color.Red;
 
         // Debug
         private Texture2D blank;
@@ -262,6 +266,7 @@ namespace BoidBash
             // Load all Songs
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
+            raveMusic = Content.Load<Song>("raveMusic");
 
             // Play music
             MediaPlayer.Play(menuMusic);
@@ -297,7 +302,7 @@ namespace BoidBash
 
             // Assign SFX to bashers
             flock.Bashers.SmallBash = smallBash;
-            flock.Bashers.MediumBash =  mediumBash;
+            flock.Bashers.MediumBash = mediumBash;
             flock.Bashers.LargeBash = largeBash;
             flock.Bashers.TimeIncrease = timeIncrease;
             flock.Bashers.AddBoids = addBoids;
@@ -346,7 +351,7 @@ namespace BoidBash
             flock.Bashers.Pens.Add(new Rectangle(1000, 200, 100, 150));
             flock.Bashers.Pens.Add(new Rectangle(850, 700, 150, 100));
             flock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 150));
-  
+
             // Create the predator
             predatorWASDArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
@@ -363,7 +368,7 @@ namespace BoidBash
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
-           
+
             // Add buttons
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
@@ -422,7 +427,7 @@ namespace BoidBash
             excludedKeys.Add(Keys.Home);
             excludedKeys.Add(Keys.End);
             excludedKeys.Add(Keys.PageDown);
-            excludedKeys.Add(Keys.PageUp);           
+            excludedKeys.Add(Keys.PageUp);
         }
 
         protected override void Update(GameTime gameTime)
@@ -446,7 +451,7 @@ namespace BoidBash
                 // Single Mode
                 case GameState.SingleGame:
                     // Apply Game processing
-                    ProcessGame(gameTime);               
+                    ProcessGame(gameTime);
                     break;
 
                 // Options
@@ -489,7 +494,7 @@ namespace BoidBash
             // Begin the Sprite Batch and the ShapeBatch
             ShapeBatch.Begin(GraphicsDevice);
             _spriteBatch.Begin();
-            
+
 
             mouseState = Mouse.GetState();
 
@@ -519,7 +524,7 @@ namespace BoidBash
                     foreach (Rectangle basher in singlePlayerBashers)
                     {
                         _spriteBatch.Draw(gradient, basher, penColor);
-                    }          
+                    }
 
                     // Calculate border colors
                     rInterval = (fadeEnd.R - fadeStart.R) / 30;
@@ -647,9 +652,9 @@ namespace BoidBash
                     if (totalScoreIncrementPrint.Count > 1)
                     {
                         _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[1]), new Vector2(80, 80), Color.Yellow);
-                        
+
                         totalScoreIncrementTimer[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        
+
                         if (totalScoreIncrementTimer[1] <= 0)
                         {
                             totalScoreIncrementPrint.RemoveAt(1);
@@ -659,9 +664,9 @@ namespace BoidBash
                     if (totalScoreIncrementPrint.Count > 2)
                     {
                         _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrint[2]), new Vector2(100, 100), Color.Yellow);
-                        
+
                         totalScoreIncrementTimer[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        
+
                         if (totalScoreIncrementTimer[2] <= 0)
                         {
                             totalScoreIncrementPrint.RemoveAt(2);
@@ -735,7 +740,7 @@ namespace BoidBash
                     Color.White);
                     gameUI.DrawScore(_spriteBatch);
                     gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
-                    pauseMenuUI.Draw(_spriteBatch); 
+                    pauseMenuUI.Draw(_spriteBatch);
 
                     // Draw Display boids
                     _spriteBatch.Draw(
@@ -792,7 +797,7 @@ namespace BoidBash
                     Color.White);
                         _spriteBatch.DrawString(senBold, "Input Name: " + name + "|", new Vector2(460, 530),
                     Color.White);
-                    }                 
+                    }
                     break;
 
 
@@ -904,8 +909,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, borderColorSelectors[6], Color.Orange);
                     _spriteBatch.Draw(blank, borderColorSelectors[7], Color.Purple);
 
-                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu", new Vector2(190, 700), Color.White);
-
+                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu and confirm", new Vector2(190, 700), Color.White);
                     break;
 
                 default:
@@ -921,18 +925,31 @@ namespace BoidBash
                     Color.Red
                     );
             }
-            else if (mouseState.RightButton == ButtonState.Pressed)
+            else if (rave)
             {
-                _spriteBatch.Draw(
+                if (raveTimer <= 0)
+                {
+                    _spriteBatch.Draw(
+                                        customCursor,
+                                        new Rectangle(mouseState.X, mouseState.Y, 16, 16),
+                                        Disco()
+                                        );
+
+                    foreach (Boid boid in menuFlock.Boids)
+                    {
+                        boid.UseDefaultColor = false;
+                    }
+                }
+                else
+                {
+                    _spriteBatch.Draw(
                     customCursor,
                     new Rectangle(mouseState.X, mouseState.Y, 16, 16),
-                    Disco()
+                    Color.White
                     );
-
-                foreach (Boid boid in menuFlock.Boids)
-                {
-                    boid.UseDefaultColor = false;
+                    raveTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
+
             }
             else
             {
@@ -1034,14 +1051,39 @@ namespace BoidBash
                 flock.Bashers.TotalBoidsBashed = 0;
                 flock.Bashers.TotalSpecialBoidsBashed = 0;
 
+                // Turn off rave
+                rave = false;
+                code = "";
+
                 // Change Game state
-                currentState = GameState.SingleGame; 
+                currentState = GameState.SingleGame;
+
             }
             // Swap to options menu
             if (IsSingleKeyPress(Keys.O))
             {
                 stateChange.Play();
                 currentState = GameState.Options;
+            }
+
+            // Detect Konami Code
+            if (keyboardState.GetPressedKeys().Length == 1 && !rave)
+            {
+                // Set key to the key that was pressed
+                key = keyboardState.GetPressedKeys()[0];
+                // If it is a single key press of that key
+                if (IsSingleKeyPress(key))
+                {
+                    code += key.ToString();
+                }
+            }
+
+            if (code == "UpUpDownDownLeftRightLeftRightBAEnter")
+            {
+                rave = true;
+                MediaPlayer.Play(raveMusic);
+                MediaPlayer.Volume = 10;
+                MediaPlayer.IsRepeating = true;
             }
 
             // Process Menuflock boids
@@ -1087,7 +1129,7 @@ namespace BoidBash
 
             // End game when timer is up 
             if (timer < 0.01f)
-            {      
+            {
                 // Update End screen UI
                 endScreenUI.Score = player1Score;
                 // Change state
@@ -1154,24 +1196,39 @@ namespace BoidBash
                 // Update player highscores
                 if (CompareToList(player1Score))
                 {
-                    if (name == "")
+                    if (!(name.Length <= 2))
                     {
-                        name = "---";
+                        // Play menu music
+                        MediaPlayer.Play(menuMusic);
+                        MediaPlayer.IsRepeating = true;
+                        stateChange.Play();
+                        // Change game state
+                        currentState = GameState.MainMenu;
+                        UpdateScores(player1Score);
+
+                        name = "";
+                        // Reset player score and score goal
+                        scoreGoal = 1;
+                        player1Score = 0;
                     }
+                }
+                else
+                {
+                    // Play menu music
+                    MediaPlayer.Play(menuMusic);
+                    MediaPlayer.IsRepeating = true;
+                    stateChange.Play();
+                    // Change game state
+                    currentState = GameState.MainMenu;
+                    // Reset player score and score goal
+                    player1Score = 0;
+                    scoreGoal = 1;
+
+                    name = "";
                     UpdateScores(player1Score);
                 }
 
-                // Play menu music
-                MediaPlayer.Play(menuMusic);
-                MediaPlayer.IsRepeating = true;
-                stateChange.Play();
-                // Change game state
-                currentState = GameState.MainMenu;
-                // Reset player score and score goal
-                player1Score = 0;
-                scoreGoal = 1;
 
-                name = "";
             }
             // Otherwise, if Space is pressed, go back to Game
             else if (IsSingleKeyPress(Keys.Space))
@@ -1404,7 +1461,7 @@ namespace BoidBash
                             break;
                     }
                     break;
-                    // Change Button Color
+                // Change Button Color
                 case 5:
                     if (IsSingleKeyPress(Keys.A) && buttonColorSelection > 1)
                     {

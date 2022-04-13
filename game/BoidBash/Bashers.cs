@@ -161,6 +161,7 @@ namespace BoidBash
             // Create necessary values
             // The value the score will be increased by
             int scoreIncrease = 0;
+            int toAdd = 0;
             // number of boids that have been bashed
             int boidsBashed = 0;
             // The bonus based on boids bashed, capping at 7
@@ -179,6 +180,8 @@ namespace BoidBash
                 // If in the pen that is bashing
                 if (flock.Boids[x].Pen == pen)
                 {
+                    // Reset toAdd
+                    toAdd = 0;
                     // Score Increment
                     // Up the number of boids bashed for every bashed boid
                     boidsBashed++;
@@ -193,13 +196,21 @@ namespace BoidBash
                     // Maximum of power of 7 to disallow incalculably high scores
                     if (bashBonus >= 7)
                     {
-                        scoreIncrease += (int)Math.Pow(scoregoal, 7);
+                        toAdd += (int)Math.Pow(scoregoal, 7);
                     }
                     else
                     {
-                        scoreIncrease += (int)Math.Pow(boidsBashed, bashBonus);
+                        toAdd += (int)Math.Pow(boidsBashed, bashBonus);
                     }
                     
+                    // Cap toadd
+                    if (toAdd > 158120256)
+                    {
+                        toAdd = 158120256;
+                    }
+
+                    scoreIncrease += toAdd;
+
                     // Detect if a special boid was destroyed
                     if (flock.Boids[x].IsSpecial)
                     {
@@ -211,20 +222,13 @@ namespace BoidBash
                     {
                         upScoreGoal = true;                      
                     }
-                     
+
                     // Adds a score print for every boid at the position it was destroyed at
-                    if (bashBonus < 7)
-                    {
-                        scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (int)Math.Pow(boidsBashed, bashBonus)));
-                        ScoreTimers.Add(1);
-                    }
-                    else
-                    {
-                        scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
-                        (int)Math.Pow(scoregoal, bashBonus)));
-                        ScoreTimers.Add(1);
-                    }
+
+                    scorePrints.Add(new Vector3(flock.Boids[x].Position.X, flock.Boids[x].Position.Y,
+                    toAdd));
+                    ScoreTimers.Add(1);
+
 
                     // Add Score print for golden boid's timer increase
                     if (bashedSpecial)
