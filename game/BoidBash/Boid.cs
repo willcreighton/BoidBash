@@ -30,6 +30,26 @@ namespace BoidBash
         // If not in a pen, the boid is set to -1.
         // If it IS in a pen, the boid is set to the index of that pen in the list of pens until it leaves
         private int pen = -1;
+        private bool useSpecialAsset = false;
+        private Texture2D specialAsset;
+
+        /// <summary>
+        /// Set's the boid's special asset
+        /// </summary>
+        public Texture2D SpecialAsset
+        {
+            get { return specialAsset; }
+            set { specialAsset = value; }
+        }
+
+        /// <summary>
+        /// Returns if the boid uses a special asset
+        /// </summary>
+        public bool UseSpecialAsset
+        {
+            set { useSpecialAsset = value; }
+            get { return useSpecialAsset; }
+        }
 
         /// <summary>
         /// Sets and returns the boid's trail list

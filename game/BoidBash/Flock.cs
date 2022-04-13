@@ -567,12 +567,17 @@ namespace BoidBash
             {
                 float angle = (float)Math.Atan2((double)b.Velocity.X, (double)b.Velocity.Y);
 
-                if (b.UseDefaultColor)
+                if (b.UseSpecialAsset)
+                {
+                    sb.Draw(b.SpecialAsset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X + 4, (int)size.Y + 5),
+                        null, b.Color, 90 + angle, new Vector2(0, 0), SpriteEffects.None, 0);
+                }
+                else if (b.UseDefaultColor)
                 {
                     // Draw the boid to the spritebatch
                     sb.Draw(asset, new Rectangle((int)b.Position.X, (int)b.Position.Y, (int)size.X, (int)size.Y),
                         null, defaultColor, angle, new Vector2(0, 0), SpriteEffects.None, 0);
-                }
+                }               
                 else if (b.IsSpecial)
                 {
                     // Draw the boid to the spritebatch
@@ -628,6 +633,16 @@ namespace BoidBash
             {
                 RepositionBoid(boid);
             }
+        }
+
+        /// <summary>
+        /// Repositions a boid to certain place
+        /// </summary>
+        /// <param name="boid"></param>
+        /// <param name="pos"></param>
+        public void RepositionBoidTo(Boid boid, Vector2 pos)
+        {
+            boid.Position = pos;
         }
     }
 }

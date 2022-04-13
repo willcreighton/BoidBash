@@ -128,6 +128,7 @@ namespace BoidBash
         private List<Keys> excludedKeys = new List<Keys>();
         private float raveTimer = 9.5f;
         private bool rave = false;
+        private bool addCursorBoid = false;
 
         // Timer
         private float timer = 30f;
@@ -925,7 +926,41 @@ namespace BoidBash
                     Color.Red
                     );
             }
-            else if (rave)
+            else if (mouseState.RightButton == ButtonState.Pressed && !addCursorBoid)
+            {
+                addCursorBoid = true;
+                menuFlock.AddBoids(1);
+                menuFlock.Boids[menuFlock.Boids.Count - 1].SpecialAsset = customCursor;
+                menuFlock.Boids[menuFlock.Boids.Count - 1].UseSpecialAsset = true;
+                menuFlock.Boids[menuFlock.Boids.Count - 1].UseDefaultColor = false;
+                menuFlock.Boids[menuFlock.Boids.Count - 1].Color = Disco();
+                menuFlock.Boids[menuFlock.Boids.Count - 1].HasTrail = true;
+                menuFlock.RepositionBoidTo(menuFlock.Boids[menuFlock.Boids.Count - 1],
+                    new Vector2(mouseState.Position.X, mouseState.Position.Y));
+            }
+            else
+            {
+                _spriteBatch.Draw(
+                    customCursor,
+                    new Rectangle(mouseState.X, mouseState.Y, 16, 16),
+                    Color.White
+                    );
+
+                foreach (Boid boid in menuFlock.Boids)
+                {
+                    if (boid.IsSpecial || boid.UseSpecialAsset)
+                    {
+                        boid.UseDefaultColor = false;
+                    }
+                    else
+                    {
+                        boid.UseDefaultColor = true;
+                    }
+                }
+            }
+
+            // Rave mechanics
+            if (rave)
             {
                 if (raveTimer <= 0)
                 {
@@ -948,35 +983,20 @@ namespace BoidBash
                     Color.White
                     );
                     raveTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
-
+                }                              
             }
-            else
-            {
-                _spriteBatch.Draw(
-                    customCursor,
-                    new Rectangle(mouseState.X, mouseState.Y, 16, 16),
-                    Color.White
-                    );
 
-                foreach (Boid boid in menuFlock.Boids)
-                {
-                    if (boid.IsSpecial)
-                    {
-                        boid.UseDefaultColor = false;
-                    }
-                    else
-                    {
-                        boid.UseDefaultColor = true;
-                    }
-                }
+            // Custom cursor boid processing
+            if (addCursorBoid)
+            {
+                menuFlock.Boids[menuFlock.Boids.Count - 1].Color = Disco();
             }
 
             // End the Sprite Batch and the ShapeBatch
             _spriteBatch.End();
             ShapeBatch.End();
-
             base.Draw(gameTime);
+
         }
 
         /// <summary>
@@ -1054,6 +1074,10 @@ namespace BoidBash
                 // Turn off rave
                 rave = false;
                 code = "";
+
+                // Reset cursor Boid
+                menuFlock.RemoveBoid(menuFlock.Boids[menuFlock.Boids.Count - 1]);
+                addCursorBoid = false;
 
                 // Change Game state
                 currentState = GameState.SingleGame;
