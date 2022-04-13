@@ -38,6 +38,7 @@ namespace BoidBash
         public Rectangle PredatorPosition
         {
             get { return position; }
+            set { position = value; }
         }
         /// <summary>
         /// ActualPosition returns the center of the rectangle that the predator is drawn upon
@@ -45,6 +46,15 @@ namespace BoidBash
         public Vector2 ActualPosition
         {
             get { return actualPosition; }
+        }
+
+        /// <summary>
+        /// Sets and returns the predator bounds
+        /// </summary>
+        public Rectangle PredatorBounds
+        {
+            set { predatorBounds = value; }
+            get { return predatorBounds; }
         }
 
         /// <summary>
