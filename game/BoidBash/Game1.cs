@@ -187,7 +187,8 @@ namespace BoidBash
         private float soundVolume = 1;
         private int optionsSelection = 1;
         private int boidColorSelection = 1;
-        private int predatorColorSelection = 4;
+        private int predatorColorSelection1 = 4;
+        private int predatorColorSelection2 = 1;
         private int borderFadeSelection = 1;
         private int buttonColorSelection = 4;
         private int menuSelection = 1;
@@ -890,11 +891,15 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(100, 390), Color.White);
                     if (optionsSelection == 4)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 430, 50, 50), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 - 20, 410), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 35, 410), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100, 430, 50, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100, 430, 50, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection * 100, 430, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100, 430, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100, 430, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, predatorColorSelectors[0], boidColor);
                     _spriteBatch.Draw(blank, predatorColorSelectors[1], Color.Green);
@@ -1070,22 +1075,22 @@ namespace BoidBash
         private void ProcessMainMenu(GameTime gameTime)
         {
             // Choose Option in menu
-            if (IsSingleKeyPress(Keys.A) && menuSelection > 1)
+            if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)) && menuSelection > 1)
             {
                 clicked.Play();
                 menuSelection--;
             }
-            else if (IsSingleKeyPress(Keys.A))
+            else if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)))
             {
                 clicked.Play();
                 menuSelection = 5;
             }
-            if (IsSingleKeyPress(Keys.D) && menuSelection < 5)
+            if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && menuSelection < 5)
             {
                 clicked.Play();
                 menuSelection++;
             }
-            else if (IsSingleKeyPress(Keys.D))
+            else if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)))
             {
                 clicked.Play();
                 menuSelection = 1;
@@ -1426,24 +1431,24 @@ namespace BoidBash
             {
                 case 1:
                     // Change Music Volume
-                    if (IsSingleKeyPress(Keys.A) && musicVolume > 0.2f)
+                    if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)) && musicVolume > 0.2f)
                     {
                         clicked.Play();
                         musicVolume -= 0.2f;
                     }
-                    if (IsSingleKeyPress(Keys.D) && musicVolume < 1)
+                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && musicVolume < 1)
                     {
                         clicked.Play();
                         musicVolume += 0.2f;
                     }
                     break;
                 case 2:
-                    if (IsSingleKeyPress(Keys.A) && soundVolume > 0.2f)
+                    if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)) && soundVolume > 0.2f)
                     {
                         clicked.Play();
                         soundVolume -= 0.2f;
                     }
-                    if (IsSingleKeyPress(Keys.D) && soundVolume < 1)
+                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && soundVolume < 1)
                     {
                         clicked.Play();
                         soundVolume += 0.2f;
@@ -1451,15 +1456,25 @@ namespace BoidBash
                     break;
                 case 3:
                     // Change Boid Color
-                    if (IsSingleKeyPress(Keys.A) && boidColorSelection > 1)
+                    if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)) && boidColorSelection > 1)
                     {
                         clicked.Play();
                         boidColorSelection--;
                     }
-                    if (IsSingleKeyPress(Keys.D) && boidColorSelection < 7)
+                    else if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)))
+                    {
+                        clicked.Play();
+                        boidColorSelection = 7;
+                    }
+                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && boidColorSelection < 7)
                     {
                         clicked.Play();
                         boidColorSelection++;
+                    }
+                    else if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)))
+                    {
+                        clicked.Play();
+                        boidColorSelection = 1;
                     }
                     // Apply Color
                     switch (boidColorSelection)
@@ -1502,74 +1517,142 @@ namespace BoidBash
 
                     break;
                 case 4:
-                    // Change Predator Color
-                    if (IsSingleKeyPress(Keys.A) && predatorColorSelection > 1)
+                    // Change Main Predator Color
+                    if (IsSingleKeyPress(Keys.A) && predatorColorSelection1 > 1)
                     {
                         clicked.Play();
-                        predatorColorSelection--;
+                        predatorColorSelection1--;
                     }
-                    if (IsSingleKeyPress(Keys.D) && predatorColorSelection < 7)
+                    else if (IsSingleKeyPress(Keys.A))
                     {
                         clicked.Play();
-                        predatorColorSelection++;
+                        predatorColorSelection1 = 7;
                     }
-                    // Apply Color
-                    switch (predatorColorSelection)
+                    if (IsSingleKeyPress(Keys.D) && predatorColorSelection1 < 7)
+                    {
+                        clicked.Play();
+                        predatorColorSelection1++;
+                    }
+                    else if (IsSingleKeyPress(Keys.D))
+                    {
+                        clicked.Play();
+                        predatorColorSelection1 = 1;
+                    }
+
+                    // Change Player 2 Predator Color
+                    if (IsSingleKeyPress(Keys.Left) && predatorColorSelection2 > 1)
+                    {
+                        clicked.Play();
+                        predatorColorSelection2--;
+                    }
+                    else if (IsSingleKeyPress(Keys.Left))
+                    {
+                        clicked.Play();
+                        predatorColorSelection2 = 7;
+                    }
+                    if (IsSingleKeyPress(Keys.Right) && predatorColorSelection2 < 7)
+                    {
+                        clicked.Play();
+                        predatorColorSelection2++;
+                    }
+                    else if (IsSingleKeyPress(Keys.Right))
+                    {
+                        clicked.Play();
+                        predatorColorSelection2 = 1;
+                    }
+
+                    // Apply Color to main predator
+                    switch (predatorColorSelection1)
                     {
                         case 1:
                             predatorWASD.Color = boidColor;
-                            predatorWASDArrows.Color = boidColor;
-                            predatorArrows.Color = boidColor;
+                            predatorWASDArrows.Color = boidColor;                           
                             break;
 
                         case 2:
                             predatorWASD.Color = Color.Green;
                             predatorWASDArrows.Color = Color.Green;
-                            predatorArrows.Color = Color.Green;
                             break;
 
                         case 3:
                             predatorWASD.Color = Color.Orange;
                             predatorWASDArrows.Color = Color.Orange;
-                            predatorArrows.Color = Color.Orange;
                             break;
 
                         case 4:
                             predatorWASD.Color = Color.Red;
                             predatorWASDArrows.Color = Color.Red;
-                            predatorArrows.Color = Color.Red;
                             break;
 
                         case 5:
                             predatorWASD.Color = Color.Magenta;
                             predatorWASDArrows.Color = Color.Magenta;
-                            predatorArrows.Color = Color.Magenta;
                             break;
 
                         case 6:
                             predatorWASD.Color = Color.Blue;
                             predatorWASDArrows.Color = Color.Blue;
-                            predatorArrows.Color = Color.Blue;
                             break;
 
                         case 7:
                             predatorWASD.Color = Color.White;
                             predatorWASDArrows.Color = Color.White;
+                            break;
+                    }
+                    
+                    switch (predatorColorSelection2)
+                    {
+                        case 1:
+                            predatorArrows.Color = boidColor;
+                            break;
+
+                        case 2:
+                            predatorArrows.Color = Color.Green;
+                            break;
+
+                        case 3:
+                            predatorArrows.Color = Color.Orange;
+                            break;
+
+                        case 4:
+                            predatorArrows.Color = Color.Red;
+                            break;
+
+                        case 5:
+                            predatorArrows.Color = Color.Magenta;
+                            break;
+
+                        case 6:
+                            predatorArrows.Color = Color.Blue;
+                            break;
+
+                        case 7:
                             predatorArrows.Color = Color.White;
                             break;
                     }
-                    break;
+
+                break;
                 // Change Button Color
                 case 5:
-                    if (IsSingleKeyPress(Keys.A) && buttonColorSelection > 1)
+                    if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)) && buttonColorSelection > 1)
                     {
                         clicked.Play();
                         buttonColorSelection--;
                     }
-                    if (IsSingleKeyPress(Keys.D) && buttonColorSelection < 7)
+                    else if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)))
+                    {
+                        clicked.Play();
+                        buttonColorSelection = 7;
+                    }
+                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && buttonColorSelection < 7)
                     {
                         clicked.Play();
                         buttonColorSelection++;
+                    }
+                    else if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)))
+                    {
+                        clicked.Play();
+                        buttonColorSelection = 1;
                     }
                     switch (buttonColorSelection)
                     {
@@ -1619,15 +1702,25 @@ namespace BoidBash
                     break;
                 case 6:
                     // Change Border Fade
-                    if (IsSingleKeyPress(Keys.A) && borderFadeSelection > 1)
+                    if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)) && borderFadeSelection > 1)
                     {
                         clicked.Play();
                         borderFadeSelection--;
                     }
-                    if (IsSingleKeyPress(Keys.D) && borderFadeSelection < 4)
+                    else if ((IsSingleKeyPress(Keys.A) || IsSingleKeyPress(Keys.Left)))
+                    {
+                        clicked.Play();
+                        borderFadeSelection = 4;
+                    }
+                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && boidColorSelection < 4)
                     {
                         clicked.Play();
                         borderFadeSelection++;
+                    }
+                    else if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)))
+                    {
+                        clicked.Play();
+                        borderFadeSelection = 1;
                     }
                     switch (borderFadeSelection)
                     {
