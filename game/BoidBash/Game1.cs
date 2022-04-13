@@ -973,6 +973,7 @@ namespace BoidBash
                     foreach (Boid boid in menuFlock.Boids)
                     {
                         boid.UseDefaultColor = false;
+                        boid.Color = Disco();
                     }
                 }
                 else
