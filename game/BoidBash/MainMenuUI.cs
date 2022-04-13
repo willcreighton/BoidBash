@@ -53,14 +53,14 @@ namespace BoidBash
             // Boid Bash logo
             _spriteBatch.Draw(
                 boidBashLogo,
-                new Rectangle(405, 100, 342, 300),
+                new Rectangle(405, 50, 342, 300),
                 Color.White
                 );
 
             // Play prompt
             _spriteBatch.Draw(
                 playPrompt,
-                new Vector2(460, windowHeight - 400),
+                new Vector2(460, windowHeight - 450),
                 Color.White
                 );
 

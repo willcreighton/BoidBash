@@ -190,6 +190,7 @@ namespace BoidBash
         private int predatorColorSelection = 4;
         private int borderFadeSelection = 1;
         private int buttonColorSelection = 4;
+        private int menuSelection = 1;
         private Color fadeStart = Color.Lime;
         private Color fadeEnd = Color.Red;
 
@@ -508,9 +509,39 @@ namespace BoidBash
                 case GameState.MainMenu:
                     menuFlock.Draw();
                     mainMenuUI.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(senRegular, String.Format("HIGH SCORES"), new Vector2(40, 15), Color.White);
-                    _spriteBatch.DrawString(senRegular, String.Format("________________"), new Vector2(30, 20), Color.White);
-                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(15, 45), Color.White);
+                    switch (menuSelection)
+                    {
+                        // Single player
+                        case 1:
+                            _spriteBatch.DrawString(senRegular, String.Format("Single Player"), new Vector2(515, 410), Color.White);
+                            break;
+
+                        // Versus
+                        case 2:
+                            _spriteBatch.DrawString(senRegular, String.Format("Versus"), new Vector2(545, 410), Color.White);
+                            break;
+
+                        // Options
+                        case 3:
+                            _spriteBatch.DrawString(senRegular, String.Format("Options"), new Vector2(540, 410), Color.White);
+                            break;
+
+                        // Instructions
+                        case 4:
+                            _spriteBatch.DrawString(senRegular, String.Format("Instructions"), new Vector2(520, 410), Color.White);
+                            break;
+
+                        // Credits
+                        case 5:
+                            _spriteBatch.DrawString(senRegular, String.Format("Credits"), new Vector2(540, 410), Color.White);
+                            break;
+                    }
+                    _spriteBatch.DrawString(senRegular, String.Format("<                            >"), new Vector2(485, 410), Color.White);
+
+
+                    _spriteBatch.DrawString(senRegular, String.Format("HIGH SCORES"), new Vector2(500, 550), Color.White);
+                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(450, 580), Color.White);
+
                     break;
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1038,57 +1069,100 @@ namespace BoidBash
         /// </summary>
         private void ProcessMainMenu(GameTime gameTime)
         {
+            // Choose Option in menu
+            if (IsSingleKeyPress(Keys.A) && menuSelection > 1)
+            {
+                clicked.Play();
+                menuSelection--;
+            }
+            else if (IsSingleKeyPress(Keys.A))
+            {
+                clicked.Play();
+                menuSelection = 5;
+            }
+            if (IsSingleKeyPress(Keys.D) && menuSelection < 5)
+            {
+                clicked.Play();
+                menuSelection++;
+            }
+            else if (IsSingleKeyPress(Keys.D))
+            {
+                clicked.Play();
+                menuSelection = 1;
+            }
+
             // If they start the game with space bar
             if (IsSingleKeyPress(Keys.Space))
             {
-                // Play game music
-                MediaPlayer.Play(gameMusic);
-                MediaPlayer.IsRepeating = true;
-
-                // Play state change SFX
-                stateChange.Play();
-
-                // Reset timer to 30
-                timer = 30;
-
-                // Clear all prints and timers
-                flock.Bashers.ScoreTimers.Clear();
-                flock.Bashers.ScorePrints.Clear();
-                totalScoreIncrementPrint.Clear();
-                totalScoreIncrementTimer.Clear();
-                totalTimeIncrementPrint.Clear();
-                totalTimeIncrementTimer.Clear();
-
-                // Clear the Game flock of all excess boids above 50
-                // This is more efficient than clearing and adding all back in
-                for (int x = flock.Boids.Count - 1; x >= 50; x--)
+                // Game State
+                if (menuSelection == 1)
                 {
-                    flock.RemoveBoid(flock.Boids[x]);
+                    // Play game music
+                    MediaPlayer.Play(gameMusic);
+                    MediaPlayer.IsRepeating = true;
+
+                    // Play state change SFX
+                    stateChange.Play();
+
+                    // Reset timer to 30
+                    timer = 30;
+
+                    // Clear all prints and timers
+                    flock.Bashers.ScoreTimers.Clear();
+                    flock.Bashers.ScorePrints.Clear();
+                    totalScoreIncrementPrint.Clear();
+                    totalScoreIncrementTimer.Clear();
+                    totalTimeIncrementPrint.Clear();
+                    totalTimeIncrementTimer.Clear();
+
+                    // Clear the Game flock of all excess boids above 50
+                    // This is more efficient than clearing and adding all back in
+                    for (int x = flock.Boids.Count - 1; x >= 50; x--)
+                    {
+                        flock.RemoveBoid(flock.Boids[x]);
+                    }
+                    // Reposition all boids
+                    flock.RepositionBoids();
+
+                    // Reset bash totals
+                    flock.Bashers.TotalBoidsBashed = 0;
+                    flock.Bashers.TotalSpecialBoidsBashed = 0;
+
+                    // Turn off rave
+                    rave = false;
+                    code = "";
+
+                    // Reset cursor Boid
+                    menuFlock.RemoveBoid(menuFlock.Boids[menuFlock.Boids.Count - 1]);
+                    addCursorBoid = false;
+
+                    // Change Game state
+                    currentState = GameState.SingleGame;
                 }
-                // Reposition all boids
-                flock.RepositionBoids();
+                // Versus Mode
+                else if (menuSelection == 2)
+                {
 
-                // Reset bash totals
-                flock.Bashers.TotalBoidsBashed = 0;
-                flock.Bashers.TotalSpecialBoidsBashed = 0;
+                }
+                // Options
+                else if (menuSelection == 3)
+                {
+                    code = "";
+                    stateChange.Play();
+                    currentState = GameState.Options;
+                }
+                // Instructions
+                else if (menuSelection == 4)
+                {
 
-                // Turn off rave
-                rave = false;
-                code = "";
+                }
+                // Credits
+                else if (menuSelection == 5)
+                {
 
-                // Reset cursor Boid
-                menuFlock.RemoveBoid(menuFlock.Boids[menuFlock.Boids.Count - 1]);
-                addCursorBoid = false;
+                }
 
-                // Change Game state
-                currentState = GameState.SingleGame;
 
-            }
-            // Swap to options menu
-            if (IsSingleKeyPress(Keys.O))
-            {
-                stateChange.Play();
-                currentState = GameState.Options;
             }
 
             // Detect Konami Code
@@ -1097,7 +1171,7 @@ namespace BoidBash
                 // Set key to the key that was pressed
                 key = keyboardState.GetPressedKeys()[0];
                 // If it is a single key press of that key
-                if (IsSingleKeyPress(key))
+                if (IsSingleKeyPress(key) && key != (Keys.Space) && key != (Keys.D))
                 {
                     code += key.ToString();
                 }
