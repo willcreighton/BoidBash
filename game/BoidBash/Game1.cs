@@ -479,6 +479,18 @@ namespace BoidBash
                     ProcessEndScreen();
                     break;
 
+                // Instructions Screen
+                case GameState.Instructions:
+                    // Apply Instructions processing
+                    ProcessInstructions();
+                    break;
+
+                // Credits Screen
+                case GameState.Credits:
+                    // Apply Credits processing
+                    ProcessCredits();
+                    break;
+
                 default:
                     break;
             }
@@ -497,7 +509,6 @@ namespace BoidBash
             // Begin the Sprite Batch and the ShapeBatch
             ShapeBatch.Begin(GraphicsDevice);
             _spriteBatch.Begin();
-
 
             mouseState = Mouse.GetState();
 
@@ -951,6 +962,11 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu and confirm", new Vector2(190, 700), Color.White);
                     break;
 
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Instructions
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
                 default:
                     break;
             }
@@ -1161,12 +1177,12 @@ namespace BoidBash
                 // Instructions
                 else if (menuSelection == 4)
                 {
-
+                    currentState = GameState.Instructions;
                 }
                 // Credits
                 else if (menuSelection == 5)
                 {
-
+                    currentState = GameState.Credits;
                 }
 
 
@@ -1413,6 +1429,9 @@ namespace BoidBash
 
         }
 
+        /// <summary>
+        /// This method processes the Options state
+        /// </summary>
         private void ProcessOptions()
         {
             // Select volume setting
@@ -1763,6 +1782,30 @@ namespace BoidBash
             }
             SoundEffect.MasterVolume = soundVolume;
             MediaPlayer.Volume = musicVolume;
+        }
+
+        /// <summary>
+        /// This method processes the Instructions state
+        /// </summary>
+        private void ProcessInstructions()
+        {
+            if (IsSingleKeyPress(Keys.M))
+            {
+                stateChange.Play();
+                currentState = GameState.MainMenu;
+            }
+        }
+
+        /// <summary>
+        /// This method processes the Credits state
+        /// </summary>
+        private void ProcessCredits()
+        {
+            if (IsSingleKeyPress(Keys.M))
+            {
+                stateChange.Play();
+                currentState = GameState.MainMenu;
+            }
         }
 
 
