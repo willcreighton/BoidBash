@@ -33,7 +33,7 @@ namespace BoidBash
         private MouseState mouseState;
 
         // Total addition print lists
-        private List<int> totalScoreIncrementPrint = new List<int>();
+        private List<long> totalScoreIncrementPrint = new List<long>();
         private List<float> totalScoreIncrementTimer = new List<float>();
         private List<int> totalTimeIncrementPrint = new List<int>();
         private List<float> totalTimeIncrementTimer = new List<float>();
@@ -1782,16 +1782,16 @@ namespace BoidBash
         public void Bashed(int pen)
         {
             // Bash boids in pen, and get the data from it
-            Vector2 dataReturn;
+            long dataReturn;
             dataReturn = flock.Bashers.BashContainedBoids(flock, pen, scoreGoal);
 
             // Add score increment to player score
-            player1Score += (ulong)dataReturn.X;
+            player1Score += (ulong)dataReturn;
 
             // Add total to totalscoreincrementprints, as long as points were added
-            if (dataReturn.X > 0)
+            if (dataReturn > 0)
             {
-                totalScoreIncrementPrint.Add((int)dataReturn.X);
+                totalScoreIncrementPrint.Add(dataReturn);
                 totalScoreIncrementTimer.Add(2);
             }
 
@@ -1800,18 +1800,18 @@ namespace BoidBash
             // 2 - > timer goes up
             // 3 - > both go up
             // Anything else -> no effect
-            if (dataReturn.Y == 1)
+            if (flock.Bashers.UpScoreGoal == 1)
             {
                 scoreGoal++;
             }
-            else if (dataReturn.Y == 2)
+            else if (flock.Bashers.UpScoreGoal == 2)
             {
                 // Add to timerincrementprints and timers
                 totalTimeIncrementPrint.Add(2);
                 totalTimeIncrementTimer.Add(2);
                 timer += 2;
             }
-            else if (dataReturn.Y == 3)
+            else if (flock.Bashers.UpScoreGoal == 3)
             {
                 // Add to timerincrementprints and timers
                 totalTimeIncrementPrint.Add(2);

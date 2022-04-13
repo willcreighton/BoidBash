@@ -25,6 +25,7 @@ namespace BoidBash
         private List<float> specialScoreTimers = new List<float>();
         private int totalBoidsBashed;
         private int totalSpecialBoidsBashed;
+        private int upScoreGoal = -1;
         private SoundEffect smallBash;
         private SoundEffect mediumBash;
         private SoundEffect largeBash;
@@ -94,6 +95,13 @@ namespace BoidBash
             set { totalSpecialBoidsBashed = value; }
         }
 
+        public int UpScoreGoal
+        {
+            get { return upScoreGoal; }
+            set { upScoreGoal = value; }
+        }
+
+
         // Sound Effect Properties
         /// <summary>
         /// Sets the smallbash sfx
@@ -156,11 +164,11 @@ namespace BoidBash
         /// </summary>
         /// <param name="flock"></param>
         /// <param name="pen"></param>
-        public Vector2 BashContainedBoids(Flock flock, int pen, int scoregoal)
+        public long BashContainedBoids(Flock flock, int pen, int scoregoal)
         {
             // Create necessary values
             // The value the score will be increased by
-            int scoreIncrease = 0;
+            long scoreIncrease = 0;
             int toAdd = 0;
             // number of boids that have been bashed
             int boidsBashed = 0;
@@ -288,8 +296,11 @@ namespace BoidBash
             // increment total boids bashed
             totalBoidsBashed += boidsBashed;
 
+            // Set score goal property
+            this.upScoreGoal = ifScoreGoal;
+
             // Return vector
-            return returnNums;
+            return scoreIncrease;
         }
     }
 }
