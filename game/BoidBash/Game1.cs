@@ -214,7 +214,7 @@ namespace BoidBash
         private List<Rectangle> bounds = new List<Rectangle>();
         private List<Rectangle> menuBounds = new List<Rectangle>();
         private List<Rectangle> instructionBounds = new List<Rectangle>();
-        private bool inDebug = true;
+        private bool inDebug = false;
         private Rectangle creationBounds = new Rectangle(300, 300, 600, 300);
 
         public int Width
