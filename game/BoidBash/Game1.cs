@@ -514,27 +514,27 @@ namespace BoidBash
                     {
                         // Single player
                         case 1:
-                            _spriteBatch.DrawString(senRegular, String.Format("Single Player"), new Vector2(515, 410), Color.White);
+                            _spriteBatch.DrawString(senRegular, String.Format("Single Player"), new Vector2(515, 410), Color.Yellow);
                             break;
 
                         // Versus
                         case 2:
-                            _spriteBatch.DrawString(senRegular, String.Format("Versus"), new Vector2(545, 410), Color.White);
+                            _spriteBatch.DrawString(senRegular, String.Format("Versus"), new Vector2(545, 410), Color.Yellow);
                             break;
 
                         // Options
                         case 3:
-                            _spriteBatch.DrawString(senRegular, String.Format("Options"), new Vector2(540, 410), Color.White);
+                            _spriteBatch.DrawString(senRegular, String.Format("Options"), new Vector2(540, 410), Color.Yellow);
                             break;
 
                         // Instructions
                         case 4:
-                            _spriteBatch.DrawString(senRegular, String.Format("Instructions"), new Vector2(520, 410), Color.White);
+                            _spriteBatch.DrawString(senRegular, String.Format("Instructions"), new Vector2(520, 410), Color.Yellow);
                             break;
 
                         // Credits
                         case 5:
-                            _spriteBatch.DrawString(senRegular, String.Format("Credits"), new Vector2(540, 410), Color.White);
+                            _spriteBatch.DrawString(senRegular, String.Format("Credits"), new Vector2(540, 410), Color.Yellow);
                             break;
                     }
                     _spriteBatch.DrawString(senRegular, String.Format("<                            >"), new Vector2(485, 410), Color.White);
@@ -891,13 +891,15 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(100, 390), Color.White);
                     if (optionsSelection == 4)
                     {
-                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 - 20, 410), Color.Yellow);
-                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 35, 410), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 - 20, 407), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 35, 407), Color.Yellow);
                         _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100, 430, 50, 50), Color.Yellow);
                         _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100, 430, 50, 50), Color.Yellow);
                     }
                     else
                     {
+                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 - 20, 407), Color.White);
+                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 35, 407), Color.White);
                         _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100, 430, 50, 50), Color.White);
                         _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100, 430, 50, 50), Color.White);
                     }
