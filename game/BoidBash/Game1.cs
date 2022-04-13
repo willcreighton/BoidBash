@@ -904,8 +904,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, borderColorSelectors[6], Color.Orange);
                     _spriteBatch.Draw(blank, borderColorSelectors[7], Color.Purple);
 
-                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu", new Vector2(190, 700), Color.White);
-
+                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu and confirm", new Vector2(190, 700), Color.White);
                     break;
 
                 default:
@@ -1154,24 +1153,39 @@ namespace BoidBash
                 // Update player highscores
                 if (CompareToList(player1Score))
                 {
-                    if (name == "")
+                    if (!(name.Length <= 2))
                     {
-                        name = "---";
+                        // Play menu music
+                        MediaPlayer.Play(menuMusic);
+                        MediaPlayer.IsRepeating = true;
+                        stateChange.Play();
+                        // Change game state
+                        currentState = GameState.MainMenu;
+                        UpdateScores(player1Score);
+
+                        name = "";                      
+                        // Reset player score and score goal
+                        scoreGoal = 1;
+                        player1Score = 0;
                     }
+                }
+                else
+                {
+                    // Play menu music
+                    MediaPlayer.Play(menuMusic);
+                    MediaPlayer.IsRepeating = true;
+                    stateChange.Play();
+                    // Change game state
+                    currentState = GameState.MainMenu;
+                    // Reset player score and score goal
+                    player1Score = 0;
+                    scoreGoal = 1;
+
+                    name = "";
                     UpdateScores(player1Score);
                 }
 
-                // Play menu music
-                MediaPlayer.Play(menuMusic);
-                MediaPlayer.IsRepeating = true;
-                stateChange.Play();
-                // Change game state
-                currentState = GameState.MainMenu;
-                // Reset player score and score goal
-                player1Score = 0;
-                scoreGoal = 1;
-
-                name = "";
+                
             }
             // Otherwise, if Space is pressed, go back to Game
             else if (IsSingleKeyPress(Keys.Space))
