@@ -46,6 +46,7 @@ namespace BoidBash
 
         // Buttons
         private List<Button> buttons = new List<Button>();
+        private List<Button> instructionButtons = new List<Button>();
         private Color bgColor = Color.White;
         private Random rng = new Random();
         private Texture2D bashButton;
@@ -107,6 +108,7 @@ namespace BoidBash
         private Texture2D boidSprite;
         private Flock flock;
         private Flock menuFlock;
+        private Flock instructionsFlock;
         private Texture2D displayBoid;
 
         // Predator
@@ -153,7 +155,17 @@ namespace BoidBash
               new Rectangle(1000, 350, 5, 450), new Rectangle(850, 800, 155, 5), new Rectangle(845, 700, 5, 105),
               new Rectangle(95, 700, 750, 5), new Rectangle(95, 550, 5, 150), new Rectangle(95, 550, 105, 5)};
 
+        private Rectangle[] instructionsBashers = new Rectangle[2]
+            { new Rectangle(100, 550, 100, 200), new Rectangle(1000, 550, 100, 200) };
+
+        private Rectangle[] instructionsBarriers = new Rectangle[8] 
+        { new Rectangle(100, 400, 100, 150), new Rectangle(100, 400, 1000, 100), new Rectangle(1000, 400, 100, 150),
+          new Rectangle(1000, 750, 100, 150), new Rectangle(100, 750, 100, 150), new Rectangle(100, 800, 1000, 100),
+          new Rectangle(0, 400, 100, 700), new Rectangle(1100, 400, 100, 700)};
+
         private Rectangle singlePlayerPlayArea = new Rectangle(200, 200, 800, 500);
+
+        private Rectangle instructionsPlayArea = new Rectangle(200, 500, 800, 300);
 
         private Rectangle[] displayBoids = new Rectangle[4]
             { new Rectangle(15, 290, 46, 60), new Rectangle(15, 390, 46, 60),
@@ -201,7 +213,8 @@ namespace BoidBash
         private Texture2D glowBorder;
         private List<Rectangle> bounds = new List<Rectangle>();
         private List<Rectangle> menuBounds = new List<Rectangle>();
-        private bool inDebug = false;
+        private List<Rectangle> instructionBounds = new List<Rectangle>();
+        private bool inDebug = true;
         private Rectangle creationBounds = new Rectangle(300, 300, 600, 300);
 
         public int Width
@@ -300,6 +313,9 @@ namespace BoidBash
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
+            instructionsFlock = new Flock(10, new Rectangle(500, 600, 200, 100),
+            boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+
             // Set menu flock backgroundColor
             menuFlock.BackgroundColor = backgroundColor;
 
@@ -315,6 +331,12 @@ namespace BoidBash
             menuFlock.Bashers.LargeBash = largeBash;
             menuFlock.Bashers.TimeIncrease = timeIncrease;
             menuFlock.Bashers.AddBoids = addBoids;
+
+            instructionsFlock.Bashers.SmallBash = smallBash;
+            instructionsFlock.Bashers.MediumBash = mediumBash;
+            instructionsFlock.Bashers.LargeBash = largeBash;
+            instructionsFlock.Bashers.TimeIncrease = timeIncrease;
+            instructionsFlock.Bashers.AddBoids = addBoids;
 
             // Apply Disco mode colors to menu boids but do not activate
             foreach (Boid boid in menuFlock.Boids)
@@ -349,11 +371,26 @@ namespace BoidBash
             menuBounds.Add(new Rectangle(1200, 0, 100, 900));
             menuFlock.Boundaries = menuBounds;
 
+            // Instructions boundaries
+            instructionBounds.Add(new Rectangle(100, 400, 100, 150));
+            instructionBounds.Add(new Rectangle(100, 400, 1000, 100));
+            instructionBounds.Add(new Rectangle(1000, 400, 100, 150));
+            instructionBounds.Add(new Rectangle(1000, 750, 100, 150));
+            instructionBounds.Add(new Rectangle(100, 750, 100, 150));
+            instructionBounds.Add(new Rectangle(100, 800, 1000, 100));
+            instructionBounds.Add(new Rectangle(0, 400, 100, 700));
+            instructionBounds.Add(new Rectangle(1100, 400, 100, 700));
+            instructionsFlock.Boundaries = instructionBounds;
+
             // Add bashing pens to flock's bashers
             flock.Bashers.Pens.Add(new Rectangle(200, 100, 150, 100));
             flock.Bashers.Pens.Add(new Rectangle(1000, 200, 100, 150));
             flock.Bashers.Pens.Add(new Rectangle(850, 700, 150, 100));
             flock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 150));
+
+            // Add bashing pens to Instruction flock
+            instructionsFlock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 200));
+            instructionsFlock.Bashers.Pens.Add(new Rectangle(1000, 550, 100, 200));
 
             // Create the predator
             predatorWASDArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
@@ -409,6 +446,24 @@ namespace BoidBash
                     clicked));
             buttons[3].OnButtonClick += this.Bashed;
 
+            // Add instruction Buttons
+            instructionButtons.Add(new Button(
+                   _graphics.GraphicsDevice,           // Device to create a custom texture
+                   new Rectangle(110, 110, 80, 80),    // Where to put the button
+                   Color.Red,                      // Button color
+                   0,                                  // Pen number
+                   bashButton,                         // Texture
+                   clicked));
+            instructionButtons[0].OnButtonClick += this.Bashed;
+            instructionButtons.Add(new Button(
+                   _graphics.GraphicsDevice,           // Device to create a custom texture
+                   new Rectangle(110, 110, 80, 80),    // Where to put the button
+                   Color.Red,                      // Button color
+                   0,                                  // Pen number
+                   bashButton,                         // Texture
+                   clicked));
+            instructionButtons[0].OnButtonClick += this.Bashed;
+
             // Add Excluded keys for names
             excludedKeys.Add(Keys.Space);
             excludedKeys.Add(Keys.LeftShift);
@@ -461,6 +516,11 @@ namespace BoidBash
                 case GameState.Options:
                     // Apply Options processing
                     ProcessOptions();
+                    break;
+
+                // Instructions 
+                case GameState.Instructions:
+                    ProcessInstructions(gameTime);
                     break;
 
                 // Versus Mode
@@ -843,6 +903,32 @@ namespace BoidBash
                     Color.White);
                     }
                     break;
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Instructions
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.Instructions:
+
+                    // Draw Play Area
+                    _spriteBatch.Draw(blank, instructionsPlayArea, playAreaColor);
+                    if (inDebug)
+                    {       
+                        
+                    }
+                    // Draw Pens
+                    foreach (Rectangle pen in instructionsBashers)
+                    {
+                        _spriteBatch.Draw(blank, pen, penColor);
+                    }
+                    // Draw Barriers
+                    foreach (Rectangle barrier in instructionsBarriers)
+                    {
+                        _spriteBatch.Draw(blank, barrier, Color.Gray);
+                    }
+                    // Draw Flock
+                    instructionsFlock.Draw();
+                    predatorWASDArrows.Draw(_spriteBatch);
+                    break;
+
 
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1146,7 +1232,9 @@ namespace BoidBash
                     }
                     // Reposition all boids
                     flock.RepositionBoids();
-
+                    // Set Predator Boundaries
+                    predatorWASDArrows.PredatorBounds = singlePlayerPlayArea;
+                    predatorWASDArrows.Position = new Rectangle(width / 2, height / 2, 35, 35);
                     // Reset bash totals
                     flock.Bashers.TotalBoidsBashed = 0;
                     flock.Bashers.TotalSpecialBoidsBashed = 0;
@@ -1177,7 +1265,11 @@ namespace BoidBash
                 // Instructions
                 else if (menuSelection == 4)
                 {
+                    code = "";
+                    stateChange.Play();
                     currentState = GameState.Instructions;
+                    predatorWASDArrows.Position = new Rectangle(550, 500, 35, 35);
+                    predatorWASDArrows.PredatorBounds = instructionsPlayArea;
                 }
                 // Credits
                 else if (menuSelection == 5)
@@ -1753,6 +1845,7 @@ namespace BoidBash
                         clicked.Play();
                         borderFadeSelection = 1;
                     }
+                    // Apply Border Fade
                     switch (borderFadeSelection)
                     {
                         case 1:
@@ -1785,29 +1878,16 @@ namespace BoidBash
         }
 
         /// <summary>
-        /// This method processes the Instructions state
+        /// Processes the instructions menu
         /// </summary>
-        private void ProcessInstructions()
+        private void ProcessInstructions(GameTime gameTime)
         {
-            if (IsSingleKeyPress(Keys.M))
-            {
-                stateChange.Play();
-                currentState = GameState.MainMenu;
-            }
-        }
+            instructionsFlock.ProcessBoids(new Vector2[] 
+            { new Vector2(predatorWASDArrows.ActualPosition.X,
+            predatorWASDArrows.ActualPosition.Y) });
 
-        /// <summary>
-        /// This method processes the Credits state
-        /// </summary>
-        private void ProcessCredits()
-        {
-            if (IsSingleKeyPress(Keys.M))
-            {
-                stateChange.Play();
-                currentState = GameState.MainMenu;
-            }
+            predatorWASDArrows.Update(gameTime);
         }
-
 
         /// <summary>
         /// This method updates the high scores text file
@@ -1998,7 +2078,6 @@ namespace BoidBash
 
         /// <summary>
         /// Called When a button is clicked in order to bash the boids in the pen
-        /// ~~~ Note from Brian -> When we update this for multiplayer, we'll have to pass in which player score to increment
         /// </summary>
         /// <param name="pen"></param>
         public void Bashed(int pen)
