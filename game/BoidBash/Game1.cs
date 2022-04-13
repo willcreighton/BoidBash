@@ -122,8 +122,10 @@ namespace BoidBash
 
         // Text Input
         private string name = "";
+        private string code = "";
         private Keys key;
         private List<Keys> excludedKeys = new List<Keys>();
+        bool rave = false;
 
         // Timer
         private float timer = 30f;
@@ -368,7 +370,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(110, 110, 80, 80),    // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     0,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -377,7 +379,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(1010, 110, 80, 80),   // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     1,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -386,7 +388,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(1010, 710, 80, 80),   // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     2,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -395,7 +397,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(110, 710, 80, 80),    // Where to put the button
-                    Color.DarkRed,                      // Button color
+                    Color.Red,                      // Button color
                     3,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -920,7 +922,7 @@ namespace BoidBash
                     Color.Red
                     );
             }
-            else if (mouseState.RightButton == ButtonState.Pressed)
+            else if (rave)
             {
                 _spriteBatch.Draw(
                     customCursor,
@@ -1033,14 +1035,35 @@ namespace BoidBash
                 flock.Bashers.TotalBoidsBashed = 0;
                 flock.Bashers.TotalSpecialBoidsBashed = 0;
 
+                // Turn off rave
+                rave = false;
+
                 // Change Game state
-                currentState = GameState.SingleGame; 
+                currentState = GameState.SingleGame;
+                
             }
             // Swap to options menu
             if (IsSingleKeyPress(Keys.O))
             {
                 stateChange.Play();
                 currentState = GameState.Options;
+            }
+
+            // Detect Konami Code
+            if (keyboardState.GetPressedKeys().Length == 1 && !rave)
+            {
+                // Set key to the key that was pressed
+                key = keyboardState.GetPressedKeys()[0];
+                // If it is a single key press of that key
+                if (IsSingleKeyPress(key))
+                {
+                    code += key.ToString();
+                }
+            }
+            
+            if (code == "UpUpDownDownLeftRightLeftRightBAEnter")
+            {
+                rave = true;
             }
 
             // Process Menuflock boids
