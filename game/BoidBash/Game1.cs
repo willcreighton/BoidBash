@@ -1416,15 +1416,25 @@ namespace BoidBash
             // Select volume setting
 
             // Change what option is selected
-            if (IsSingleKeyPress(Keys.W) && optionsSelection > 1)
+            if ((IsSingleKeyPress(Keys.W) || IsSingleKeyPress(Keys.Up)) && optionsSelection > 1)
             {
                 clicked.Play();
                 optionsSelection--;
             }
-            if (IsSingleKeyPress(Keys.S) && optionsSelection < 6)
+            else if ((IsSingleKeyPress(Keys.W) || IsSingleKeyPress(Keys.Up)))
+            {
+                clicked.Play();
+                optionsSelection = 6;
+            }
+            if ((IsSingleKeyPress(Keys.S) || IsSingleKeyPress(Keys.Down)) && optionsSelection < 6)
             {
                 clicked.Play();
                 optionsSelection++;
+            }
+            else if ((IsSingleKeyPress(Keys.S) || IsSingleKeyPress(Keys.Down)))
+            {
+                clicked.Play();
+                optionsSelection = 1;
             }
 
             switch (optionsSelection)
