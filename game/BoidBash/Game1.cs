@@ -126,7 +126,7 @@ namespace BoidBash
         private string code = "";
         private Keys key;
         private List<Keys> excludedKeys = new List<Keys>();
-        private float raveTimer = 9.5f;
+        private float raveTimer = 10.5f;
         private bool rave = false;
         private bool addCursorBoid = false;
 
