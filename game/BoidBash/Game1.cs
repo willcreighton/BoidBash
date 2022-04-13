@@ -1724,7 +1724,7 @@ namespace BoidBash
                         clicked.Play();
                         borderFadeSelection = 4;
                     }
-                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && boidColorSelection < 4)
+                    if ((IsSingleKeyPress(Keys.D) || IsSingleKeyPress(Keys.Right)) && borderFadeSelection < 4)
                     {
                         clicked.Play();
                         borderFadeSelection++;
