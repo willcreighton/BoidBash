@@ -510,6 +510,12 @@
 /processorParam:TextureFormat=Compressed
 /build:PrimaryFont_.spritefont
 
+#begin raveMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:raveMusic.mp3
+
 #begin ResumePrompt.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -74,6 +74,7 @@ namespace BoidBash
         // Songs
         private Song menuMusic;
         private Song gameMusic;
+        private Song raveMusic;
 
         // Screen size
         private int windowWidth;
@@ -125,7 +126,8 @@ namespace BoidBash
         private string code = "";
         private Keys key;
         private List<Keys> excludedKeys = new List<Keys>();
-        bool rave = false;
+        private float raveTimer = 9.5f;
+        private bool rave = false;
 
         // Timer
         private float timer = 30f;
@@ -264,6 +266,7 @@ namespace BoidBash
             // Load all Songs
             gameMusic = Content.Load<Song>("gameMusic");
             menuMusic = Content.Load<Song>("mainMenuMusic");
+            raveMusic = Content.Load<Song>("raveMusic");
 
             // Play music
             MediaPlayer.Play(menuMusic);
@@ -924,16 +927,29 @@ namespace BoidBash
             }
             else if (rave)
             {
-                _spriteBatch.Draw(
+                if (raveTimer <= 0)
+                {
+                    _spriteBatch.Draw(
+                                        customCursor,
+                                        new Rectangle(mouseState.X, mouseState.Y, 16, 16),
+                                        Disco()
+                                        );
+
+                    foreach (Boid boid in menuFlock.Boids)
+                    {
+                        boid.UseDefaultColor = false;
+                    }
+                }
+                else
+                {
+                    _spriteBatch.Draw(
                     customCursor,
                     new Rectangle(mouseState.X, mouseState.Y, 16, 16),
-                    Disco()
+                    Color.White
                     );
-
-                foreach (Boid boid in menuFlock.Boids)
-                {
-                    boid.UseDefaultColor = false;
+                    raveTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 }
+                
             }
             else
             {
@@ -1037,6 +1053,7 @@ namespace BoidBash
 
                 // Turn off rave
                 rave = false;
+                code = "";
 
                 // Change Game state
                 currentState = GameState.SingleGame;
@@ -1064,6 +1081,9 @@ namespace BoidBash
             if (code == "UpUpDownDownLeftRightLeftRightBAEnter")
             {
                 rave = true;
+                MediaPlayer.Play(raveMusic);
+                MediaPlayer.Volume = 10;
+                MediaPlayer.IsRepeating = true;
             }
 
             // Process Menuflock boids
