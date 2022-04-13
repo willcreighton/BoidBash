@@ -1078,11 +1078,10 @@ namespace BoidBash
                 }
             }
 
-            if (code == "UpUpDownDownLeftRightLeftRightBAEnter")
+            if (code == "UpUpDownDownLeftRightLeftRightBAEnter" && !rave)
             {
                 rave = true;
                 MediaPlayer.Play(raveMusic);
-                MediaPlayer.Volume = 10;
                 MediaPlayer.IsRepeating = true;
             }
 
