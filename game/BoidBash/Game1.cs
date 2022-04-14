@@ -10,9 +10,6 @@ using System.IO;
 namespace BoidBash
 {
     // This enumerator references the different states of the game
-    // TODO: Add Options
-    // TODO: Add Instructions
-    // TODO: Add Credits
     enum GameState
     {
         MainMenu,
@@ -112,6 +109,7 @@ namespace BoidBash
         private Flock flock;
         private Flock menuFlock;
         private Flock instructionsFlock;
+        private Flock versusFlock;
         private Texture2D displayBoid;
 
         // Predator
@@ -137,6 +135,8 @@ namespace BoidBash
 
         // Timer
         private float timer = 30f;
+        private float versusTimer1 = 30f;
+        private float versusTimer2 = 10f;
         private float raveTimer = 10.5f;
         private float menuTimer = 5;
         private float toolTipTimer = 10;
@@ -161,8 +161,23 @@ namespace BoidBash
               new Rectangle(1000, 350, 5, 450), new Rectangle(850, 800, 155, 5), new Rectangle(845, 700, 5, 105),
               new Rectangle(95, 700, 750, 5), new Rectangle(95, 550, 5, 150), new Rectangle(95, 550, 105, 5)};
 
+        private Rectangle[] versusLeftBorders = new Rectangle[]
+            { new Rectangle (100, 95, 150, 5), new Rectangle (250, 95, 5, 100), new Rectangle (95, 95, 5, 705),
+              new Rectangle (95, 800, 155, 5), new Rectangle (250, 700, 5, 105), new Rectangle (235, 700, 350, 5),
+              new Rectangle (250, 195, 365, 5)};
+
+        private Rectangle[] versusRightBorders = new Rectangle[]
+            { 
+              new Rectangle (945, 95, 5, 100), new Rectangle (945, 95, 155, 5), new Rectangle (1100, 95, 5, 705),
+              new Rectangle (945, 700, 5, 100), new Rectangle (945, 800, 160, 5), new Rectangle (615, 195, 335, 5),
+              new Rectangle (615, 700, 335, 5)};
+
         private Rectangle[] instructionsBashers = new Rectangle[2]
             { new Rectangle(100, 550, 100, 200), new Rectangle(1000, 550, 100, 200) };
+
+        private Rectangle[] versusBashers = new Rectangle[4]
+            { new Rectangle(100, 100, 150, 100), new Rectangle(950, 100, 150, 100),
+             new Rectangle(100, 700, 150, 100), new Rectangle(950, 700, 150, 100)};
 
         private Rectangle[] instructionsBarriers = new Rectangle[8] 
         { new Rectangle(100, 400, 100, 150), new Rectangle(100, 400, 1000, 100), new Rectangle(1000, 400, 100, 150),
@@ -172,6 +187,8 @@ namespace BoidBash
         private Rectangle singlePlayerPlayArea = new Rectangle(200, 200, 800, 500);
 
         private Rectangle instructionsPlayArea = new Rectangle(200, 500, 800, 300);
+
+        private Rectangle versusPlayArea = new Rectangle(100, 200, 1000, 500);
 
         private Rectangle[] displayBoids = new Rectangle[4]
             { new Rectangle(15, 290, 46, 60), new Rectangle(15, 390, 46, 60),
@@ -206,7 +223,7 @@ namespace BoidBash
         private int optionsSelection = 1;
         private int boidColorSelection = 1;
         private int predatorColorSelection1 = 4;
-        private int predatorColorSelection2 = 1;
+        private int predatorColorSelection2 = 6;
         private int borderFadeSelection = 1;
         private int buttonColorSelection = 4;
         private int menuSelection = 1;
@@ -220,6 +237,7 @@ namespace BoidBash
         private List<Rectangle> bounds = new List<Rectangle>();
         private List<Rectangle> menuBounds = new List<Rectangle>();
         private List<Rectangle> instructionBounds = new List<Rectangle>();
+        private List<Rectangle> versusBounds = new List<Rectangle>();
         private bool inDebug = false;
         private Rectangle creationBounds = new Rectangle(300, 300, 600, 300);
 
@@ -319,6 +337,9 @@ namespace BoidBash
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
+            versusFlock = new Flock(100, new Rectangle(500, 500, 100, 100),
+                boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
+
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
@@ -346,6 +367,12 @@ namespace BoidBash
             instructionsFlock.Bashers.LargeBash = largeBash;
             instructionsFlock.Bashers.TimeIncrease = timeIncrease;
             instructionsFlock.Bashers.AddBoids = addBoids;
+
+            versusFlock.Bashers.SmallBash = smallBash;
+            versusFlock.Bashers.MediumBash = mediumBash;
+            versusFlock.Bashers.LargeBash = largeBash;
+            versusFlock.Bashers.TimeIncrease = timeIncrease;
+            versusFlock.Bashers.AddBoids = addBoids;
 
             // Apply Disco mode colors to menu boids but do not activate
             foreach (Boid boid in menuFlock.Boids)
@@ -391,6 +418,19 @@ namespace BoidBash
             instructionBounds.Add(new Rectangle(1100, 400, 100, 700));
             instructionsFlock.Boundaries = instructionBounds;
 
+            // Versus boundaries
+            versusBounds.Add(new Rectangle(0, 0, 350, 100));
+            versusBounds.Add(new Rectangle(0, 0, 100, 900));
+            versusBounds.Add(new Rectangle(250, 0, 100, 200));
+            versusBounds.Add(new Rectangle(250, 100, 700, 100));
+            versusBounds.Add(new Rectangle(850, 0, 350, 100));
+            versusBounds.Add(new Rectangle(1100, 0, 100, 900));
+            versusBounds.Add(new Rectangle(0, 800, 350, 100));
+            versusBounds.Add(new Rectangle(250, 700, 700, 100));
+            versusBounds.Add(new Rectangle(850, 700, 100, 200));
+            versusBounds.Add(new Rectangle(850, 800, 250, 100));
+            versusFlock.Boundaries = versusBounds;
+
             // Add bashing pens to flock's bashers
             flock.Bashers.Pens.Add(new Rectangle(200, 100, 150, 100));
             flock.Bashers.Pens.Add(new Rectangle(1000, 200, 100, 150));
@@ -410,7 +450,7 @@ namespace BoidBash
                 windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.WASD);
             predatorArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.Arrows);
+                windowHeight, windowWidth, Color.Blue, 35, 35, ControlScheme.Arrows);
 
             // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold);
@@ -534,6 +574,7 @@ namespace BoidBash
 
                 // Versus Mode
                 case GameState.VersusGame:
+                    ProcessVersus(gameTime);
                     break;
 
                 // Pause Menu
@@ -835,6 +876,47 @@ namespace BoidBash
                 //                                         Versus Mode 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.VersusGame:
+
+                    // Draw play area
+                    _spriteBatch.Draw(blank, versusPlayArea, playAreaColor);
+
+                    // Draw bashers
+                    foreach (Rectangle pen in versusBashers)
+                    {
+                        _spriteBatch.Draw(blank, pen, penColor);
+                    }
+
+                    rInterval = (fadeEnd.R - fadeStart.R) / 30;
+                    gInterval = (fadeEnd.G - fadeStart.G) / 30;
+                    bInterval = (fadeEnd.B - fadeStart.B) / 30;
+                    colorDrawn = new Color(
+                        (fadeEnd.R + rInterval * (int)versusTimer1 * -1),
+                        (fadeEnd.G + gInterval * (int)versusTimer1 * -1),
+                        (fadeEnd.B + bInterval * (int)versusTimer1 * -1)
+                        );
+
+                    foreach (Rectangle border in versusRightBorders)
+                    {
+                        _spriteBatch.Draw(blank, border, colorDrawn);
+                    }
+
+                    rInterval = (fadeEnd.R - fadeStart.R) / 30;
+                    gInterval = (fadeEnd.G - fadeStart.G) / 30;
+                    bInterval = (fadeEnd.B - fadeStart.B) / 30;
+                    colorDrawn = new Color(
+                        (fadeEnd.R + rInterval * (int)versusTimer2 * -1),
+                        (fadeEnd.G + gInterval * (int)versusTimer2 * -1),
+                        (fadeEnd.B + bInterval * (int)versusTimer2 * -1)
+                        );
+
+                    foreach (Rectangle border in versusLeftBorders)
+                    {
+                        _spriteBatch.Draw(blank, border, colorDrawn);
+                    }
+
+                    versusFlock.Draw();
+                    predatorArrows.Draw(_spriteBatch);
+                    predatorWASD.Draw(_spriteBatch);
                     break;
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1325,7 +1407,11 @@ namespace BoidBash
                 // Versus Mode
                 else if (menuSelection == 2)
                 {
-
+                    code = "";
+                    predatorWASD.PredatorBounds = versusPlayArea;
+                    predatorArrows.PredatorBounds = versusPlayArea;
+                    stateChange.Play();
+                    currentState = GameState.VersusGame;
                 }
                 // Options
                 else if (menuSelection == 3)
@@ -1995,6 +2081,35 @@ namespace BoidBash
                 currentState = GameState.MainMenu;
             }
         }
+
+        /// <summary>
+        /// Processes the Versus Game
+        /// </summary>
+        /// <param name="gameTime"></param>
+        private void ProcessVersus(GameTime gameTime)
+        {
+            // Process Versus Flock
+            versusFlock.ProcessBoids(new Vector2[]
+            { new Vector2(predatorWASD.ActualPosition.X,
+            predatorWASD.ActualPosition.Y), new Vector2(predatorArrows.ActualPosition.X,
+            predatorArrows.ActualPosition.Y) });
+
+            // Update predators
+            predatorArrows.Update(gameTime);
+            predatorWASD.Update(gameTime);
+
+            // Update timer
+            versusTimer1 -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            versusTimer2 -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //Return to Main menu
+            if (IsSingleKeyPress(Keys.M))
+            {
+                stateChange.Play();
+                currentState = GameState.MainMenu;
+            }
+        }
+
 
         /// <summary>
         /// This method updates the high scores text file
