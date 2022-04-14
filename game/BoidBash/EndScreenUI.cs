@@ -19,6 +19,7 @@ namespace BoidBash
         private Texture2D gameOver;
         private ulong score;
         private SpriteFont senBold;
+        private Texture2D returnPrompt;
 
         // This is a property that is named Score
         public ulong Score
@@ -27,13 +28,14 @@ namespace BoidBash
         }
 
         // Constructor
-        public EndScreenUI(int windowWidth, int windowHeight, Texture2D continuePrompt, Texture2D gameOver, SpriteFont senBold)
+        public EndScreenUI(int windowWidth, int windowHeight, Texture2D continuePrompt, Texture2D gameOver, SpriteFont senBold, Texture2D returnPrompt)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.continuePrompt = continuePrompt;
             this.gameOver = gameOver;
             this.senBold = senBold;
+            this.returnPrompt = returnPrompt;
         }
 
         /// <summary>
@@ -51,8 +53,8 @@ namespace BoidBash
 
             // Continue to Main Menu prompt
             _spriteBatch.Draw(
-                continuePrompt,
-                new Vector2(460, windowHeight - 50),
+                returnPrompt,
+                new Vector2(430, windowHeight - 50),
                 Color.White
                 );
 

@@ -419,7 +419,7 @@ namespace BoidBash
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
-            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold);
+            endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold, returnPrompt);
 
             // Add buttons
             buttons.Add(new Button(
@@ -954,7 +954,7 @@ namespace BoidBash
                      senExtraBold,
                      String.Format("PRACTICE"),
                      new Vector2(490, 420),
-                    Color.White
+                    Color.Red
                      );
 
                     // Main Menu prompt
@@ -981,6 +981,15 @@ namespace BoidBash
                             new Vector2(15, 350),
                            Color.White
                             );
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("You have 30 seconds to move the PREDATOR\ntowards the BOIDS to trap them in\n" +
+                             "the BASHERS and BASH them\nto score as many points as possible!"),
+                             new Vector2(250, 125),
+                             Color.White
+                             );
+
                             break;
                         case 2:
                             _spriteBatch.DrawString(
@@ -1043,6 +1052,21 @@ namespace BoidBash
                             new Vector2(15, 350),
                            Color.White
                             );
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Player 1 Controls"),
+                             new Vector2(140, 75),
+                            Color.White
+                             );
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Player 2 Controls"),
+                             new Vector2(780, 75),
+                            Color.White
+                             );
+
                             break;
                     }
 
@@ -1744,36 +1768,43 @@ namespace BoidBash
                         case 1:
                             flock.DefaultColor = boidColor;
                             menuFlock.DefaultColor = boidColor;
+                            instructionsFlock.DefaultColor = boidColor;
                             break;
 
                         case 2:
                             flock.DefaultColor = Color.Green;
                             menuFlock.DefaultColor = Color.Green;
+                            instructionsFlock.DefaultColor = Color.Green;
                             break;
 
                         case 3:
                             flock.DefaultColor = Color.Orange;
                             menuFlock.DefaultColor = Color.Orange;
+                            instructionsFlock.DefaultColor = Color.Orange;
                             break;
 
                         case 4:
                             flock.DefaultColor = Color.Red;
                             menuFlock.DefaultColor = Color.Red;
+                            instructionsFlock.DefaultColor = Color.Red;
                             break;
 
                         case 5:
                             flock.DefaultColor = Color.Magenta;
                             menuFlock.DefaultColor = Color.Magenta;
+                            instructionsFlock.DefaultColor = Color.Magenta;
                             break;
 
                         case 6:
                             flock.DefaultColor = Color.Blue;
                             menuFlock.DefaultColor = Color.Blue;
+                            instructionsFlock.DefaultColor = Color.Blue;
                             break;
 
                         case 7:
                             flock.DefaultColor = Color.White;
                             menuFlock.DefaultColor = Color.White;
+                            instructionsFlock.DefaultColor = Color.White;
                             break;
                     }
 
