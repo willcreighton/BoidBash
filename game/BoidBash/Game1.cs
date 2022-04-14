@@ -62,6 +62,8 @@ namespace BoidBash
         private Texture2D pausedDisplay;
         private Texture2D customCursor;
         private Texture2D mouseControls;
+        private Texture2D arrowControls;
+        private Texture2D wasdControls;
 
         // Sounds
         private SoundEffect smallBash;
@@ -307,6 +309,8 @@ namespace BoidBash
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             predTexture = Content.Load<Texture2D>("PredSp");
             mouseControls = Content.Load<Texture2D>("Mouse");
+            arrowControls = Content.Load<Texture2D>("Player2Controls");
+            wasdControls = Content.Load<Texture2D>("Player1Controls");
 
             // Create flocks
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
@@ -959,16 +963,19 @@ namespace BoidBash
                     _spriteBatch.DrawString(
                      senBold,
                      String.Format("Or"),
-                     new Vector2(230, 220),
+                     new Vector2(233, 220),
                     Color.White
                      );
 
                     //Mouse Placeholder
-                    ShapeBatch.BoxOutline(575, 175, 100, 180, Color.White);
+                    //ShapeBatch.BoxOutline(575, 175, 100, 180, Color.White);
+                    _spriteBatch.Draw(mouseControls, new Vector2(575, 175), Color.White);
 
                     //Keyboard PlaceHolders
-                    ShapeBatch.BoxOutline(20, 175, 200, 150, Color.White);
-                    ShapeBatch.BoxOutline(280, 175, 200, 150, Color.White);
+                    //ShapeBatch.BoxOutline(20, 175, 200, 150, Color.White);
+                    //ShapeBatch.BoxOutline(280, 175, 200, 150, Color.White);
+                    _spriteBatch.Draw(arrowControls, new Vector2(280, 180), Color.White);
+                    _spriteBatch.Draw(wasdControls, new Vector2(20, 175), Color.White);
 
                     //Goal Placeholder
                     ShapeBatch.BoxOutline(775, 75, 375, 300, Color.White);
