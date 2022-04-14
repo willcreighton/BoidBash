@@ -174,28 +174,28 @@ namespace BoidBash
             { new Rectangle(15, 290, 46, 60), new Rectangle(15, 390, 46, 60),
             new Rectangle(240, 400, 46, 60), new Rectangle(905, 400, 46, 60)};
 
-        private Rectangle musicSlider = new Rectangle(100, 140, 320, 10);
-        private Rectangle soundSlider = new Rectangle(100, 240, 320, 10);
+        private Rectangle musicSlider = new Rectangle(440, 140, 320, 10);
+        private Rectangle soundSlider = new Rectangle(440, 240, 320, 10);
 
         private Rectangle[] boidColorSelectors = new Rectangle[7]
-        { new Rectangle(105, 335, 40, 40), new Rectangle(205, 335, 40, 40), new Rectangle(305, 335, 40, 40),
-          new Rectangle(405, 335, 40, 40), new Rectangle(505, 335, 40, 40), new Rectangle(605, 335, 40, 40),
-          new Rectangle(705, 335, 40, 40) };
+        { new Rectangle(280, 335, 40, 40), new Rectangle(380, 335, 40, 40), new Rectangle(480, 335, 40, 40),
+          new Rectangle(580, 335, 40, 40), new Rectangle(680, 335, 40, 40), new Rectangle(780, 335, 40, 40),
+          new Rectangle(880, 335, 40, 40) };
 
         private Rectangle[] predatorColorSelectors = new Rectangle[7]
-            {new Rectangle(105, 435, 40, 40), new Rectangle(205, 435, 40, 40), new Rectangle(305, 435, 40, 40),
-             new Rectangle(405, 435, 40, 40), new Rectangle(505, 435, 40, 40), new Rectangle(605, 435, 40, 40),
-             new Rectangle(705, 435, 40, 40)};
+            {new Rectangle(280, 435, 40, 40), new Rectangle(380, 435, 40, 40), new Rectangle(480, 435, 40, 40),
+             new Rectangle(580, 435, 40, 40), new Rectangle(680, 435, 40, 40), new Rectangle(780, 435, 40, 40),
+             new Rectangle(880, 435, 40, 40)};
 
         private Rectangle[] buttonColorSelectors = new Rectangle[7]
-            {new Rectangle(105, 535, 40, 40), new Rectangle(205, 535, 40, 40), new Rectangle(305, 535, 40, 40),
-             new Rectangle(405, 535, 40, 40), new Rectangle(505, 535, 40, 40), new Rectangle(605, 535, 40, 40),
-             new Rectangle(705, 535, 40, 40)};
+            {new Rectangle(280, 535, 40, 40), new Rectangle(380, 535, 40, 40), new Rectangle(480, 535, 40, 40),
+             new Rectangle(580, 535, 40, 40), new Rectangle(680, 535, 40, 40), new Rectangle(780, 535, 40, 40),
+             new Rectangle(880, 535, 40, 40)};
 
         private Rectangle[] borderColorSelectors = new Rectangle[8]
-            { new Rectangle(105, 635, 40, 40), new Rectangle(145, 635, 40, 40), new Rectangle(255, 635, 40, 40),
-              new Rectangle(295, 635, 40, 40), new Rectangle(405, 635, 40, 40), new Rectangle(445, 635, 40, 40),
-              new Rectangle(555, 635, 40, 40), new Rectangle(595, 635, 40, 40)};
+            { new Rectangle(335, 635, 40, 40), new Rectangle(375, 635, 40, 40), new Rectangle(485, 635, 40, 40),
+              new Rectangle(525, 635, 40, 40), new Rectangle(635, 635, 40, 40), new Rectangle(675, 635, 40, 40),
+              new Rectangle(785, 635, 40, 40), new Rectangle(825, 635, 40, 40)};
 
         // Options
         private float musicVolume = 1;
@@ -991,45 +991,45 @@ namespace BoidBash
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.Options:
                     // Title
-                    _spriteBatch.DrawString(senExtraBold, "Options", new Vector2(500, 20), Color.White);
+                    _spriteBatch.DrawString(senExtraBold, "Options", new Vector2(510, 20), Color.White);
 
                     // Music Volume Selection
-                    _spriteBatch.DrawString(senRegular, "0", new Vector2(110, 105), Color.White);
-                    _spriteBatch.DrawString(senRegular, "100", new Vector2(395, 105), Color.White);
-                    _spriteBatch.DrawString(senRegular, "Music Volume", new Vector2(190, 85), Color.White);
+                    _spriteBatch.DrawString(senRegular, "0", new Vector2(445, 105), Color.White);
+                    _spriteBatch.DrawString(senRegular, "100", new Vector2(735, 105), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Music Volume", new Vector2(530, 85), Color.White);
                     _spriteBatch.Draw(blank, musicSlider, Color.Gray);
                     if (optionsSelection == 1)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 100, 130, 30, 30), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 440, 130, 30, 30), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 100, 130, 30, 30), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle((int)(musicVolume * 300) + 440, 130, 30, 30), Color.White);
                     }
 
                     // Sound Volume Selection
-                    _spriteBatch.DrawString(senRegular, "0", new Vector2(110, 205), Color.White);
-                    _spriteBatch.DrawString(senRegular, "100", new Vector2(395, 205), Color.White);
-                    _spriteBatch.DrawString(senRegular, "Sound Volume", new Vector2(190, 185), Color.White);
+                    _spriteBatch.DrawString(senRegular, "0", new Vector2(445, 205), Color.White);
+                    _spriteBatch.DrawString(senRegular, "100", new Vector2(735, 205), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Sound Volume", new Vector2(530, 185), Color.White);
                     _spriteBatch.Draw(blank, soundSlider, Color.Gray);
                     if (optionsSelection == 2)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle((int)(soundVolume * 300) + 100, 230, 30, 30), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle((int)(soundVolume * 300) + 440, 230, 30, 30), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle((int)(soundVolume * 300) + 100, 230, 30, 30), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle((int)(soundVolume * 300) + 440, 230, 30, 30), Color.White);
                     }
 
                     // Boid Color Selection
-                    _spriteBatch.DrawString(senRegular, "Boid Color", new Vector2(100, 285), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Boid Color", new Vector2(550, 285), Color.White);
                     if (optionsSelection == 3)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 330, 50, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100 + 175, 330, 50, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100, 330, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100 + 175, 330, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, boidColorSelectors[0], boidColor);
                     _spriteBatch.Draw(blank, boidColorSelectors[1], Color.Green);
@@ -1040,20 +1040,18 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, boidColorSelectors[6], Color.White);
 
                     // Predator Color Selection
-                    _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(100, 390), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Predator Color", new Vector2(525, 390), Color.White);
                     if (optionsSelection == 4)
                     {
-                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 - 20, 407), Color.Yellow);
-                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 35, 407), Color.Yellow);
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100, 430, 50, 50), Color.Yellow);
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100, 430, 50, 50), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 + 155, 407), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 205, 407), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100 + 175, 430, 50, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100 + 175, 430, 50, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(senRegular, "Main", new Vector2(predatorColorSelection1 * 100 - 20, 407), Color.White);
-                        _spriteBatch.DrawString(senRegular, "P2", new Vector2(predatorColorSelection2 * 100 + 35, 407), Color.White);
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100, 430, 50, 50), Color.White);
-                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100, 430, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection1 * 100 + 175, 430, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100 + 175, 430, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, predatorColorSelectors[0], boidColor);
                     _spriteBatch.Draw(blank, predatorColorSelectors[1], Color.Green);
@@ -1064,14 +1062,14 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, predatorColorSelectors[6], Color.White);
 
                     // Button Color Selection
-                    _spriteBatch.DrawString(senRegular, "Button Color", new Vector2(100, 490), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Button Color", new Vector2(535, 490), Color.White);
                     if (optionsSelection == 5)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100, 530, 50, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100 + 175, 530, 50, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100, 530, 50, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100 + 175, 530, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, buttonColorSelectors[0], boidColor);
                     _spriteBatch.Draw(blank, buttonColorSelectors[1], Color.Green);
@@ -1082,14 +1080,14 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, buttonColorSelectors[6], Color.White);
 
                     // Border Color Selection
-                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(100, 590), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Border Fade Colors", new Vector2(500, 590), Color.White);
                     if (optionsSelection == 6)
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 630, 90, 50), Color.Yellow);
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 + 180, 630, 90, 50), Color.Yellow);
                     }
                     else
                     {
-                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 - 50, 630, 90, 50), Color.White);
+                        _spriteBatch.Draw(blank, new Rectangle(borderFadeSelection * 150 + 180, 630, 90, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, borderColorSelectors[0], Color.Lime);
                     _spriteBatch.Draw(blank, borderColorSelectors[1], Color.Red);
@@ -1100,7 +1098,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, borderColorSelectors[6], Color.Orange);
                     _spriteBatch.Draw(blank, borderColorSelectors[7], Color.Purple);
 
-                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu and confirm", new Vector2(190, 700), Color.White);
+                    _spriteBatch.DrawString(senRegular, "\"M\" to go back to main Menu and confirm", new Vector2(410, 700), Color.White);
                     break;
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
