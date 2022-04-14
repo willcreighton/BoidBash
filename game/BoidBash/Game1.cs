@@ -930,6 +930,13 @@ namespace BoidBash
                     instructionsFlock.Draw();
                     predatorWASDArrows.Draw(_spriteBatch);
 
+                    _spriteBatch.DrawString(
+                     senExtraBold,
+                     String.Format("PRACTICE"),
+                     new Vector2(490, 420),
+                    Color.White
+                     );
+
                     // Main Menu prompt
                     _spriteBatch.Draw(
                         returnPrompt,
@@ -967,13 +974,10 @@ namespace BoidBash
                     Color.White
                      );
 
-                    //Mouse Placeholder
-                    //ShapeBatch.BoxOutline(575, 175, 100, 180, Color.White);
+                    //Draws the mouse for the instructions
                     _spriteBatch.Draw(mouseControls, new Vector2(575, 175), Color.White);
 
-                    //Keyboard PlaceHolders
-                    //ShapeBatch.BoxOutline(20, 175, 200, 150, Color.White);
-                    //ShapeBatch.BoxOutline(280, 175, 200, 150, Color.White);
+                    //Draws the Keyboard Keys
                     _spriteBatch.Draw(arrowControls, new Vector2(280, 180), Color.White);
                     _spriteBatch.Draw(wasdControls, new Vector2(20, 175), Color.White);
 
@@ -1102,7 +1106,9 @@ namespace BoidBash
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Credits
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.Credits:
 
+                    break;
 
                 default:
                     break;
@@ -1952,7 +1958,12 @@ namespace BoidBash
         /// </summary>
         private void ProcessCredits()
         {
-
+            //Returns to Main menu
+            if (IsSingleKeyPress(Keys.M))
+            {
+                stateChange.Play();
+                currentState = GameState.MainMenu;
+            }
         }
 
         /// <summary>
