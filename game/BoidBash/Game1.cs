@@ -542,7 +542,7 @@ namespace BoidBash
                 // Credits Screen
                 case GameState.Credits:
                     // Apply Credits processing
-                    //ProcessCredits();
+                    ProcessCredits();
                     break;
 
                 default:
@@ -683,6 +683,7 @@ namespace BoidBash
                         displayBoids[1],
                         Color.Gold
                         );
+
                     // Draw the number of types of boids bashed
                     _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalBoidsBashed), new Vector2(75, 300),
                     Color.White);
@@ -921,9 +922,50 @@ namespace BoidBash
                     // Draw Flock
                     instructionsFlock.Draw();
                     predatorWASDArrows.Draw(_spriteBatch);
+
+                    // Main Menu prompt
+                    _spriteBatch.Draw(
+                        returnPrompt,
+                        new Vector2(10, windowHeight - 30),
+                        Color.White
+                        );
+
+                    _spriteBatch.DrawString(
+                     senBold,
+                     String.Format("Single Player Instructions"),
+                     new Vector2(400, 15),
+                    Color.White
+                     );
+
+                    _spriteBatch.DrawString(
+                     senBold,
+                     String.Format("Bash"),
+                     new Vector2(550, 100),
+                    Color.White
+                     );
+
+                    _spriteBatch.Draw(bashButton, new Vector2(625, 75), Color.Red);
+
+                    _spriteBatch.DrawString(
+                     senBold,
+                     String.Format("Move"),
+                     new Vector2(200, 100),
+                    Color.White
+                     );
+
+                    _spriteBatch.DrawString(
+                     senBold,
+                     String.Format("Or"),
+                     new Vector2(230, 200),
+                    Color.White
+                     );
+
+                    ShapeBatch.BoxOutline(20, 150, 200, 150, Color.White);
+                    ShapeBatch.BoxOutline(280, 150, 200, 150, Color.White);
+
+                    ShapeBatch.BoxOutline(775, 75, 375, 300, Color.White);
+
                     break;
-
-
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Options
@@ -1043,7 +1085,7 @@ namespace BoidBash
                     break;
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                //                                         Instructions
+                //                                         Credits
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -1881,6 +1923,21 @@ namespace BoidBash
             predatorWASDArrows.ActualPosition.Y) });
 
             predatorWASDArrows.Update(gameTime);
+
+            //Return to Main menu
+            if (IsSingleKeyPress(Keys.M))
+            {
+                stateChange.Play();
+                currentState = GameState.MainMenu;
+            }
+        }
+
+        /// <summary>
+        /// Processes the Credits menu
+        /// </summary>
+        private void ProcessCredits()
+        {
+
         }
 
         /// <summary>
