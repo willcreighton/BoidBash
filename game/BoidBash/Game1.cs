@@ -61,6 +61,7 @@ namespace BoidBash
         private Texture2D gameOver;
         private Texture2D pausedDisplay;
         private Texture2D customCursor;
+        private Texture2D mouseControls;
 
         // Sounds
         private SoundEffect smallBash;
@@ -305,6 +306,7 @@ namespace BoidBash
             gradient = Content.Load<Texture2D>("SquareArt");
             glowBorder = Content.Load<Texture2D>("SquareGlow");
             predTexture = Content.Load<Texture2D>("PredSp");
+            mouseControls = Content.Load<Texture2D>("Mouse");
 
             // Create flocks
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
@@ -901,6 +903,7 @@ namespace BoidBash
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Instructions
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                // I AM WORKING ON THE CONTROLS FOR THE GAME, PLEASE DON'T TOUCH IT, I HAVE A VISION - RYAN
                 case GameState.Instructions:
 
                     // Draw Play Area
@@ -932,8 +935,8 @@ namespace BoidBash
 
                     _spriteBatch.DrawString(
                      senBold,
-                     String.Format("Single Player Instructions"),
-                     new Vector2(400, 15),
+                     String.Format("< Single Player Instructions >"),
+                     new Vector2(390, 15),
                     Color.White
                      );
 
@@ -949,20 +952,25 @@ namespace BoidBash
                     _spriteBatch.DrawString(
                      senBold,
                      String.Format("Move"),
-                     new Vector2(200, 100),
+                     new Vector2(205, 100),
                     Color.White
                      );
 
                     _spriteBatch.DrawString(
                      senBold,
                      String.Format("Or"),
-                     new Vector2(230, 200),
+                     new Vector2(230, 220),
                     Color.White
                      );
 
-                    ShapeBatch.BoxOutline(20, 150, 200, 150, Color.White);
-                    ShapeBatch.BoxOutline(280, 150, 200, 150, Color.White);
+                    //Mouse Placeholder
+                    ShapeBatch.BoxOutline(575, 175, 100, 180, Color.White);
 
+                    //Keyboard PlaceHolders
+                    ShapeBatch.BoxOutline(20, 175, 200, 150, Color.White);
+                    ShapeBatch.BoxOutline(280, 175, 200, 150, Color.White);
+
+                    //Goal Placeholder
                     ShapeBatch.BoxOutline(775, 75, 375, 300, Color.White);
 
                     break;
