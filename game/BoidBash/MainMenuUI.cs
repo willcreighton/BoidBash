@@ -18,16 +18,18 @@ namespace BoidBash
         private Texture2D playPrompt;
         private Texture2D boidBashLogo;
         private SpriteFont senBold;
+        private SpriteFont senRegular;
         private float time = 2f;
 
         // Constructor
-        public MainMenuUI(int windowWidth, int windowHeight, Texture2D playPrompt, Texture2D boidBashLogo, SpriteFont senBold)
+        public MainMenuUI(int windowWidth, int windowHeight, Texture2D playPrompt, Texture2D boidBashLogo, SpriteFont senBold, SpriteFont senRegular)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.playPrompt = playPrompt;
             this.boidBashLogo = boidBashLogo;
             this.senBold = senBold;
+            this.senRegular = senRegular;
         }
 
         //Updates the time and resets it
@@ -56,7 +58,7 @@ namespace BoidBash
                 new Rectangle(405, 50, 342, 300),
                 Color.White
                 );
-
+            
             // Play prompt
             _spriteBatch.Draw(
                 playPrompt,
@@ -75,6 +77,14 @@ namespace BoidBash
                     Color.Gold
                     );
             }
+
+            //Draws title for Highscores
+            _spriteBatch.DrawString(
+                senRegular, 
+                String.Format("HIGH SCORES"), 
+                new Vector2(500, 550), 
+                Color.White
+                );
         }
     }
 }

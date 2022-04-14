@@ -255,7 +255,6 @@ namespace BoidBash
             _graphics.PreferredBackBufferWidth = windowWidth;
             _graphics.PreferredBackBufferHeight = windowHeight;
             _graphics.ApplyChanges();
-
             width = _graphics.GraphicsDevice.Viewport.Width;
             height = _graphics.GraphicsDevice.Viewport.Height;
 
@@ -416,7 +415,7 @@ namespace BoidBash
                 windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.Arrows);
 
             // Initialize all UI Objects
-            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold);
+            mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold, senRegular);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold, returnPrompt);
@@ -616,8 +615,7 @@ namespace BoidBash
                     }
                     _spriteBatch.DrawString(senRegular, String.Format("<                            >"), new Vector2(485, 410), Color.White);
 
-
-                    _spriteBatch.DrawString(senRegular, String.Format("HIGH SCORES"), new Vector2(500, 550), Color.White);
+                    //Draws the highscores
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(450, 580), Color.White);
 
                     if (displayToolTip)
@@ -946,6 +944,7 @@ namespace BoidBash
                     {
                         _spriteBatch.Draw(blank, barrier, Color.Gray);
                     }
+
                     // Draw Flock
                     instructionsFlock.Draw();
                     predatorWASDArrows.Draw(_spriteBatch);
@@ -1029,6 +1028,7 @@ namespace BoidBash
                             _spriteBatch.Draw(arrowControls, new Vector2(430, 180), Color.White);
                             _spriteBatch.Draw(wasdControls, new Vector2(170, 175), Color.White);
 
+                            //Page 2 out of 3
                             _spriteBatch.DrawString(
                             senBold,
                             String.Format("2/3"),
@@ -1056,9 +1056,26 @@ namespace BoidBash
                             _spriteBatch.DrawString(
                              senBold,
                              String.Format("Player 1 Controls"),
-                             new Vector2(140, 75),
+                             new Vector2(150, 75),
                             Color.White
                              );
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Move"),
+                             new Vector2(100, 160),
+                            Color.White
+                             );
+                            _spriteBatch.Draw(wasdControls, new Vector2(40, 190), Color.White);
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Bash"),
+                             new Vector2(360, 160),
+                            Color.White
+                             );
+
+                            _spriteBatch.Draw(bashButton, new Vector2(430, 130), Color.Red);
 
                             _spriteBatch.DrawString(
                              senBold,
@@ -1066,6 +1083,23 @@ namespace BoidBash
                              new Vector2(780, 75),
                             Color.White
                              );
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Move"),
+                             new Vector2(730, 160),
+                            Color.White
+                             );
+
+                            _spriteBatch.Draw(arrowControls, new Vector2(670, 190), Color.White);
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Bash"),
+                             new Vector2(980, 160),
+                             Color.White
+                             );
+                            _spriteBatch.Draw(bashButton, new Vector2(1050, 130), Color.Red);
 
                             break;
                     }
@@ -1198,6 +1232,12 @@ namespace BoidBash
                         new Vector2(10, windowHeight - 30),
                         Color.White
                         );
+
+                    _spriteBatch.Draw(
+                         boidBashLogo,
+                         new Rectangle(405, 280, 342, 300),
+                         Color.White
+                         );
 
                     break;
 
