@@ -130,13 +130,16 @@ namespace BoidBash
         private string name = "";
         private string code = "";
         private Keys key;
-        private List<Keys> excludedKeys = new List<Keys>();
-        private float raveTimer = 10.5f;
+        private List<Keys> excludedKeys = new List<Keys>();       
         private bool rave = false;
         private bool addCursorBoid = false;
+        private bool displayToolTip = true;
 
         // Timer
         private float timer = 30f;
+        private float raveTimer = 10.5f;
+        private float menuTimer = 5;
+        private float toolTipTimer = 10;
 
         // Update Score Fields
         private List<ulong> scores = new List<ulong>();
@@ -613,6 +616,20 @@ namespace BoidBash
 
                     _spriteBatch.DrawString(senRegular, String.Format("HIGH SCORES"), new Vector2(500, 550), Color.White);
                     _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(450, 580), Color.White);
+
+                    if (displayToolTip)
+                    {
+                        _spriteBatch.DrawString(senRegular, String.Format("Use A, D, or Left and Right arrow keys\n" +
+                            "        to Cycle through menu options"), new Vector2(775, 30), Color.White);
+                    }
+                    else if (toolTipTimer > 0)
+                    {
+                        // WILL - when you implement animated text class, could use some help with this
+                        _spriteBatch.DrawString(senRegular, String.Format("Use A, D, or Left and Right arrow keys\n" +
+                            "        to Cycle through menu options"), new Vector2(775, 30),
+                            new Color(backgroundColor.R, backgroundColor.G, backgroundColor.B));
+                    }
+
 
                     break;
 
@@ -1352,6 +1369,21 @@ namespace BoidBash
                 rave = true;
                 MediaPlayer.Play(raveMusic);
                 MediaPlayer.IsRepeating = true;
+            }
+
+            // Tip on cycling options           
+            if (menuTimer > 0)
+            {
+                menuTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                displayToolTip = true;
+            }
+            else
+            {
+                displayToolTip = false;
+                if (toolTipTimer > 0)
+                {
+                    toolTipTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
             }
 
             // Process Menuflock boids
