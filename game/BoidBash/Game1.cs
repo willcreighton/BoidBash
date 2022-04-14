@@ -223,6 +223,9 @@ namespace BoidBash
         private bool inDebug = false;
         private Rectangle creationBounds = new Rectangle(300, 300, 600, 300);
 
+        //Case Field
+        private int choice = 1;
+
         public int Width
         {
             get { return width; }
@@ -961,45 +964,87 @@ namespace BoidBash
                         Color.White
                         );
 
-                    _spriteBatch.DrawString(
-                     senBold,
-                     String.Format("< Single Player Instructions >"),
-                     new Vector2(390, 15),
-                    Color.White
-                     );
+                    switch (choice)
+                    {
+                        case 1:
 
-                    _spriteBatch.DrawString(
-                     senBold,
-                     String.Format("Bash"),
-                     new Vector2(550, 100),
-                    Color.White
-                     );
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("< Instructions >"),
+                             new Vector2(470, 15),
+                             Color.White
+                             );
 
-                    _spriteBatch.Draw(bashButton, new Vector2(625, 75), Color.Red);
+                            _spriteBatch.DrawString(
+                            senBold,
+                            String.Format("1/3"),
+                            new Vector2(15, 350),
+                           Color.White
+                            );
+                            break;
+                        case 2:
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("< Single Player Controls >"),
+                             new Vector2(390, 15),
+                             Color.White
+                             );
 
-                    _spriteBatch.DrawString(
-                     senBold,
-                     String.Format("Move"),
-                     new Vector2(205, 100),
-                    Color.White
-                     );
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Bash"),
+                             new Vector2(750, 100),
+                            Color.White
+                             );
 
-                    _spriteBatch.DrawString(
-                     senBold,
-                     String.Format("Or"),
-                     new Vector2(233, 220),
-                    Color.White
-                     );
+                            _spriteBatch.Draw(bashButton, new Vector2(825, 75), Color.Red);
 
-                    //Draws the mouse for the instructions
-                    _spriteBatch.Draw(mouseControls, new Vector2(575, 175), Color.White);
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Move"),
+                             new Vector2(355, 100),
+                            Color.White
+                             );
 
-                    //Draws the Keyboard Keys
-                    _spriteBatch.Draw(arrowControls, new Vector2(280, 180), Color.White);
-                    _spriteBatch.Draw(wasdControls, new Vector2(20, 175), Color.White);
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("Or"),
+                             new Vector2(383, 220),
+                            Color.White
+                             );
 
-                    //Goal Placeholder
-                    ShapeBatch.BoxOutline(775, 75, 375, 300, Color.White);
+                            //Draws the mouse for the instructions
+                            _spriteBatch.Draw(mouseControls, new Vector2(775, 175), Color.White);
+
+                            //Draws the Keyboard Keys
+                            _spriteBatch.Draw(arrowControls, new Vector2(430, 180), Color.White);
+                            _spriteBatch.Draw(wasdControls, new Vector2(170, 175), Color.White);
+
+                            _spriteBatch.DrawString(
+                            senBold,
+                            String.Format("2/3"),
+                            new Vector2(15, 350),
+                           Color.White
+                            );
+                            break;
+
+                        case 3:
+
+                            _spriteBatch.DrawString(
+                             senBold,
+                             String.Format("< Versus Controls >"),
+                             new Vector2(450, 15),
+                             Color.White
+                             );
+
+                            _spriteBatch.DrawString(
+                            senBold,
+                            String.Format("3/3"),
+                            new Vector2(15, 350),
+                           Color.White
+                            );
+                            break;
+                    }
 
                     break;
 
@@ -1122,6 +1167,13 @@ namespace BoidBash
                 //                                         Credits
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.Credits:
+
+                    // Main Menu prompt
+                    _spriteBatch.Draw(
+                        returnPrompt,
+                        new Vector2(10, windowHeight - 30),
+                        Color.White
+                        );
 
                     break;
 
@@ -1980,6 +2032,19 @@ namespace BoidBash
             {
                 stateChange.Play();
                 currentState = GameState.MainMenu;
+            }
+
+            if (IsSingleKeyPress(Keys.NumPad1) || IsSingleKeyPress(Keys.D1))
+            {
+                choice = 1;
+            }
+            if (IsSingleKeyPress(Keys.NumPad2) || IsSingleKeyPress(Keys.D2))
+            {
+                choice = 2;
+            }
+            if (IsSingleKeyPress(Keys.NumPad3) || IsSingleKeyPress(Keys.D3))
+            {
+                choice = 3;
             }
         }
 
