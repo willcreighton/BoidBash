@@ -1758,7 +1758,7 @@ namespace BoidBash
 
                     _spriteBatch.Draw(
                          boidBashLogo,
-                         new Rectangle(405, 280, 342, 300),
+                         new Rectangle(405, (280), 342, 300),
                          Color.White
                          );
 
