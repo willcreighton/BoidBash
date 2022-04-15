@@ -149,8 +149,8 @@ namespace BoidBash
 
         // Timer
         private float timer = 30f;
-        private float versusTimer1 = 30f;
-        private float versusTimer2 = 10f;
+        private float versusTimer1 = 45f;
+        private float versusTimer2 = 45f;
         private float raveTimer = 10.5f;
         private float menuTimer = 5;
         private float toolTipTimer = 10;
@@ -357,7 +357,7 @@ namespace BoidBash
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
-            versusFlock = new Flock(100, new Rectangle(550, 200, 100, 600),
+            versusFlock = new Flock(60, new Rectangle(550, 200, 100, 600),
                 boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
@@ -917,10 +917,10 @@ namespace BoidBash
                     // Draw play area
                     _spriteBatch.Draw(blank, versusPlayArea, playAreaColor);
 
-                    // Draw bashers
+                   // Draw bashers
                     foreach (Rectangle pen in versusBashers)
                     {
-                        _spriteBatch.Draw(blank, pen, penColor);
+                        _spriteBatch.Draw(gradient, pen, penColor);
                     }
 
                     // Set fade color for right
@@ -1206,7 +1206,7 @@ namespace BoidBash
                     // Draw bashers
                     foreach (Rectangle pen in versusBashers)
                     {
-                        _spriteBatch.Draw(blank, pen, penColor);
+                        _spriteBatch.Draw(gradient, pen, penColor);
                     }
 
                     // Set fade color for right
@@ -1361,31 +1361,48 @@ namespace BoidBash
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 case GameState.VersusEndScreen:
 
-                    endScreenUI.Draw(_spriteBatch);
+                    // Game over display
+                    _spriteBatch.Draw(
+                        gameOver,
+                        new Rectangle(360, 300, 470, 60),
+                        Color.White
+                        );
 
-                    // Need to make draw both scores
-                    // Need to draw who wins
+                    // Continue to Main Menu prompt
+                    _spriteBatch.Draw(
+                        returnPrompt,
+                        new Vector2(430, windowHeight - 50),
+                        Color.White
+                        );
+
+                    // Allows the user to play again instantly
+                    _spriteBatch.DrawString(
+                        senBold,
+                        String.Format("Press SPACE to Play Again"),
+                        new Vector2(385, windowHeight - 350),
+                        Color.White
+                        );
+
+                    // Draw both scores
+                    _spriteBatch.DrawString(senBold, string.Format("P1 Score: {0:n0}", player1Score), new Vector2(10, 10), predatorWASD.Color);
+                    _spriteBatch.DrawString(senBold, string.Format("P2 Score: {0:n0}", player2Score), new Vector2(10, 50), predatorArrows.Color);
+
+                    if (player1Score > player2Score)
+                    {
+                        _spriteBatch.DrawString(senBold, "Player 1 Wins!", new Vector2(500, 500), predatorWASD.Color);
+                    }
+                    else if(player2Score > player1Score)
+                    {
+                        _spriteBatch.DrawString(senBold, "Player 2 Wins!", new Vector2(500, 500), predatorArrows.Color);
+                    }
+                    else
+                    {
+                        _spriteBatch.DrawString(senBold, "Wow, a Tie!", new Vector2(500, 500), Color.White);
+                    }
 
                     // Unsure if we are adding this
                     // Draw number of types of boids bashed
-                    /*
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalBoidsBashed), new Vector2(230, 470),
-                    Color.White);
-                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalSpecialBoidsBashed), new Vector2(905, 470),
-                    Color.White);
 
-                    // Draw Display boids
-                    _spriteBatch.Draw(
-                        displayBoid,
-                       displayBoids[2],
-                        boidColor
-                        );
-                    _spriteBatch.Draw(
-                        displayBoid,
-                        displayBoids[3],
-                        Color.Gold
-                        );
-                    */
 
                     break;
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1403,7 +1420,7 @@ namespace BoidBash
                     // Draw Pens
                     foreach (Rectangle pen in instructionsBashers)
                     {
-                        _spriteBatch.Draw(blank, pen, penColor);
+                        _spriteBatch.Draw(gradient, pen, penColor);
                     }
                     // Draw Barriers
                     foreach (Rectangle barrier in instructionsBarriers)
@@ -1901,7 +1918,7 @@ namespace BoidBash
                     // Reset bash totals
                     flock.Bashers.TotalBoidsBashed = 0;
                     flock.Bashers.TotalSpecialBoidsBashed = 0;
-
+                    
                     // Turn off rave
                     rave = false;
                     code = "";
@@ -1918,8 +1935,8 @@ namespace BoidBash
                 {
                     MediaPlayer.Play(gameMusic);
                     MediaPlayer.IsRepeating = true;
-                    versusTimer1 = 30;
-                    versusTimer2 = 30;
+                    versusTimer1 = 45;
+                    versusTimer2 = 45;
 
                     code = "";
                     predatorWASD.PredatorBounds = versusPlayArea;
@@ -1932,6 +1949,11 @@ namespace BoidBash
 
                     process1 = true;
                     process2 = true;
+
+                    for (int x = versusFlock.Boids.Count - 1; x >= 60; x--)
+                    {
+                        versusFlock.RemoveBoid(versusFlock.Boids[x]);
+                    }
 
                     // Reposition all boids
                     versusFlock.RepositionBoids();
@@ -2671,11 +2693,11 @@ namespace BoidBash
                 BashVersus1(1);
             }
             // Player2 bashers
-            if (IsSingleKeyPress(Keys.NumPad1) && versusTimer2 > 0)
+            if (IsSingleKeyPress(Keys.NumPad2) && versusTimer2 > 0)
             {
                 BashVersus2(2);
             }
-            if (IsSingleKeyPress(Keys.NumPad2) && versusTimer2 > 0)
+            if (IsSingleKeyPress(Keys.NumPad3) && versusTimer2 > 0)
             {
                 BashVersus2(3);
             }
@@ -2788,26 +2810,30 @@ namespace BoidBash
                 stateChange.Play();
 
                 // Reset timer to 30
-                versusTimer1 = 30;
-                versusTimer2 = 30;
+                versusTimer1 = 45;
+                versusTimer2 = 45;
 
                 predatorWASD.Position = new Rectangle(width / 2 - 30, height / 2, 35, 35);
                 predatorArrows.Position = new Rectangle(width / 2 + 30, height / 2, 35, 35);
 
                 /// Need to make these for verus
                 // Clear all prints and timers
-                /*
-                flock.Bashers.ScoreTimers.Clear();
-                flock.Bashers.ScorePrints.Clear();
-                totalScoreIncrementPrint.Clear();
-                totalScoreIncrementTimer.Clear();
-                totalTimeIncrementPrint.Clear();
-                totalTimeIncrementTimer.Clear();
-                */
+                
+                versusFlock.Bashers.ScoreTimers.Clear();
+                versusFlock.Bashers.ScorePrints.Clear();
+                totalScoreIncrementPrintP1.Clear();
+                totalScoreIncrementTimerP1.Clear();
+                totalTimeIncrementPrintP1.Clear();
+                totalTimeIncrementTimerP1.Clear();
+                totalScoreIncrementPrintP2.Clear();
+                totalScoreIncrementTimerP2.Clear();
+                totalTimeIncrementPrintP2.Clear();
+                totalTimeIncrementTimerP2.Clear();
+
 
                 // Clear the Game flock of all excess boids above 100
                 // This is more efficient than clearing and adding all back in
-                for (int x = versusFlock.Boids.Count - 1; x >= 100; x--)
+                for (int x = versusFlock.Boids.Count - 1; x >= 60; x--)
                 {
                     versusFlock.RemoveBoid(versusFlock.Boids[x]);
                 }

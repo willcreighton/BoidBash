@@ -62,6 +62,7 @@ namespace BoidBash
         /// </summary>
         public Color Color
         {
+            get { return color; }
             set { color = value; }
         }
 
