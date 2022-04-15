@@ -37,6 +37,16 @@ namespace BoidBash
         private List<int> totalTimeIncrementPrint = new List<int>();
         private List<float> totalTimeIncrementTimer = new List<float>();
 
+        private List<long> totalScoreIncrementPrintP1 = new List<long>();
+        private List<float> totalScoreIncrementTimerP1 = new List<float>();
+        private List<int> totalTimeIncrementPrintP1 = new List<int>();
+        private List<float> totalTimeIncrementTimerP1 = new List<float>();
+
+        private List<long> totalScoreIncrementPrintP2 = new List<long>();
+        private List<float> totalScoreIncrementTimerP2 = new List<float>();
+        private List<int> totalTimeIncrementPrintP2 = new List<int>();
+        private List<float> totalTimeIncrementTimerP2 = new List<float>();
+
         // Border color & timer sync
         private int rInterval;
         private int gInterval;
@@ -446,6 +456,11 @@ namespace BoidBash
             flock.Bashers.Pens.Add(new Rectangle(1000, 200, 100, 150));
             flock.Bashers.Pens.Add(new Rectangle(850, 700, 150, 100));
             flock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 150));
+
+            versusFlock.Bashers.Pens.Add(new Rectangle(100, 100, 150, 100));
+            versusFlock.Bashers.Pens.Add(new Rectangle(100, 700, 150, 100));
+            versusFlock.Bashers.Pens.Add(new Rectangle(950, 100, 150, 100));          
+            versusFlock.Bashers.Pens.Add(new Rectangle(950, 700, 150, 100));
 
             // Add bashing pens to Instruction flock
             instructionsFlock.Bashers.Pens.Add(new Rectangle(100, 550, 100, 200));
@@ -949,8 +964,29 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, "Bash Goal: " + scoreGoal2, new Vector2(800, 100), Color.White);
 
                     // Draw Player timers
-                    _spriteBatch.DrawString(senRegular, string.Format("Player 1 Time: {0:F1}", versusTimer1), new Vector2(10, 50), Color.White);
-                    _spriteBatch.DrawString(senRegular, string.Format("Player 2 Time: {0:F1}", versusTimer2), new Vector2(880, 50), Color.White);
+                    //Draws the clock red at 5 seconds
+                    // Player 1
+                    if (versusTimer1 > 5)
+                    {
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer1.ToString("0")), new Vector2(10, 50),
+                         Color.White);
+                    }
+                    else
+                    {
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer1.ToString("0")), new Vector2(10, 50),
+                         Color.Red);
+                    }
+                    // Player 2
+                    if (versusTimer1 > 5)
+                    {
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer2.ToString("0")), new Vector2(880, 50),
+                         Color.White);
+                    }
+                    else
+                    {
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer2.ToString("0")), new Vector2(880, 50),
+                         Color.Red);
+                    }
 
                     // Draw flock and predators
                     versusFlock.Draw();
@@ -971,7 +1007,190 @@ namespace BoidBash
                     {
                         _spriteBatch.Draw(predTexture, predatorArrows.Position, Color.Gray);
                     }
-                  
+
+                    // Draws and removes any new point numbers that show up after destroying boids
+                    foreach (Vector3 info in versusFlock.Bashers.ScorePrints)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+" + String.Format("{0:n0}", info.Z), new Vector2(info.X, info.Y), Color.Yellow);
+                    }
+                    // Change the amount of time left on the timers
+                    for (int x = versusFlock.Bashers.ScoreTimers.Count - 1; x >= 0; x--)
+                    {
+                        versusFlock.Bashers.ScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (versusFlock.Bashers.ScoreTimers[x] <= 0)
+                        {
+                            versusFlock.Bashers.ScorePrints.RemoveAt(x);
+                            versusFlock.Bashers.ScoreTimers.RemoveAt(x);
+                        }
+                    }
+
+                    // Draws and removes any new point numbers that show up after destroying special boids
+                    foreach (Vector3 info in versusFlock.Bashers.SpecialScorePrints)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+" + info.Z.ToString(), new Vector2(info.X, info.Y), Color.Magenta);
+                    }
+                    // Change the amount of time left on the special timers
+                    for (int x = versusFlock.Bashers.SpecialScoreTimers.Count - 1; x >= 0; x--)
+                    {
+                        versusFlock.Bashers.SpecialScoreTimers[x] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (versusFlock.Bashers.SpecialScoreTimers[x] <= 0)
+                        {
+                            versusFlock.Bashers.SpecialScorePrints.RemoveAt(x);
+                            versusFlock.Bashers.SpecialScoreTimers.RemoveAt(x);
+                        }
+                    }
+
+                    // TODO - Make this a method
+                     
+                    // Draw total score increment for player 1
+                    if (totalScoreIncrementPrintP1.Count > 0)
+                    {
+                        // Draw the string
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[0]), new Vector2(60, 60), Color.Yellow);
+                        // Increment timer
+                        totalScoreIncrementTimerP1[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        // Remove if timer is over
+                        if (totalScoreIncrementTimerP1[0] <= 0)
+                        {
+                            totalScoreIncrementPrintP1.RemoveAt(0);
+                            totalScoreIncrementTimerP1.RemoveAt(0);
+                        }
+                    }
+                    // Do same for other prints
+                    if (totalScoreIncrementPrintP1.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[1]), new Vector2(80, 80), Color.Yellow);
+
+                        totalScoreIncrementTimerP1[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                        if (totalScoreIncrementTimerP1[1] <= 0)
+                        {
+                            totalScoreIncrementPrintP1.RemoveAt(1);
+                            totalScoreIncrementTimerP1.RemoveAt(1);
+                        }
+                    }
+                    if (totalScoreIncrementPrintP1.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[2]), new Vector2(100, 100), Color.Yellow);
+
+                        totalScoreIncrementTimerP1[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                        if (totalScoreIncrementTimerP1[2] <= 0)
+                        {
+                            totalScoreIncrementPrintP1.RemoveAt(2);
+                            totalScoreIncrementTimerP1.RemoveAt(2);
+
+                        }
+                    }
+
+                    // Draw total time increment
+                    if (totalTimeIncrementPrintP1.Count > 0)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[0]), new Vector2(60, 80), Color.Magenta);
+                        totalTimeIncrementTimerP1[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimerP1[0] <= 0)
+                        {
+                            totalTimeIncrementPrintP1.RemoveAt(0);
+                            totalTimeIncrementTimerP1.RemoveAt(0);
+                        }
+                    }
+                    if (totalTimeIncrementPrintP1.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[1]), new Vector2(80, 100), Color.Magenta);
+                        totalTimeIncrementTimerP1[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimerP1[1] <= 0)
+                        {
+                            totalTimeIncrementPrintP1.RemoveAt(1);
+                            totalTimeIncrementTimerP1.RemoveAt(1);
+                        }
+                    }
+                    if (totalTimeIncrementPrintP1.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[2]), new Vector2(100, 120), Color.Magenta);
+                        totalTimeIncrementTimerP1[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimerP1[2] <= 0)
+                        {
+                            totalTimeIncrementPrintP1.RemoveAt(2);
+                            totalTimeIncrementTimerP1.RemoveAt(2);
+
+                        }
+                    }
+
+                    // Draw total score increment for player 2
+                    if (totalScoreIncrementPrintP2.Count > 0)
+                    {
+                        // Draw the string
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[0]), new Vector2(800, 60), Color.Yellow);
+                        // Increment timer
+                        totalScoreIncrementTimerP2[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        // Remove if timer is over
+                        if (totalScoreIncrementTimerP2[0] <= 0)
+                        {
+                            totalScoreIncrementPrintP2.RemoveAt(0);
+                            totalScoreIncrementTimerP2.RemoveAt(0);
+                        }
+                    }
+                    // Do same for other prints
+                    if (totalScoreIncrementPrintP2.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[1]), new Vector2(820, 80), Color.Yellow);
+
+                        totalScoreIncrementTimerP2[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                        if (totalScoreIncrementTimerP2[1] <= 0)
+                        {
+                            totalScoreIncrementPrintP2.RemoveAt(1);
+                            totalScoreIncrementTimerP2.RemoveAt(1);
+                        }
+                    }
+                    if (totalScoreIncrementPrintP2.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[2]), new Vector2(840, 100), Color.Yellow);
+
+                        totalScoreIncrementTimerP2[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                        if (totalScoreIncrementTimerP2[2] <= 0)
+                        {
+                            totalScoreIncrementPrintP2.RemoveAt(2);
+                            totalScoreIncrementTimerP2.RemoveAt(2);
+
+                        }
+                    }
+
+                    // Draw total time increment
+                    if (totalTimeIncrementPrintP2.Count > 0)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[0]), new Vector2(800, 80), Color.Magenta);
+                        totalTimeIncrementTimerP2[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimerP2[0] <= 0)
+                        {
+                            totalTimeIncrementPrintP2.RemoveAt(0);
+                            totalTimeIncrementTimerP2.RemoveAt(0);
+                        }
+                    }
+                    if (totalTimeIncrementPrintP2.Count > 1)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[1]), new Vector2(820, 100), Color.Magenta);
+                        totalTimeIncrementTimerP2[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimerP2[1] <= 0)
+                        {
+                            totalTimeIncrementPrintP2.RemoveAt(1);
+                            totalTimeIncrementTimerP2.RemoveAt(1);
+                        }
+                    }
+                    if (totalTimeIncrementPrintP2.Count > 2)
+                    {
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[2]), new Vector2(840, 120), Color.Magenta);
+                        totalTimeIncrementTimerP2[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (totalTimeIncrementTimerP2[2] <= 0)
+                        {
+                            totalTimeIncrementPrintP2.RemoveAt(2);
+                            totalTimeIncrementTimerP2.RemoveAt(2);
+
+                        }
+                    }
+
+
                     break;
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Versus Pause Menu
@@ -1711,6 +1930,9 @@ namespace BoidBash
                     stateChange.Play();
                     currentState = GameState.VersusGame;
 
+                    process1 = true;
+                    process2 = true;
+
                     // Reposition all boids
                     versusFlock.RepositionBoids();
                 }
@@ -2438,6 +2660,26 @@ namespace BoidBash
                 versusTimer2 = 0;
             }  
 
+            // Process Player input
+            // Player1 bashers
+            if (IsSingleKeyPress(Keys.J) && versusTimer1 > 0)
+            {
+                BashVersus1(0);
+            }
+            if (IsSingleKeyPress(Keys.K) && versusTimer1 > 0)
+            {
+                BashVersus1(1);
+            }
+            // Player2 bashers
+            if (IsSingleKeyPress(Keys.NumPad1) && versusTimer2 > 0)
+            {
+                BashVersus2(2);
+            }
+            if (IsSingleKeyPress(Keys.NumPad2) && versusTimer2 > 0)
+            {
+                BashVersus2(3);
+            }
+
             // Process alive predators in flock
             if (process1 && process2)
             {
@@ -2567,7 +2809,7 @@ namespace BoidBash
                 // This is more efficient than clearing and adding all back in
                 for (int x = versusFlock.Boids.Count - 1; x >= 100; x--)
                 {
-                    flock.RemoveBoid(flock.Boids[x]);
+                    versusFlock.RemoveBoid(versusFlock.Boids[x]);
                 }
                 // Reposition all boids
                 flock.RepositionBoids();
@@ -2584,6 +2826,8 @@ namespace BoidBash
                 player2Score = 0;
                 scoreGoal1 = 1;
                 scoreGoal2 = 1;
+                process1 = true;
+                process2 = true;
 
                 // Change Game state
                 currentState = GameState.VersusGame;
@@ -2820,6 +3064,101 @@ namespace BoidBash
                 totalTimeIncrementTimer.Add(2);
                 timer += 2;
                 scoreGoal1++;
+            }
+        }
+        
+        /// <summary>
+        /// Handles bashing of boids in versus for player 1
+        /// </summary>
+        /// <param name="pen"></param>
+        /// <param name="score"></param>
+        /// <param name="scoreGoal"></param>
+        /// <param name="playerTimer"></param>
+        public void BashVersus1(int pen)
+        {
+            // Bash boids in pen, and get the data from it
+            long dataReturn;
+            dataReturn = versusFlock.Bashers.BashContainedBoids(versusFlock, pen, scoreGoal1);
+
+            // Add score increment to player score
+            player1Score += (ulong)dataReturn;
+
+            // Add total to totalscoreincrementprints, as long as points were added
+            if (dataReturn > 0)
+            {
+                totalScoreIncrementPrintP1.Add(dataReturn);
+                totalScoreIncrementTimerP1.Add(2);
+            }
+
+            // Determine if score goal, timer, or both are being incremented
+            // 1 - > up score goal
+            // 2 - > timer goes up
+            // 3 - > both go up
+            // Anything else -> no effect
+            if (versusFlock.Bashers.UpScoreGoal == 1)
+            {
+                scoreGoal1++;
+            }
+            else if (versusFlock.Bashers.UpScoreGoal == 2)
+            {
+                // Add to timerincrementprints and timers
+                totalTimeIncrementPrintP1.Add(2);
+                totalTimeIncrementTimerP1.Add(2);
+                versusTimer1 += 2;
+            }
+            else if (versusFlock.Bashers.UpScoreGoal == 3)
+            {
+                // Add to timerincrementprints and timers
+                totalTimeIncrementPrintP1.Add(2);
+                totalTimeIncrementTimerP1.Add(2);
+                versusTimer1 += 2;
+                scoreGoal1++;
+            }
+        }
+
+        /// <summary>
+        /// Bashes boids in Versus for player 2
+        /// </summary>
+        /// <param name="pen"></param>
+        public void BashVersus2(int pen)
+        {
+            // Bash boids in pen, and get the data from it
+            long dataReturn;
+            dataReturn = versusFlock.Bashers.BashContainedBoids(versusFlock, pen, scoreGoal2);
+
+            // Add score increment to player score
+            player2Score += (ulong)dataReturn;
+
+            // Add total to totalscoreincrementprints, as long as points were added
+            if (dataReturn > 0)
+            {
+                totalScoreIncrementPrintP2.Add(dataReturn);
+                totalScoreIncrementTimerP2.Add(2);
+            }
+
+            // Determine if score goal, timer, or both are being incremented
+            // 1 - > up score goal
+            // 2 - > timer goes up
+            // 3 - > both go up
+            // Anything else -> no effect
+            if (versusFlock.Bashers.UpScoreGoal == 1)
+            {
+                scoreGoal2++;
+            }
+            else if (versusFlock.Bashers.UpScoreGoal == 2)
+            {
+                // Add to timerincrementprints and timers
+                totalTimeIncrementPrintP2.Add(2);
+                totalTimeIncrementTimerP2.Add(2);
+                versusTimer2 += 2;
+            }
+            else if (versusFlock.Bashers.UpScoreGoal == 3)
+            {
+                // Add to timerincrementprints and timers
+                totalTimeIncrementPrintP2.Add(2);
+                totalTimeIncrementTimerP2.Add(2);
+                versusTimer2 += 2;
+                scoreGoal2++;
             }
         }
     }
