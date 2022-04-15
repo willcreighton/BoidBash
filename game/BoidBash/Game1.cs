@@ -1057,6 +1057,7 @@ namespace BoidBash
                     {
                         case 1:
 
+                            //Draws Instructions
                             _spriteBatch.DrawString(
                              senBold,
                              String.Format("< Instructions >"),
@@ -1129,6 +1130,7 @@ namespace BoidBash
 
                         case 3:
 
+                            //Draws the title for versus controls
                             _spriteBatch.DrawString(
                              senBold,
                              String.Format("< Versus Controls >"),
@@ -1136,6 +1138,7 @@ namespace BoidBash
                              Color.White
                              );
 
+                            //Draw page 3 out of 3
                             _spriteBatch.DrawString(
                             senBold,
                             String.Format("3/3"),
@@ -1143,6 +1146,7 @@ namespace BoidBash
                            Color.White
                             );
 
+                            //PLayer 1 controls
                             _spriteBatch.DrawString(
                              senBold,
                              String.Format("Player 1 Controls"),
@@ -1156,6 +1160,7 @@ namespace BoidBash
                              new Vector2(100, 160),
                             Color.White
                              );
+
                             _spriteBatch.Draw(wasdControls, new Vector2(40, 190), Color.White);
 
                             _spriteBatch.DrawString(
@@ -1167,6 +1172,7 @@ namespace BoidBash
 
                             _spriteBatch.Draw(bashButton, new Vector2(430, 130), Color.Red);
 
+                            //Player 2 Controls
                             _spriteBatch.DrawString(
                              senBold,
                              String.Format("Player 2 Controls"),
@@ -1191,6 +1197,9 @@ namespace BoidBash
                              );
                             _spriteBatch.Draw(bashButton, new Vector2(1050, 130), Color.Red);
 
+                            break;
+
+                        default:
                             break;
                     }
 
