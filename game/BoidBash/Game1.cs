@@ -73,6 +73,8 @@ namespace BoidBash
         private Texture2D mouseControls;
         private Texture2D arrowControls;
         private Texture2D wasdControls;
+        private Texture2D versusBash1;
+        private Texture2D versusBash2;
 
         // Sounds
         private SoundEffect smallBash;
@@ -352,6 +354,8 @@ namespace BoidBash
             mouseControls = Content.Load<Texture2D>("Mouse");
             arrowControls = Content.Load<Texture2D>("Player2Controls");
             wasdControls = Content.Load<Texture2D>("Player1Controls");
+            versusBash1 = Content.Load<Texture2D>("Player1Bash");
+            versusBash2 = Content.Load<Texture2D>("Player2Bash");
 
             // Create flocks
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
@@ -990,6 +994,7 @@ namespace BoidBash
 
                     // Draw flock and predators
                     versusFlock.Draw();
+
                     // If out of time, draw dead predator
                     if (versusTimer1 > 0)
                     {
@@ -1046,7 +1051,7 @@ namespace BoidBash
                     if (totalScoreIncrementPrintP1.Count > 0)
                     {
                         // Draw the string
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[0]), new Vector2(60, 60), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[0]), new Vector2(160, 40), Color.Yellow);
                         // Increment timer
                         totalScoreIncrementTimerP1[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         // Remove if timer is over
@@ -1059,7 +1064,7 @@ namespace BoidBash
                     // Do same for other prints
                     if (totalScoreIncrementPrintP1.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[1]), new Vector2(80, 80), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[1]), new Vector2(180, 60), Color.Yellow);
 
                         totalScoreIncrementTimerP1[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1071,7 +1076,7 @@ namespace BoidBash
                     }
                     if (totalScoreIncrementPrintP1.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[2]), new Vector2(100, 100), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[2]), new Vector2(200, 80), Color.Yellow);
 
                         totalScoreIncrementTimerP1[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1086,7 +1091,7 @@ namespace BoidBash
                     // Draw total time increment
                     if (totalTimeIncrementPrintP1.Count > 0)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[0]), new Vector2(60, 80), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[0]), new Vector2(160, 60), Color.Magenta);
                         totalTimeIncrementTimerP1[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP1[0] <= 0)
                         {
@@ -1096,7 +1101,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP1.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[1]), new Vector2(80, 100), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[1]), new Vector2(180, 80), Color.Magenta);
                         totalTimeIncrementTimerP1[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP1[1] <= 0)
                         {
@@ -1106,7 +1111,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP1.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[2]), new Vector2(100, 120), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[2]), new Vector2(200, 100), Color.Magenta);
                         totalTimeIncrementTimerP1[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP1[2] <= 0)
                         {
@@ -1120,7 +1125,7 @@ namespace BoidBash
                     if (totalScoreIncrementPrintP2.Count > 0)
                     {
                         // Draw the string
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[0]), new Vector2(800, 60), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[0]), new Vector2(1020, 50), Color.Yellow);
                         // Increment timer
                         totalScoreIncrementTimerP2[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         // Remove if timer is over
@@ -1133,7 +1138,7 @@ namespace BoidBash
                     // Do same for other prints
                     if (totalScoreIncrementPrintP2.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[1]), new Vector2(820, 80), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[1]), new Vector2(1040, 80), Color.Yellow);
 
                         totalScoreIncrementTimerP2[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1145,7 +1150,7 @@ namespace BoidBash
                     }
                     if (totalScoreIncrementPrintP2.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[2]), new Vector2(840, 100), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[2]), new Vector2(1060, 100), Color.Yellow);
 
                         totalScoreIncrementTimerP2[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1160,7 +1165,7 @@ namespace BoidBash
                     // Draw total time increment
                     if (totalTimeIncrementPrintP2.Count > 0)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[0]), new Vector2(800, 80), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[0]), new Vector2(1020, 80), Color.Magenta);
                         totalTimeIncrementTimerP2[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP2[0] <= 0)
                         {
@@ -1170,7 +1175,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP2.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[1]), new Vector2(820, 100), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[1]), new Vector2(1040, 100), Color.Magenta);
                         totalTimeIncrementTimerP2[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP2[1] <= 0)
                         {
@@ -1180,7 +1185,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP2.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[2]), new Vector2(840, 120), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[2]), new Vector2(1060, 120), Color.Magenta);
                         totalTimeIncrementTimerP2[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP2[2] <= 0)
                         {
@@ -1379,7 +1384,7 @@ namespace BoidBash
                     _spriteBatch.DrawString(
                         senBold,
                         String.Format("Press SPACE to Play Again"),
-                        new Vector2(385, windowHeight - 350),
+                        new Vector2(400, windowHeight - 350),
                         Color.White
                         );
 
@@ -1402,7 +1407,7 @@ namespace BoidBash
 
                     // Unsure if we are adding this
                     // Draw number of types of boids bashed
-
+                    // Note from Ryan - I don't think we need toasd
 
                     break;
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1554,7 +1559,11 @@ namespace BoidBash
                             Color.White
                              );
 
-                            _spriteBatch.Draw(wasdControls, new Vector2(40, 190), Color.White);
+                            //Draws WASD
+                            _spriteBatch.Draw(
+                                wasdControls, 
+                                new Vector2(40, 190), 
+                                Color.White);
 
                             _spriteBatch.DrawString(
                              senBold,
@@ -1563,7 +1572,16 @@ namespace BoidBash
                             Color.White
                              );
 
-                            _spriteBatch.Draw(bashButton, new Vector2(430, 130), Color.Red);
+                            //Draws Q and E
+                            _spriteBatch.Draw(
+                                versusBash1, 
+                                new Vector2(350, 230), 
+                                Color.White);
+
+                            _spriteBatch.Draw(
+                                bashButton, 
+                                new Vector2(430, 130), 
+                                Color.Red);
 
                             //Player 2 Controls
                             _spriteBatch.DrawString(
@@ -1580,7 +1598,11 @@ namespace BoidBash
                             Color.White
                              );
 
-                            _spriteBatch.Draw(arrowControls, new Vector2(670, 190), Color.White);
+                            //Draws arrow keys
+                            _spriteBatch.Draw(
+                                arrowControls, 
+                                new Vector2(670, 190), 
+                                Color.White);
 
                             _spriteBatch.DrawString(
                              senBold,
@@ -1588,7 +1610,16 @@ namespace BoidBash
                              new Vector2(980, 160),
                              Color.White
                              );
-                            _spriteBatch.Draw(bashButton, new Vector2(1050, 130), Color.Red);
+
+                            _spriteBatch.Draw(
+                                bashButton, 
+                                new Vector2(1050, 130), 
+                                Color.Red);
+
+                            //Draws K and L
+                            _spriteBatch.Draw(versusBash2, 
+                                new Vector2(970, 230), 
+                                Color.White);
 
                             break;
 
@@ -2684,20 +2715,20 @@ namespace BoidBash
 
             // Process Player input
             // Player1 bashers
-            if (IsSingleKeyPress(Keys.J) && versusTimer1 > 0)
+            if (IsSingleKeyPress(Keys.Q) && versusTimer1 > 0)
             {
                 BashVersus1(0);
             }
-            if (IsSingleKeyPress(Keys.K) && versusTimer1 > 0)
+            if (IsSingleKeyPress(Keys.E) && versusTimer1 > 0)
             {
                 BashVersus1(1);
             }
             // Player2 bashers
-            if (IsSingleKeyPress(Keys.NumPad2) && versusTimer2 > 0)
+            if (IsSingleKeyPress(Keys.K) && versusTimer2 > 0)
             {
                 BashVersus2(2);
             }
-            if (IsSingleKeyPress(Keys.NumPad3) && versusTimer2 > 0)
+            if (IsSingleKeyPress(Keys.L) && versusTimer2 > 0)
             {
                 BashVersus2(3);
             }
