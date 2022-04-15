@@ -667,27 +667,27 @@ namespace BoidBash
                     {
                         // Single player
                         case 1:
-                            _spriteBatch.DrawString(senRegular, String.Format("Single Player"), new Vector2(515, 410), Color.Yellow);
+                            _spriteBatch.DrawString(senRegular, String.Format("Single Player"), new Vector2(515, 410), Color.Gold);
                             break;
 
                         // Versus
                         case 2:
-                            _spriteBatch.DrawString(senRegular, String.Format("Versus"), new Vector2(545, 410), Color.Yellow);
+                            _spriteBatch.DrawString(senRegular, String.Format("Versus"), new Vector2(545, 410), Color.Gold);
                             break;
 
                         // Options
                         case 3:
-                            _spriteBatch.DrawString(senRegular, String.Format("Options"), new Vector2(540, 410), Color.Yellow);
+                            _spriteBatch.DrawString(senRegular, String.Format("Options"), new Vector2(540, 410), Color.Gold);
                             break;
 
                         // Instructions
                         case 4:
-                            _spriteBatch.DrawString(senRegular, String.Format("Instructions"), new Vector2(520, 410), Color.Yellow);
+                            _spriteBatch.DrawString(senRegular, String.Format("Instructions"), new Vector2(520, 410), Color.Gold);
                             break;
 
                         // Credits
                         case 5:
-                            _spriteBatch.DrawString(senRegular, String.Format("Credits"), new Vector2(540, 410), Color.Yellow);
+                            _spriteBatch.DrawString(senRegular, String.Format("Credits"), new Vector2(540, 410), Color.Gold);
                             break;
                     }
                     _spriteBatch.DrawString(senRegular, String.Format("<                            >"), new Vector2(485, 410), Color.White);
