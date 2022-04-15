@@ -13,10 +13,12 @@ namespace BoidBash
     enum GameState
     {
         MainMenu,
-        SingleGame,
-        VersusGame,
+        SingleGame,      
         PauseMenu,
         EndScreen,
+        VersusGame,
+        VersusPause,
+        VersusEndScreen,
         Options,
         Instructions,
         Credits
@@ -122,7 +124,9 @@ namespace BoidBash
 
         // Player Score
         private ulong player1Score = 0;
-        private int scoreGoal = 1;
+        private ulong player2Score = 0;
+        private int scoreGoal1 = 1;
+        private int scoreGoal2 = 1;
 
         // Text Input
         private string name = "";
@@ -140,6 +144,8 @@ namespace BoidBash
         private float raveTimer = 10.5f;
         private float menuTimer = 5;
         private float toolTipTimer = 10;
+        private bool process1 = true;
+        private bool process2 = true;
 
         // Update Score Fields
         private List<ulong> scores = new List<ulong>();
@@ -169,7 +175,7 @@ namespace BoidBash
         private Rectangle[] versusRightBorders = new Rectangle[]
             { 
               new Rectangle (945, 95, 5, 100), new Rectangle (945, 95, 155, 5), new Rectangle (1100, 95, 5, 705),
-              new Rectangle (945, 700, 5, 100), new Rectangle (945, 800, 160, 5), new Rectangle (600, 195, 345, 5),
+              new Rectangle (945, 700, 5, 100), new Rectangle (945, 800, 160, 5), new Rectangle (600, 195, 350, 5),
               new Rectangle (600, 700, 345, 5)};
 
         private Rectangle[] instructionsBashers = new Rectangle[2]
@@ -341,7 +347,7 @@ namespace BoidBash
             flock = new Flock(70, new Rectangle(300, 300, 600, 300),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
-            versusFlock = new Flock(100, new Rectangle(500, 500, 100, 100),
+            versusFlock = new Flock(100, new Rectangle(550, 200, 100, 600),
                 boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
             menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
@@ -596,6 +602,16 @@ namespace BoidBash
                     ProcessEndScreen();
                     break;
 
+                // Versus Pause screen
+                case GameState.VersusPause:
+                    ProcessVersusPause();
+                    break;
+
+                // Versus End Screen
+                case GameState.VersusEndScreen:
+                    ProcessVersusEndScreen();
+                    break;
+
                 // Credits Screen
                 case GameState.Credits:
                     // Apply Credits processing
@@ -728,7 +744,7 @@ namespace BoidBash
                     // Draw all text on screen
                     gameUI.DrawPausePrompt(_spriteBatch);
                     gameUI.DrawScore(_spriteBatch);
-                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
+                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal1);
 
                     //Draws the clock red at 5 seconds
                     if (timer > 5)
@@ -897,16 +913,81 @@ namespace BoidBash
                     gInterval = (fadeEnd.G - fadeStart.G) / 30;
                     bInterval = (fadeEnd.B - fadeStart.B) / 30;
                     colorDrawn = new Color(
-                        (fadeEnd.R + rInterval * (int)versusTimer1 * -1),
-                        (fadeEnd.G + gInterval * (int)versusTimer1 * -1),
-                        (fadeEnd.B + bInterval * (int)versusTimer1 * -1)
+                        (fadeEnd.R + rInterval * (int)versusTimer2 * -1),
+                        (fadeEnd.G + gInterval * (int)versusTimer2 * -1),
+                        (fadeEnd.B + bInterval * (int)versusTimer2 * -1)
                         );
 
+                    // Draw right borders
                     foreach (Rectangle border in versusRightBorders)
                     {
                         _spriteBatch.Draw(blank, border, colorDrawn);
                     }
 
+                    // Set fade for left
+                    rInterval = (fadeEnd.R - fadeStart.R) / 30;
+                    gInterval = (fadeEnd.G - fadeStart.G) / 30;
+                    bInterval = (fadeEnd.B - fadeStart.B) / 30;
+                    colorDrawn = new Color(
+                        (fadeEnd.R + rInterval * (int)versusTimer1 * -1),
+                        (fadeEnd.G + gInterval * (int)versusTimer1 * -1),
+                        (fadeEnd.B + bInterval * (int)versusTimer1 * -1)
+                        );
+
+                    // Draw left borders
+                    foreach (Rectangle border in versusLeftBorders)
+                    {
+                        _spriteBatch.Draw(blank, border, colorDrawn);
+                    }
+
+                    // Draw Player Scores
+                    // Positions may be temporary, unsure where to put atm
+                    _spriteBatch.DrawString(senRegular, "Player 1 Score: " + player1Score, new Vector2(10, 10), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Player 2 Score: " + player2Score, new Vector2(880, 10), Color.White);
+
+                    // Draw Player timers
+                    _spriteBatch.DrawString(senRegular, string.Format("Player 1 Time: {0:F1}", versusTimer1), new Vector2(10, 50), Color.White);
+                    _spriteBatch.DrawString(senRegular, string.Format("Player 2 Time: {0:F1}", versusTimer2), new Vector2(880, 50), Color.White);
+
+                    // Draw flock and predators
+                    versusFlock.Draw();
+                    // If out of time, draw dead predator
+                    if (versusTimer1 > 0)
+                    {
+                        predatorWASD.Draw(_spriteBatch);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(predTexture, predatorWASD.Position, Color.Gray);
+                    }
+                    if (versusTimer2 > 0)
+                    {
+                        predatorArrows.Draw(_spriteBatch);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(predTexture, predatorArrows.Position, Color.Gray);
+                    }
+                  
+                    break;
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Versus Pause Menu
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.VersusPause:
+
+                    // Draw "Paused" text
+                    _spriteBatch.DrawString(senBold, "Paused", new Vector2(540, 30), Color.White);
+
+                    // Draw play area
+                    _spriteBatch.Draw(blank, versusPlayArea, playAreaColor);
+
+                    // Draw bashers
+                    foreach (Rectangle pen in versusBashers)
+                    {
+                        _spriteBatch.Draw(blank, pen, penColor);
+                    }
+
+                    // Set fade color for right
                     rInterval = (fadeEnd.R - fadeStart.R) / 30;
                     gInterval = (fadeEnd.G - fadeStart.G) / 30;
                     bInterval = (fadeEnd.B - fadeStart.B) / 30;
@@ -916,16 +997,57 @@ namespace BoidBash
                         (fadeEnd.B + bInterval * (int)versusTimer2 * -1)
                         );
 
+                    // Draw right borders
+                    foreach (Rectangle border in versusRightBorders)
+                    {
+                        _spriteBatch.Draw(blank, border, colorDrawn);
+                    }
+
+                    // Set fade for left
+                    rInterval = (fadeEnd.R - fadeStart.R) / 30;
+                    gInterval = (fadeEnd.G - fadeStart.G) / 30;
+                    bInterval = (fadeEnd.B - fadeStart.B) / 30;
+                    colorDrawn = new Color(
+                        (fadeEnd.R + rInterval * (int)versusTimer1 * -1),
+                        (fadeEnd.G + gInterval * (int)versusTimer1 * -1),
+                        (fadeEnd.B + bInterval * (int)versusTimer1 * -1)
+                        );
+
+                    // Draw left borders
                     foreach (Rectangle border in versusLeftBorders)
                     {
                         _spriteBatch.Draw(blank, border, colorDrawn);
                     }
 
-                    
+                    // Draw Player Scores
+                    // Positions may be temporary, unsure where to put atm
+                    _spriteBatch.DrawString(senRegular, "Player 1 Score: " + player1Score, new Vector2(10, 10), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Player 2 Score: " + player2Score, new Vector2(880, 10), Color.White);
 
+                    // Draw Player timers
+                    _spriteBatch.DrawString(senRegular, string.Format("Player 1 Time: {0:F1}", versusTimer1), new Vector2(10, 50), Color.White);
+                    _spriteBatch.DrawString(senRegular, string.Format("Player 2 Time: {0:F1}", versusTimer2), new Vector2(880, 50), Color.White);
+
+                    // Draw flock and predators
                     versusFlock.Draw();
-                    predatorArrows.Draw(_spriteBatch);
-                    predatorWASD.Draw(_spriteBatch);
+                    // If out of time, draw dead predator
+                    if (versusTimer1 > 0)
+                    {
+                        predatorWASD.Draw(_spriteBatch);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(predTexture, predatorWASD.Position, Color.Gray);
+                    }
+                    if (versusTimer2 > 0)
+                    {
+                        predatorArrows.Draw(_spriteBatch);
+                    }
+                    else
+                    {
+                        _spriteBatch.Draw(predTexture, predatorArrows.Position, Color.Gray);
+                    }
+
                     break;
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -952,7 +1074,7 @@ namespace BoidBash
                     _spriteBatch.DrawString(senBold, "Time: " + timer.ToString("0"), new Vector2(1050, 15),
                     Color.White);
                     gameUI.DrawScore(_spriteBatch);
-                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal);
+                    gameUI.DrawScoreGoal(_spriteBatch, scoreGoal1);
                     pauseMenuUI.Draw(_spriteBatch);
 
                     // Draw Display boids
@@ -1011,6 +1133,38 @@ namespace BoidBash
                         _spriteBatch.DrawString(senBold, "Input Name: " + name + "|", new Vector2(460, 530),
                     Color.White);
                     }
+                    break;
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                //                                         Versus End Screen
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                case GameState.VersusEndScreen:
+
+                    endScreenUI.Draw(_spriteBatch);
+
+                    // Need to make draw both scores
+                    // Need to draw who wins
+
+                    // Unsure if we are adding this
+                    // Draw number of types of boids bashed
+                    /*
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalBoidsBashed), new Vector2(230, 470),
+                    Color.White);
+                    _spriteBatch.DrawString(senBold, "x " + String.Format("{0:n0}", flock.Bashers.TotalSpecialBoidsBashed), new Vector2(905, 470),
+                    Color.White);
+
+                    // Draw Display boids
+                    _spriteBatch.Draw(
+                        displayBoid,
+                       displayBoids[2],
+                        boidColor
+                        );
+                    _spriteBatch.Draw(
+                        displayBoid,
+                        displayBoids[3],
+                        Color.Gold
+                        );
+                    */
+
                     break;
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                         Instructions
@@ -1540,11 +1694,22 @@ namespace BoidBash
                 // Versus Mode
                 else if (menuSelection == 2)
                 {
+                    MediaPlayer.Play(gameMusic);
+                    MediaPlayer.IsRepeating = true;
+                    versusTimer1 = 30;
+                    versusTimer2 = 30;
+
                     code = "";
                     predatorWASD.PredatorBounds = versusPlayArea;
                     predatorArrows.PredatorBounds = versusPlayArea;
+                    predatorWASD.Position = new Rectangle(width / 2 - 30, height / 2, 35, 35);
+                    predatorArrows.Position = new Rectangle(width / 2 + 30, height / 2, 35, 35);
+
                     stateChange.Play();
                     currentState = GameState.VersusGame;
+
+                    // Reposition all boids
+                    versusFlock.RepositionBoids();
                 }
                 // Options
                 else if (menuSelection == 3)
@@ -1700,7 +1865,7 @@ namespace BoidBash
                 // Reset player score
                 player1Score = 0;
                 // Reset Score goal
-                scoreGoal = 1;
+                scoreGoal1 = 1;
             }
         }
 
@@ -1727,7 +1892,7 @@ namespace BoidBash
 
                         name = "";
                         // Reset player score and score goal
-                        scoreGoal = 1;
+                        scoreGoal1 = 1;
                         player1Score = 0;
                     }
                 }
@@ -1741,7 +1906,7 @@ namespace BoidBash
                     currentState = GameState.MainMenu;
                     // Reset player score and score goal
                     player1Score = 0;
-                    scoreGoal = 1;
+                    scoreGoal1 = 1;
 
                     name = "";
                     UpdateScores(player1Score);
@@ -1796,7 +1961,7 @@ namespace BoidBash
                 // Clear Game data
                 name = "";
                 player1Score = 0;
-                scoreGoal = 1;
+                scoreGoal1 = 1;
 
                 // Change Game state
                 currentState = GameState.SingleGame;
@@ -1912,42 +2077,49 @@ namespace BoidBash
                             flock.DefaultColor = boidColor;
                             menuFlock.DefaultColor = boidColor;
                             instructionsFlock.DefaultColor = boidColor;
+                            versusFlock.DefaultColor = boidColor;
                             break;
 
                         case 2:
                             flock.DefaultColor = Color.Green;
                             menuFlock.DefaultColor = Color.Green;
                             instructionsFlock.DefaultColor = Color.Green;
+                            versusFlock.DefaultColor = Color.Green;
                             break;
 
                         case 3:
                             flock.DefaultColor = Color.Orange;
                             menuFlock.DefaultColor = Color.Orange;
                             instructionsFlock.DefaultColor = Color.Orange;
+                            versusFlock.DefaultColor = Color.Orange;
                             break;
 
                         case 4:
                             flock.DefaultColor = Color.Red;
                             menuFlock.DefaultColor = Color.Red;
                             instructionsFlock.DefaultColor = Color.Red;
+                            versusFlock.DefaultColor = Color.Red;
                             break;
 
                         case 5:
                             flock.DefaultColor = Color.Magenta;
                             menuFlock.DefaultColor = Color.Magenta;
                             instructionsFlock.DefaultColor = Color.Magenta;
+                            versusFlock.DefaultColor = Color.Magenta;
                             break;
 
                         case 6:
                             flock.DefaultColor = Color.Blue;
                             menuFlock.DefaultColor = Color.Blue;
                             instructionsFlock.DefaultColor = Color.Blue;
+                            versusFlock.DefaultColor = Color.Blue;
                             break;
 
                         case 7:
                             flock.DefaultColor = Color.White;
                             menuFlock.DefaultColor = Color.White;
                             instructionsFlock.DefaultColor = Color.White;
+                            versusFlock.DefaultColor = Color.White;
                             break;
                     }
 
@@ -2241,28 +2413,179 @@ namespace BoidBash
         /// <param name="gameTime"></param>
         private void ProcessVersus(GameTime gameTime)
         {
-            // Process Versus Flock
-            versusFlock.ProcessBoids(new Vector2[]
-            { new Vector2(predatorWASD.ActualPosition.X,
+            // Update timer and predators if they have time
+            if (versusTimer1 > 0)
+            {
+                predatorWASD.Update(gameTime);
+                versusTimer1 -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                process1 = false;
+                versusTimer1 = 0;
+            }
+            if (versusTimer2 > 0)
+            {
+                predatorArrows.Update(gameTime);
+                versusTimer2 -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                process2 = false;
+                versusTimer2 = 0;
+            }  
+
+            // Process alive predators in flock
+            if (process1 && process2)
+            {
+                versusFlock.ProcessBoids(new Vector2[]
+                { new Vector2(predatorWASD.ActualPosition.X,
             predatorWASD.ActualPosition.Y), new Vector2(predatorArrows.ActualPosition.X,
             predatorArrows.ActualPosition.Y) });
-
-            // Update predators
-            predatorArrows.Update(gameTime);
-            predatorWASD.Update(gameTime);
-
-            // Update timer
-            versusTimer1 -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            versusTimer2 -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //Return to Main menu
-            if (IsSingleKeyPress(Keys.M))
+            }
+            else if (process1)
             {
+                versusFlock.ProcessBoids(new Vector2[]
+                { new Vector2(predatorWASD.ActualPosition.X,
+            predatorWASD.ActualPosition.Y)});
+            }
+            else if (process2)
+            {
+                versusFlock.ProcessBoids(new Vector2[]
+                { new Vector2(predatorArrows.ActualPosition.X,
+            predatorArrows.ActualPosition.Y)});
+            }
+
+            // End game if out of time
+            if (versusTimer1 <= 0 && versusTimer2 <= 0)
+            {
+                MediaPlayer.Pause();
                 stateChange.Play();
-                currentState = GameState.MainMenu;
+                currentState = GameState.VersusEndScreen;
+                // Go to versus end screen
+            }
+
+            // Pause if tab is pressed
+            if (IsSingleKeyPress(Keys.Tab))
+            {
+                // Pause music
+                MediaPlayer.Pause();
+                stateChange.Play();
+                // Change game state
+                currentState = GameState.VersusPause;
             }
         }
 
+        /// <summary>
+        /// Processes the versus pause game state
+        /// </summary>
+        private void ProcessVersusPause()
+        {
+            // If space is pressed, resume game
+            if (IsSingleKeyPress(Keys.Space))
+            {
+                // Resume music
+                MediaPlayer.Resume();
+                stateChange.Play();
+                // Change game state
+                currentState = GameState.VersusGame;
+            }
+            // Otherwise, if M is pressed, go to main menu
+            else if (IsSingleKeyPress(Keys.M))
+            {
+                // Play main menu music
+                MediaPlayer.Play(menuMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
+                // Change game state
+                currentState = GameState.MainMenu;
+                // Put predator back in center
+                predatorWASD.Position = new Rectangle(width / 2 - 30, height / 2, 25, 25);
+                predatorArrows.Position = new Rectangle(width / 2 + 30, height / 2, 25, 25);
+                // Reset player score
+                player1Score = 0;
+                player2Score = 0;
+                // Reset Score goal
+                scoreGoal1 = 1;
+                scoreGoal2 = 1;
+            }
+        }
+
+        /// <summary>
+        /// Processes the versus end screen game state
+        /// </summary>
+        private void ProcessVersusEndScreen()
+        {
+            // If M is pressed, go back to Main Menu
+            if (IsSingleKeyPress(Keys.M))
+            {
+                // Play menu music
+                MediaPlayer.Play(menuMusic);
+                MediaPlayer.IsRepeating = true;
+                stateChange.Play();
+                // Change game state
+                currentState = GameState.MainMenu;
+                // Reset player score and score goal
+                player1Score = 0;
+                player2Score = 0;
+                scoreGoal1 = 1;
+                scoreGoal2 = 1;
+            }
+
+            // Otherwise, if Space is pressed, go back to Game
+            else if (IsSingleKeyPress(Keys.Space))
+            {
+                // Play game music
+                MediaPlayer.Play(gameMusic);
+                MediaPlayer.IsRepeating = true;
+
+                // Play state change SFX
+                stateChange.Play();
+
+                // Reset timer to 30
+                versusTimer1 = 30;
+                versusTimer2 = 30;
+
+                predatorWASD.Position = new Rectangle(width / 2 - 30, height / 2, 35, 35);
+                predatorArrows.Position = new Rectangle(width / 2 + 30, height / 2, 35, 35);
+
+                /// Need to make these for verus
+                // Clear all prints and timers
+                /*
+                flock.Bashers.ScoreTimers.Clear();
+                flock.Bashers.ScorePrints.Clear();
+                totalScoreIncrementPrint.Clear();
+                totalScoreIncrementTimer.Clear();
+                totalTimeIncrementPrint.Clear();
+                totalTimeIncrementTimer.Clear();
+                */
+
+                // Clear the Game flock of all excess boids above 100
+                // This is more efficient than clearing and adding all back in
+                for (int x = versusFlock.Boids.Count - 1; x >= 100; x--)
+                {
+                    flock.RemoveBoid(flock.Boids[x]);
+                }
+                // Reposition all boids
+                flock.RepositionBoids();
+
+                /// Unsure if we'll add this
+                // Reset bash totals
+                /*
+                flock.Bashers.TotalBoidsBashed = 0;
+                flock.Bashers.TotalSpecialBoidsBashed = 0;
+                */
+
+                // Clear Game data
+                player1Score = 0;
+                player2Score = 0;
+                scoreGoal1 = 1;
+                scoreGoal2 = 1;
+
+                // Change Game state
+                currentState = GameState.VersusGame;
+            }
+        }
 
         /// <summary>
         /// This method updates the high scores text file
@@ -2459,7 +2782,7 @@ namespace BoidBash
         {
             // Bash boids in pen, and get the data from it
             long dataReturn;
-            dataReturn = flock.Bashers.BashContainedBoids(flock, pen, scoreGoal);
+            dataReturn = flock.Bashers.BashContainedBoids(flock, pen, scoreGoal1);
 
             // Add score increment to player score
             player1Score += (ulong)dataReturn;
@@ -2478,7 +2801,7 @@ namespace BoidBash
             // Anything else -> no effect
             if (flock.Bashers.UpScoreGoal == 1)
             {
-                scoreGoal++;
+                scoreGoal1++;
             }
             else if (flock.Bashers.UpScoreGoal == 2)
             {
@@ -2493,7 +2816,7 @@ namespace BoidBash
                 totalTimeIncrementPrint.Add(2);
                 totalTimeIncrementTimer.Add(2);
                 timer += 2;
-                scoreGoal++;
+                scoreGoal1++;
             }
         }
     }
