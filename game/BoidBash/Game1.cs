@@ -941,9 +941,12 @@ namespace BoidBash
                     }
 
                     // Draw Player Scores
-                    // Positions may be temporary, unsure where to put atm
+                    // Positions are temporary, unsure where to put atm
                     _spriteBatch.DrawString(senRegular, "Player 1 Score: " + player1Score, new Vector2(10, 10), Color.White);
                     _spriteBatch.DrawString(senRegular, "Player 2 Score: " + player2Score, new Vector2(880, 10), Color.White);
+
+                    _spriteBatch.DrawString(senRegular, "Bash Goal: " + scoreGoal1, new Vector2(260, 100), Color.White);
+                    _spriteBatch.DrawString(senRegular, "Bash Goal: " + scoreGoal2, new Vector2(800, 100), Color.White);
 
                     // Draw Player timers
                     _spriteBatch.DrawString(senRegular, string.Format("Player 1 Time: {0:F1}", versusTimer1), new Vector2(10, 50), Color.White);
