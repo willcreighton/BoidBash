@@ -163,14 +163,14 @@ namespace BoidBash
 
         private Rectangle[] versusLeftBorders = new Rectangle[]
             { new Rectangle (100, 95, 150, 5), new Rectangle (250, 95, 5, 100), new Rectangle (95, 95, 5, 705),
-              new Rectangle (95, 800, 155, 5), new Rectangle (250, 700, 5, 105), new Rectangle (235, 700, 350, 5),
-              new Rectangle (250, 195, 365, 5)};
+              new Rectangle (95, 800, 155, 5), new Rectangle (250, 700, 5, 105), new Rectangle (250, 700, 350, 5),
+              new Rectangle (250, 195, 350, 5)};
 
         private Rectangle[] versusRightBorders = new Rectangle[]
             { 
               new Rectangle (945, 95, 5, 100), new Rectangle (945, 95, 155, 5), new Rectangle (1100, 95, 5, 705),
-              new Rectangle (945, 700, 5, 100), new Rectangle (945, 800, 160, 5), new Rectangle (615, 195, 335, 5),
-              new Rectangle (615, 700, 335, 5)};
+              new Rectangle (945, 700, 5, 100), new Rectangle (945, 800, 160, 5), new Rectangle (600, 195, 345, 5),
+              new Rectangle (600, 700, 345, 5)};
 
         private Rectangle[] instructionsBashers = new Rectangle[2]
             { new Rectangle(100, 550, 100, 200), new Rectangle(1000, 550, 100, 200) };
@@ -216,6 +216,8 @@ namespace BoidBash
             { new Rectangle(335, 635, 40, 40), new Rectangle(375, 635, 40, 40), new Rectangle(485, 635, 40, 40),
               new Rectangle(525, 635, 40, 40), new Rectangle(635, 635, 40, 40), new Rectangle(675, 635, 40, 40),
               new Rectangle(785, 635, 40, 40), new Rectangle(825, 635, 40, 40)};
+
+        private Rectangle centerMarker;
 
         // Options
         private float musicVolume = 1;
@@ -453,6 +455,9 @@ namespace BoidBash
             predatorArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
                 windowHeight, windowWidth, Color.Blue, 35, 35, ControlScheme.Arrows);
+
+            // *Debug* set center marker
+            centerMarker = new Rectangle(width / 2 - 5, 0, 10, 1000); 
 
             // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold, senRegular);
@@ -887,6 +892,7 @@ namespace BoidBash
                         _spriteBatch.Draw(blank, pen, penColor);
                     }
 
+                    // Set fade color for right
                     rInterval = (fadeEnd.R - fadeStart.R) / 30;
                     gInterval = (fadeEnd.G - fadeStart.G) / 30;
                     bInterval = (fadeEnd.B - fadeStart.B) / 30;
@@ -914,6 +920,8 @@ namespace BoidBash
                     {
                         _spriteBatch.Draw(blank, border, colorDrawn);
                     }
+
+                    
 
                     versusFlock.Draw();
                     predatorArrows.Draw(_spriteBatch);
