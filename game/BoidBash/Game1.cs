@@ -343,10 +343,10 @@ namespace BoidBash
             bashButton = Content.Load<Texture2D>("BashButtonNew");
             playPrompt = Content.Load<Texture2D>("StartPrompt");
             boidBashLogo = Content.Load<Texture2D>("DaLogo");
-            continuePrompt = Content.Load<Texture2D>("ContinuePrompt");
+            continuePrompt = Content.Load<Texture2D>("PlayAgainPrompt");
             gameOver = Content.Load<Texture2D>("GameOver");
             resumePrompt = Content.Load<Texture2D>("ResumePrompt");
-            pausePrompt = Content.Load<Texture2D>("PausePrompt");
+            pausePrompt = Content.Load<Texture2D>("PausePrompt2");
             returnPrompt = Content.Load<Texture2D>("ReturnMainMenu");
             pausedDisplay = Content.Load<Texture2D>("Paused");
             customCursor = Content.Load<Texture2D>("CustomCursor");
@@ -491,7 +491,7 @@ namespace BoidBash
 
             // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold, senRegular);
-            gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, boidBashLogo, pausePrompt);
+            gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, pausePrompt);
             pauseMenuUI = new PauseMenuUI(windowWidth, windowHeight, resumePrompt, returnPrompt, pausedDisplay);
             endScreenUI = new EndScreenUI(windowWidth, windowHeight, continuePrompt, gameOver, senBold, returnPrompt);
 
@@ -499,7 +499,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(110, 110, 80, 80),    // Where to put the button
-                    Color.Red,                      // Button color
+                    Color.Red,                          // Button color
                     0,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -508,7 +508,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(1010, 110, 80, 80),   // Where to put the button
-                    Color.Red,                      // Button color
+                    Color.Red,                          // Button color
                     1,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -517,7 +517,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(1010, 710, 80, 80),   // Where to put the button
-                    Color.Red,                      // Button color
+                    Color.Red,                          // Button color
                     2,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -526,7 +526,7 @@ namespace BoidBash
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // Device to create a custom texture
                     new Rectangle(110, 710, 80, 80),    // Where to put the button
-                    Color.Red,                      // Button color
+                    Color.Red,                          // Button color
                     3,                                  // Pen number
                     bashButton,                         // Texture
                     clicked));
@@ -536,7 +536,7 @@ namespace BoidBash
             instructionButtons.Add(new Button(
                    _graphics.GraphicsDevice,           // Device to create a custom texture
                    new Rectangle(110, 110, 80, 80),    // Where to put the button
-                   Color.Red,                      // Button color
+                   Color.Red,                          // Button color
                    0,                                  // Pen number
                    bashButton,                         // Texture
                    clicked));
@@ -544,7 +544,7 @@ namespace BoidBash
             instructionButtons.Add(new Button(
                    _graphics.GraphicsDevice,           // Device to create a custom texture
                    new Rectangle(110, 110, 80, 80),    // Where to put the button
-                   Color.Red,                      // Button color
+                   Color.Red,                          // Button color
                    0,                                  // Pen number
                    bashButton,                         // Texture
                    clicked));
@@ -576,10 +576,6 @@ namespace BoidBash
 
         protected override void Update(GameTime gameTime)
         {
-            // Exit if Escape is pressed
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             // Update keyboard state
             keyboardState = Keyboard.GetState();
 
@@ -1342,7 +1338,7 @@ namespace BoidBash
                     // Draw Display boids
                     _spriteBatch.Draw(
                         displayBoid,
-                       displayBoids[2],
+                        displayBoids[2],
                         boidColor
                         );
                     _spriteBatch.Draw(
@@ -2091,7 +2087,7 @@ namespace BoidBash
             }
 
             // Pause if tab is pressed
-            if (IsSingleKeyPress(Keys.Tab))
+            if (IsSingleKeyPress(Keys.Escape))
             {
                 // Pause music
                 MediaPlayer.Pause();

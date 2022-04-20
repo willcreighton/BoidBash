@@ -18,19 +18,17 @@ namespace BoidBash
         private int windowHeight;
         private SpriteFont senBold;
         private SpriteFont senExtraBold;
-        private Texture2D boidBashLogo;
         private Texture2D pausePrompt;
 
         private ulong score = 0;
 
         // Constructor
-        public GameUI(int windowWidth, int windowHeight, SpriteFont senBold, SpriteFont senExtraBold, Texture2D boidBashLogo, Texture2D pausePrompt)
+        public GameUI(int windowWidth, int windowHeight, SpriteFont senBold, SpriteFont senExtraBold, Texture2D pausePrompt)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
             this.senBold = senBold;
             this.senExtraBold = senExtraBold;
-            this.boidBashLogo = boidBashLogo;
             this.pausePrompt = pausePrompt;
         }
 
@@ -58,21 +56,6 @@ namespace BoidBash
                 new Vector2(20, windowHeight - 40),
                 Color.White
                 );
-        }
-
-        /// <summary>
-        /// Draw the Boid Bash logo
-        /// </summary>
-        /// <param name="_spriteBatch"></param>
-        public void DrawLogo(SpriteBatch _spriteBatch)
-        {
-            // Boid Bash logo display
-            _spriteBatch.Draw(
-                boidBashLogo,
-                new Rectangle(1085, 800, 100, 90),
-                Color.White
-                );
-
         }
 
         /// <summary>
