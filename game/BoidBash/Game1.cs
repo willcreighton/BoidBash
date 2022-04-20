@@ -698,7 +698,7 @@ namespace BoidBash
                     _spriteBatch.DrawString(senRegular, String.Format("<                            >"), new Vector2(485, 410), Color.White);
 
                     //Draws the highscores
-                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(450, 580), Color.White);
+                    _spriteBatch.DrawString(senRegular, GetScoreList(), new Vector2(450, 540), Color.White);
 
                     if (displayToolTip)
                     {
@@ -1777,7 +1777,7 @@ namespace BoidBash
                         position2, 
                         Color.Gold);
 
-                    _spriteBatch.DrawString(senExtraBold, "Mark Ian Calica\nWill Creighton\nRyan Vollmer\nBrian Creelman", position3, Disco());
+                    _spriteBatch.DrawString(senExtraBold, "Mark Ian Calica\nWill Creighton\nRyan Vollmer\nBrian Creelman", position3, Color.Gold);
 
                     break;
 

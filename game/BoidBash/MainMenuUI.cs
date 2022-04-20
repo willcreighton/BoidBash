@@ -55,7 +55,7 @@ namespace BoidBash
             // Boid Bash logo
             _spriteBatch.Draw(
                 boidBashLogo,
-                new Rectangle(405, 150, 342, 150),
+                new Rectangle(325, 105, 500, 250),
                 Color.White
                 );
             
@@ -82,7 +82,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 senRegular, 
                 String.Format("HIGH SCORES"), 
-                new Vector2(500, 550), 
+                new Vector2(500, 515), 
                 Color.White
                 );
         }
