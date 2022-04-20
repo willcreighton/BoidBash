@@ -15,7 +15,7 @@ namespace BoidBash
         // Fields
         private int windowWidth;
         private int windowHeight;
-        private Texture2D continuePrompt;
+        private Texture2D playAgainPrompt;
         private Texture2D gameOver;
         private ulong score;
         private SpriteFont senBold;
@@ -28,11 +28,11 @@ namespace BoidBash
         }
 
         // Constructor
-        public EndScreenUI(int windowWidth, int windowHeight, Texture2D continuePrompt, Texture2D gameOver, SpriteFont senBold, Texture2D returnPrompt)
+        public EndScreenUI(int windowWidth, int windowHeight, Texture2D playAgainPrompt, Texture2D gameOver, SpriteFont senBold, Texture2D returnPrompt)
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
-            this.continuePrompt = continuePrompt;
+            this.playAgainPrompt = playAgainPrompt;
             this.gameOver = gameOver;
             this.senBold = senBold;
             this.returnPrompt = returnPrompt;
@@ -66,11 +66,10 @@ namespace BoidBash
                 Color.White
                 );
 
-            // Allows the user to play again instantly
-            _spriteBatch.DrawString(
-                senBold,
-                String.Format("Press SPACE to Play Again"),
-                new Vector2(400, windowHeight - 450),
+            // Play again prompt
+            _spriteBatch.Draw(
+                playAgainPrompt,
+                new Vector2(445, windowHeight - 450),
                 Color.White
                 );
         }
