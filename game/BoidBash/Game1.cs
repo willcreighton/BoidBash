@@ -342,7 +342,7 @@ namespace BoidBash
             // Load all textures
             bashButton = Content.Load<Texture2D>("BashButtonNew");
             playPrompt = Content.Load<Texture2D>("StartPrompt");
-            boidBashLogo = Content.Load<Texture2D>("BoidBashLogo");
+            boidBashLogo = Content.Load<Texture2D>("DaLogo");
             continuePrompt = Content.Load<Texture2D>("ContinuePrompt");
             gameOver = Content.Load<Texture2D>("GameOver");
             resumePrompt = Content.Load<Texture2D>("ResumePrompt");
@@ -1771,8 +1771,7 @@ namespace BoidBash
 
                     _spriteBatch.Draw(
                          boidBashLogo,
-                         position1,
-                         new Rectangle(25, 25, 800, 800),
+                         new Rectangle((int)position1.X, (int)position1.Y, 800, 500),
                          Color.White
                          );
 
@@ -2709,11 +2708,11 @@ namespace BoidBash
                 stateChange.Play();
                 currentState = GameState.MainMenu;
             }
-            position1.Y -= 1;
+            position1.Y -= 2;
             if (position2.Y > 300)
             {
-                position2.Y -= 1;
-                position3.Y -= 1;
+                position2.Y -= 2;
+                position3.Y -= 2;
             }
         }
 
