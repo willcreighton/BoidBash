@@ -965,35 +965,34 @@ namespace BoidBash
                     }
 
                     // Draw Player Scores
-                    // Positions are temporary, unsure where to put atm
-                    _spriteBatch.DrawString(senRegular, "Player 1 Score: " + player1Score, new Vector2(10, 10), Color.White);
-                    _spriteBatch.DrawString(senRegular, "Player 2 Score: " + player2Score, new Vector2(880, 10), Color.White);
+                    _spriteBatch.DrawString(senBold, "Player 1 Score: " + string.Format("{0:n0}", player1Score), new Vector2(10, 10), Color.White);
+                    _spriteBatch.DrawString(senBold, "Player 2 Score: " + string.Format("{0:n0}", player2Score), new Vector2(730, 10), Color.White);
 
-                    _spriteBatch.DrawString(senRegular, "Bash Goal: " + scoreGoal1, new Vector2(260, 100), Color.White);
-                    _spriteBatch.DrawString(senRegular, "Bash Goal: " + scoreGoal2, new Vector2(800, 100), Color.White);
+                    _spriteBatch.DrawString(senBold, "Bash Goal: " + scoreGoal1, new Vector2(260, 150), Color.White);
+                    _spriteBatch.DrawString(senBold, "Bash Goal: " + scoreGoal2, new Vector2(730, 150), Color.White);
 
                     // Draw Player timers
                     //Draws the clock red at 5 seconds
                     // Player 1
                     if (versusTimer1 > 5)
                     {
-                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer1.ToString("0")), new Vector2(10, 50),
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer1.ToString("0")), new Vector2(260, 110),
                          Color.White);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer1.ToString("0")), new Vector2(10, 50),
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer1.ToString("0")), new Vector2(260, 110),
                          Color.Red);
                     }
                     // Player 2
                     if (versusTimer1 > 5)
                     {
-                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer2.ToString("0")), new Vector2(880, 50),
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer2.ToString("0")), new Vector2(730, 110),
                          Color.White);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer2.ToString("0")), new Vector2(880, 50),
+                        _spriteBatch.DrawString(senBold, "Time: " + String.Format("{0:0.00}", versusTimer2.ToString("0")), new Vector2(730, 110),
                          Color.Red);
                     }
 
@@ -1056,7 +1055,7 @@ namespace BoidBash
                     if (totalScoreIncrementPrintP1.Count > 0)
                     {
                         // Draw the string
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[0]), new Vector2(160, 40), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[0]), new Vector2(220, 40), Color.Yellow);
                         // Increment timer
                         totalScoreIncrementTimerP1[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         // Remove if timer is over
@@ -1069,7 +1068,7 @@ namespace BoidBash
                     // Do same for other prints
                     if (totalScoreIncrementPrintP1.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[1]), new Vector2(180, 60), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[1]), new Vector2(230, 60), Color.Yellow);
 
                         totalScoreIncrementTimerP1[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1081,7 +1080,7 @@ namespace BoidBash
                     }
                     if (totalScoreIncrementPrintP1.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[2]), new Vector2(200, 80), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP1[2]), new Vector2(240, 80), Color.Yellow);
 
                         totalScoreIncrementTimerP1[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1096,7 +1095,7 @@ namespace BoidBash
                     // Draw total time increment
                     if (totalTimeIncrementPrintP1.Count > 0)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[0]), new Vector2(160, 60), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[0]), new Vector2(370, 130), Color.Magenta);
                         totalTimeIncrementTimerP1[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP1[0] <= 0)
                         {
@@ -1106,7 +1105,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP1.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[1]), new Vector2(180, 80), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[1]), new Vector2(380, 150), Color.Magenta);
                         totalTimeIncrementTimerP1[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP1[1] <= 0)
                         {
@@ -1116,7 +1115,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP1.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[2]), new Vector2(200, 100), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP1[2]), new Vector2(390, 170), Color.Magenta);
                         totalTimeIncrementTimerP1[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP1[2] <= 0)
                         {
@@ -1130,7 +1129,7 @@ namespace BoidBash
                     if (totalScoreIncrementPrintP2.Count > 0)
                     {
                         // Draw the string
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[0]), new Vector2(1020, 50), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[0]), new Vector2(980, 50), Color.Yellow);
                         // Increment timer
                         totalScoreIncrementTimerP2[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         // Remove if timer is over
@@ -1143,7 +1142,7 @@ namespace BoidBash
                     // Do same for other prints
                     if (totalScoreIncrementPrintP2.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[1]), new Vector2(1040, 80), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[1]), new Vector2(990, 80), Color.Yellow);
 
                         totalScoreIncrementTimerP2[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1155,7 +1154,7 @@ namespace BoidBash
                     }
                     if (totalScoreIncrementPrintP2.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[2]), new Vector2(1060, 100), Color.Yellow);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalScoreIncrementPrintP2[2]), new Vector2(1000, 100), Color.Yellow);
 
                         totalScoreIncrementTimerP2[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -1170,7 +1169,7 @@ namespace BoidBash
                     // Draw total time increment
                     if (totalTimeIncrementPrintP2.Count > 0)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[0]), new Vector2(1020, 80), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[0]), new Vector2(850, 140), Color.Magenta);
                         totalTimeIncrementTimerP2[0] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP2[0] <= 0)
                         {
@@ -1180,7 +1179,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP2.Count > 1)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[1]), new Vector2(1040, 100), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[1]), new Vector2(860, 160), Color.Magenta);
                         totalTimeIncrementTimerP2[1] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP2[1] <= 0)
                         {
@@ -1190,7 +1189,7 @@ namespace BoidBash
                     }
                     if (totalTimeIncrementPrintP2.Count > 2)
                     {
-                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[2]), new Vector2(1060, 120), Color.Magenta);
+                        _spriteBatch.DrawString(senRegular, "+ " + string.Format("{0:n0}", totalTimeIncrementPrintP2[2]), new Vector2(870, 180), Color.Magenta);
                         totalTimeIncrementTimerP2[2] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (totalTimeIncrementTimerP2[2] <= 0)
                         {
