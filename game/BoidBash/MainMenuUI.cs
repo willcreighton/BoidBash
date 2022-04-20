@@ -82,7 +82,7 @@ namespace BoidBash
             _spriteBatch.DrawString(
                 senRegular, 
                 String.Format("HIGH SCORES"), 
-                new Vector2(500, 550), 
+                new Vector2(500, 515), 
                 Color.White
                 );
         }
