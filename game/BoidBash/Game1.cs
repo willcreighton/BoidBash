@@ -1781,7 +1781,7 @@ namespace BoidBash
                         position2, 
                         Color.Gold);
 
-                    _spriteBatch.DrawString(senExtraBold, "Mark Ian Calica\nWill Creighton\nRyan Vollmer\nBrian Creelman", position3, Disco());
+                    _spriteBatch.DrawString(senExtraBold, "Mark Ian Calica\nWill Creighton\nRyan Vollmer\nBrian Creelman", position3, Color.Gold);
 
                     break;
 

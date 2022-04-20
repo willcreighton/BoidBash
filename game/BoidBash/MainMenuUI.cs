@@ -55,7 +55,7 @@ namespace BoidBash
             // Boid Bash logo
             _spriteBatch.Draw(
                 boidBashLogo,
-                new Rectangle(405, 150, 342, 150),
+                new Rectangle(325, 75, 500, 300),
                 Color.White
                 );
             
