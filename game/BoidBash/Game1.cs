@@ -1684,11 +1684,11 @@ namespace BoidBash
                         _spriteBatch.Draw(blank, new Rectangle(boidColorSelection * 100 + 175, 330, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, boidColorSelectors[0], boidColor);
-                    _spriteBatch.Draw(blank, boidColorSelectors[1], Color.Green);
+                    _spriteBatch.Draw(blank, boidColorSelectors[1], Color.Lime);
                     _spriteBatch.Draw(blank, boidColorSelectors[2], Color.Orange);
                     _spriteBatch.Draw(blank, boidColorSelectors[3], Color.Red);
                     _spriteBatch.Draw(blank, boidColorSelectors[4], Color.Magenta);
-                    _spriteBatch.Draw(blank, boidColorSelectors[5], Color.Blue);
+                    _spriteBatch.Draw(blank, boidColorSelectors[5], Color.Yellow);
                     _spriteBatch.Draw(blank, boidColorSelectors[6], Color.White);
 
                     // Predator Color Selection
@@ -1706,11 +1706,11 @@ namespace BoidBash
                         _spriteBatch.Draw(blank, new Rectangle(predatorColorSelection2 * 100 + 175, 430, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, predatorColorSelectors[0], boidColor);
-                    _spriteBatch.Draw(blank, predatorColorSelectors[1], Color.Green);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[1], Color.Lime);
                     _spriteBatch.Draw(blank, predatorColorSelectors[2], Color.Orange);
                     _spriteBatch.Draw(blank, predatorColorSelectors[3], Color.Red);
                     _spriteBatch.Draw(blank, predatorColorSelectors[4], Color.Magenta);
-                    _spriteBatch.Draw(blank, predatorColorSelectors[5], Color.Blue);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[5], Color.Yellow);
                     _spriteBatch.Draw(blank, predatorColorSelectors[6], Color.White);
 
                     // Button Color Selection
@@ -1724,11 +1724,11 @@ namespace BoidBash
                         _spriteBatch.Draw(blank, new Rectangle(buttonColorSelection * 100 + 175, 530, 50, 50), Color.White);
                     }
                     _spriteBatch.Draw(blank, buttonColorSelectors[0], boidColor);
-                    _spriteBatch.Draw(blank, buttonColorSelectors[1], Color.Green);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[1], Color.Lime);
                     _spriteBatch.Draw(blank, buttonColorSelectors[2], Color.Orange);
                     _spriteBatch.Draw(blank, buttonColorSelectors[3], Color.Red);
                     _spriteBatch.Draw(blank, buttonColorSelectors[4], Color.Magenta);
-                    _spriteBatch.Draw(blank, buttonColorSelectors[5], Color.Blue);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[5], Color.Yellow);
                     _spriteBatch.Draw(blank, buttonColorSelectors[6], Color.White);
 
                     // Border Color Selection
@@ -2380,10 +2380,10 @@ namespace BoidBash
                             break;
 
                         case 2:
-                            flock.DefaultColor = Color.Green;
-                            menuFlock.DefaultColor = Color.Green;
-                            instructionsFlock.DefaultColor = Color.Green;
-                            versusFlock.DefaultColor = Color.Green;
+                            flock.DefaultColor = Color.Lime;
+                            menuFlock.DefaultColor = Color.Lime;
+                            instructionsFlock.DefaultColor = Color.Lime;
+                            versusFlock.DefaultColor = Color.Lime;
                             break;
 
                         case 3:
@@ -2408,10 +2408,10 @@ namespace BoidBash
                             break;
 
                         case 6:
-                            flock.DefaultColor = Color.Blue;
-                            menuFlock.DefaultColor = Color.Blue;
-                            instructionsFlock.DefaultColor = Color.Blue;
-                            versusFlock.DefaultColor = Color.Blue;
+                            flock.DefaultColor = Color.Yellow;
+                            menuFlock.DefaultColor = Color.Yellow;
+                            instructionsFlock.DefaultColor = Color.Yellow;
+                            versusFlock.DefaultColor = Color.Yellow;
                             break;
 
                         case 7:
@@ -2477,8 +2477,8 @@ namespace BoidBash
                             break;
 
                         case 2:
-                            predatorWASD.Color = Color.Green;
-                            predatorWASDArrows.Color = Color.Green;
+                            predatorWASD.Color = Color.Lime;
+                            predatorWASDArrows.Color = Color.Lime;
                             break;
 
                         case 3:
@@ -2497,8 +2497,8 @@ namespace BoidBash
                             break;
 
                         case 6:
-                            predatorWASD.Color = Color.Blue;
-                            predatorWASDArrows.Color = Color.Blue;
+                            predatorWASD.Color = Color.Yellow;
+                            predatorWASDArrows.Color = Color.Yellow;
                             break;
 
                         case 7:
@@ -2514,7 +2514,7 @@ namespace BoidBash
                             break;
 
                         case 2:
-                            predatorArrows.Color = Color.Green;
+                            predatorArrows.Color = Color.Lime;
                             break;
 
                         case 3:
@@ -2530,7 +2530,7 @@ namespace BoidBash
                             break;
 
                         case 6:
-                            predatorArrows.Color = Color.Blue;
+                            predatorArrows.Color = Color.Yellow;
                             break;
 
                         case 7:
@@ -2572,7 +2572,7 @@ namespace BoidBash
                         case 2:
                             foreach (Button button in buttons)
                             {
-                                button.Color = Color.Green;
+                                button.Color = Color.Lime;
                             }
                             break;
                         case 3:
@@ -2596,7 +2596,7 @@ namespace BoidBash
                         case 6:
                             foreach (Button button in buttons)
                             {
-                                button.Color = Color.Blue;
+                                button.Color = Color.Yellow;
                             }
                             break;
                         case 7:
