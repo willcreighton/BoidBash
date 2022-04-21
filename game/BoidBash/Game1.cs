@@ -2791,7 +2791,7 @@ namespace BoidBash
             }
 
             // Pause if tab is pressed
-            if (IsSingleKeyPress(Keys.Tab))
+            if (IsSingleKeyPress(Keys.Escape))
             {
                 // Pause music
                 MediaPlayer.Pause();
