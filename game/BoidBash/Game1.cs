@@ -155,9 +155,14 @@ namespace BoidBash
         private float versusTimer2 = 45f;
         private float raveTimer = 10.5f;
         private float menuTimer = 5;
+        private float startUpTimer = 3;
         private float toolTipTimer = 10;
         private bool process1 = true;
         private bool process2 = true;
+        private bool musicStarted = false;
+        private bool startUp1 = false;
+        private bool startUp2 = false;
+        private bool startUp3 = false;
 
         // Update Score Fields
         private List<ulong> scores = new List<ulong>();
@@ -838,6 +843,19 @@ namespace BoidBash
                         b.Draw(_spriteBatch);
                     }
 
+                    // Draw Ready? Set. Bash!
+                    if (startUpTimer > 2)
+                    {
+                        _spriteBatch.DrawString(senBold, "Ready?", new Vector2(550, 400), Color.Gold);
+                    }
+                    else if (startUpTimer > 1)
+                    {
+                        _spriteBatch.DrawString(senBold, "Set.", new Vector2(580, 400), Color.Gold);
+                    }
+                    else if (startUpTimer > 0)
+                    {
+                        _spriteBatch.DrawString(senExtraBold, "Bash!", new Vector2(550, 400), Color.Gold);
+                    }
 
                     // Draw total score increment
                     if (totalScoreIncrementPrint.Count > 0)
@@ -1933,11 +1951,7 @@ namespace BoidBash
             {
                 // Game State
                 if (menuSelection == 1)
-                {
-                    // Play game music
-                    MediaPlayer.Play(gameMusic);
-                    MediaPlayer.IsRepeating = true;
-
+                {                   
                     // Play state change SFX
                     stateChange.Play();
 
@@ -1970,6 +1984,8 @@ namespace BoidBash
                     // Turn off rave
                     rave = false;
                     code = "";
+
+                    MediaPlayer.Pause();
 
                     // Reset cursor Boid
                     menuFlock.RemoveBoid(menuFlock.Boids[menuFlock.Boids.Count - 1]);
@@ -2080,11 +2096,56 @@ namespace BoidBash
         /// </summary>
         private void ProcessGame(GameTime gameTime)
         {
-            // Call each button's update method
-            foreach (Button button in buttons)
+            // Start up before game starts
+            if (startUpTimer > 0)
             {
-                button.Update();
+                startUpTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+            else
+            {
+                if (!musicStarted)
+                {
+                    // Play game music
+                    MediaPlayer.Play(gameMusic);
+                    MediaPlayer.IsRepeating = true;
+                    musicStarted = true;
+                }
+
+                // Call each button's update method
+                foreach (Button button in buttons)
+                {
+                    button.Update();
+                }
+
+                // End game when timer is up 
+                if (timer < 0.01f)
+                {
+                    // Update End screen UI
+                    endScreenUI.Score = player1Score;
+                    // Change state
+                    currentState = GameState.EndScreen;
+
+                    startUpTimer = 3;
+                    musicStarted = false;
+
+                    // Stop music and play sound
+                    gameOverSound.Play();
+                    MediaPlayer.Stop();
+                }
+
+                // Process Boids and predator
+                predatorWASDArrows.Update(gameTime);
+                flock.ProcessBoids(new Vector2[1] { predatorWASDArrows.ActualPosition });
+
+                // Update Game timer.
+                if (timer > 0)
+                {
+                    timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+
+                // Update score for game UI
+                gameUI.ScoreUpdater(player1Score);
+            }        
 
             // Pause if tab is pressed
             if (IsSingleKeyPress(Keys.Escape))
@@ -2110,30 +2171,23 @@ namespace BoidBash
                 }
             }
 
-            // End game when timer is up 
-            if (timer < 0.01f)
+            // Play sound at time of RSB
+            if (startUpTimer > 2 && !startUp1)
             {
-                // Update End screen UI
-                endScreenUI.Score = player1Score;
-                // Change state
-                currentState = GameState.EndScreen;
-                // Stop music and play sound
-                gameOverSound.Play();
-                MediaPlayer.Stop();
+                stateChange.Play();
+                startUp1 = true;
+            }
+            if (startUpTimer > 1 && !startUp2)
+            {
+                stateChange.Play();
+                startUp2 = true;
+            }
+            if (startUpTimer > 0 && !startUp3)
+            {
+                stateChange.Play();
+                startUp3 = true;
             }
 
-            // Process Boids and predator
-            predatorWASDArrows.Update(gameTime);
-            flock.ProcessBoids(new Vector2[1] { predatorWASDArrows.ActualPosition });
-
-            // Update Game timer.
-            if (timer > 0)
-            {
-                timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
-            // Update score for game UI
-            gameUI.ScoreUpdater(player1Score);
         }
 
         /// <summary>
@@ -2165,6 +2219,9 @@ namespace BoidBash
                 player1Score = 0;
                 // Reset Score goal
                 scoreGoal1 = 1;
+                // Reset Start up Timer
+                startUpTimer = 3;
+                musicStarted = false;
             }
         }
 
@@ -2210,16 +2267,10 @@ namespace BoidBash
                     name = "";
                     UpdateScores(player1Score);
                 }
-
-
             }
             // Otherwise, if Space is pressed, go back to Game
             else if (IsSingleKeyPress(Keys.Space))
             {
-                // Play game music
-                MediaPlayer.Play(gameMusic);
-                MediaPlayer.IsRepeating = true;
-
                 // Play state change SFX
                 stateChange.Play();
 
