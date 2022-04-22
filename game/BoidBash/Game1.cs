@@ -347,7 +347,7 @@ namespace BoidBash
             // Load all textures
             bashButton = Content.Load<Texture2D>("BashButtonNew");
             playPrompt = Content.Load<Texture2D>("StartPrompt");
-            boidBashLogo = Content.Load<Texture2D>("DaLogo");
+            boidBashLogo = Content.Load<Texture2D>("LogoVar4");
             continuePrompt = Content.Load<Texture2D>("PlayAgainPrompt");
             gameOver = Content.Load<Texture2D>("GameOver");
             resumePrompt = Content.Load<Texture2D>("ResumePrompt");
