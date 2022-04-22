@@ -163,6 +163,7 @@ namespace BoidBash
         private bool startUp1 = false;
         private bool startUp2 = false;
         private bool startUp3 = false;
+        private bool startUp4 = false;
 
         // Update Score Fields
         private List<ulong> scores = new List<ulong>();
@@ -2126,11 +2127,16 @@ namespace BoidBash
                     currentState = GameState.EndScreen;
 
                     startUpTimer = 3;
-                    musicStarted = false;
+                    musicStarted = false;                   
 
                     // Stop music and play sound
                     gameOverSound.Play();
                     MediaPlayer.Stop();
+
+                    startUp1 = false;
+                    startUp2 = false;
+                    startUp3 = false;
+                    startUp4 = false;
                 }
 
                 // Process Boids and predator
@@ -2177,15 +2183,20 @@ namespace BoidBash
                 stateChange.Play();
                 startUp1 = true;
             }
-            if (startUpTimer > 1 && !startUp2)
+            if (startUpTimer < 2 && !startUp2)
             {
                 stateChange.Play();
                 startUp2 = true;
             }
-            if (startUpTimer > 0 && !startUp3)
+            if (startUpTimer < 1 && !startUp3)
             {
                 stateChange.Play();
                 startUp3 = true;
+            }
+            if (startUpTimer < 0 && !startUp4)
+            {
+                largeBash.Play();
+                startUp4 = true;
             }
         }
 
@@ -2221,6 +2232,12 @@ namespace BoidBash
                 // Reset Start up Timer
                 startUpTimer = 3;
                 musicStarted = false;
+
+                // Reset RSB sounds
+                startUp1 = false;
+                startUp2 = false;
+                startUp3 = false;
+                startUp4 = false;
             }
         }
 
