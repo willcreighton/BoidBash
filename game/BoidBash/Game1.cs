@@ -2172,17 +2172,17 @@ namespace BoidBash
             }
 
             // Play sound at time of RSB
-            if (startUpTimer > 2 && startUpTimer < 3 && !startUp1)
+            if (startUpTimer < 3 && !startUp1)
             {
                 stateChange.Play();
                 startUp1 = true;
             }
-            if (startUpTimer > 1 && startUpTimer < 2 && !startUp2)
+            if (startUpTimer < 2 && !startUp2)
             {
                 stateChange.Play();
                 startUp2 = true;
             }
-            if (startUpTimer > 0 && startUpTimer < 1 && !startUp3)
+            if (startUpTimer < 1 && !startUp3)
             {
                 stateChange.Play();
                 startUp3 = true;
