@@ -275,10 +275,12 @@ namespace BoidBash
         //Case Field
         private int choice = 1;
 
+        //Properties
         public int Width
         {
             get { return width; }
         }
+
         public int Height
         {
             get { return height; }
@@ -289,6 +291,7 @@ namespace BoidBash
             get { return player1Score; }
         }
 
+        //Constructor
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -1424,11 +1427,8 @@ namespace BoidBash
                         _spriteBatch.DrawString(senBold, "Wow, a Tie!", new Vector2(500, 500), Color.White);
                     }
 
-                    // Unsure if we are adding this
-                    // Draw number of types of boids bashed
-                    // Note from Ryan - I don't think we need toasd
-
                     break;
+
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 //                                                                      Instructions Mode 
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2436,6 +2436,7 @@ namespace BoidBash
                         clicked.Play();
                         boidColorSelection = 1;
                     }
+
                     // Apply Color
                     switch (boidColorSelection)
                     {
