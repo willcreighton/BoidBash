@@ -111,6 +111,7 @@ namespace BoidBash
         private Color boidColor = new Color(0, 200, 255);
         private Color penColor = new Color(70, 70, 70);
         private Color playAreaColor = new Color(5, 5, 5);
+        private Color displayBoidColor;
 
         // State UI
         private MainMenuUI mainMenuUI;
@@ -498,6 +499,9 @@ namespace BoidBash
             // *Debug* set center marker
             centerMarker = new Rectangle(width / 2 - 5, 0, 10, 1000);
 
+            // Initalize display boid color
+            displayBoidColor = boidColor;
+
             // Initialize all UI Objects
             mainMenuUI = new MainMenuUI(windowWidth, windowHeight, playPrompt, boidBashLogo, senBold, senRegular);
             gameUI = new GameUI(windowWidth, windowHeight, senBold, senExtraBold, pausePrompt);
@@ -791,7 +795,7 @@ namespace BoidBash
                     _spriteBatch.Draw(
                         displayBoid,
                         displayBoids[0],
-                        boidColor
+                        displayBoidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
@@ -1344,7 +1348,7 @@ namespace BoidBash
                     _spriteBatch.Draw(
                         displayBoid,
                         displayBoids[0],
-                        boidColor
+                        displayBoidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
@@ -1375,7 +1379,7 @@ namespace BoidBash
                     _spriteBatch.Draw(
                         displayBoid,
                         displayBoids[2],
-                        boidColor
+                        displayBoidColor
                         );
                     _spriteBatch.Draw(
                         displayBoid,
@@ -1721,7 +1725,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, boidColorSelectors[2], Color.Orange);
                     _spriteBatch.Draw(blank, boidColorSelectors[3], Color.Red);
                     _spriteBatch.Draw(blank, boidColorSelectors[4], Color.Magenta);
-                    _spriteBatch.Draw(blank, boidColorSelectors[5], Color.Salmon);
+                    _spriteBatch.Draw(blank, boidColorSelectors[5], Color.Plum);
                     _spriteBatch.Draw(blank, boidColorSelectors[6], Color.White);
 
                     // Predator Color Selection
@@ -1743,7 +1747,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, predatorColorSelectors[2], Color.Orange);
                     _spriteBatch.Draw(blank, predatorColorSelectors[3], Color.Red);
                     _spriteBatch.Draw(blank, predatorColorSelectors[4], Color.Magenta);
-                    _spriteBatch.Draw(blank, predatorColorSelectors[5], Color.Salmon);
+                    _spriteBatch.Draw(blank, predatorColorSelectors[5], Color.Plum);
                     _spriteBatch.Draw(blank, predatorColorSelectors[6], Color.White);
 
                     // Button Color Selection
@@ -1761,7 +1765,7 @@ namespace BoidBash
                     _spriteBatch.Draw(blank, buttonColorSelectors[2], Color.Orange);
                     _spriteBatch.Draw(blank, buttonColorSelectors[3], Color.Red);
                     _spriteBatch.Draw(blank, buttonColorSelectors[4], Color.Magenta);
-                    _spriteBatch.Draw(blank, buttonColorSelectors[5], Color.Salmon);
+                    _spriteBatch.Draw(blank, buttonColorSelectors[5], Color.Plum);
                     _spriteBatch.Draw(blank, buttonColorSelectors[6], Color.White);
 
                     // Border Color Selection
@@ -2459,6 +2463,7 @@ namespace BoidBash
                             menuFlock.DefaultColor = boidColor;
                             instructionsFlock.DefaultColor = boidColor;
                             versusFlock.DefaultColor = boidColor;
+                            displayBoidColor = boidColor;
                             break;
 
                         case 2:
@@ -2466,6 +2471,7 @@ namespace BoidBash
                             menuFlock.DefaultColor = Color.Lime;
                             instructionsFlock.DefaultColor = Color.Lime;
                             versusFlock.DefaultColor = Color.Lime;
+                            displayBoidColor = Color.Lime;
                             break;
 
                         case 3:
@@ -2473,6 +2479,7 @@ namespace BoidBash
                             menuFlock.DefaultColor = Color.Orange;
                             instructionsFlock.DefaultColor = Color.Orange;
                             versusFlock.DefaultColor = Color.Orange;
+                            displayBoidColor = Color.Orange;
                             break;
 
                         case 4:
@@ -2480,6 +2487,7 @@ namespace BoidBash
                             menuFlock.DefaultColor = Color.Red;
                             instructionsFlock.DefaultColor = Color.Red;
                             versusFlock.DefaultColor = Color.Red;
+                            displayBoidColor = Color.Red;
                             break;
 
                         case 5:
@@ -2487,13 +2495,15 @@ namespace BoidBash
                             menuFlock.DefaultColor = Color.Magenta;
                             instructionsFlock.DefaultColor = Color.Magenta;
                             versusFlock.DefaultColor = Color.Magenta;
+                            displayBoidColor = Color.Magenta;
                             break;
 
                         case 6:
-                            flock.DefaultColor = Color.Salmon;
-                            menuFlock.DefaultColor = Color.Salmon;
-                            instructionsFlock.DefaultColor = Color.Salmon;
-                            versusFlock.DefaultColor = Color.Salmon;
+                            flock.DefaultColor = Color.Plum;
+                            menuFlock.DefaultColor = Color.Plum;
+                            instructionsFlock.DefaultColor = Color.Plum;
+                            versusFlock.DefaultColor = Color.Plum;
+                            displayBoidColor = Color.Plum;
                             break;
 
                         case 7:
@@ -2501,6 +2511,7 @@ namespace BoidBash
                             menuFlock.DefaultColor = Color.White;
                             instructionsFlock.DefaultColor = Color.White;
                             versusFlock.DefaultColor = Color.White;
+                            displayBoidColor = Color.White;
                             break;
                     }
 
@@ -2579,8 +2590,8 @@ namespace BoidBash
                             break;
 
                         case 6:
-                            predatorWASD.Color = Color.Salmon;
-                            predatorWASDArrows.Color = Color.Salmon;
+                            predatorWASD.Color = Color.Plum;
+                            predatorWASDArrows.Color = Color.Plum;
                             break;
 
                         case 7:
@@ -2612,7 +2623,7 @@ namespace BoidBash
                             break;
 
                         case 6:
-                            predatorArrows.Color = Color.Salmon;
+                            predatorArrows.Color = Color.Plum;
                             break;
 
                         case 7:
@@ -2678,7 +2689,7 @@ namespace BoidBash
                         case 6:
                             foreach (Button button in buttons)
                             {
-                                button.Color = Color.Salmon;
+                                button.Color = Color.Plum;
                             }
                             break;
                         case 7:
