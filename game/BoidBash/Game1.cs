@@ -250,7 +250,7 @@ namespace BoidBash
         private int optionsSelection = 1;
         private int boidColorSelection = 1;
         private int predatorColorSelection1 = 4;
-        private int predatorColorSelection2 = 6;
+        private int predatorColorSelection2 = 2;
         private int borderFadeSelection = 1;
         private int buttonColorSelection = 4;
         private int menuSelection = 1;
@@ -494,7 +494,7 @@ namespace BoidBash
                 windowHeight, windowWidth, Color.Red, 35, 35, ControlScheme.WASD);
             predatorArrows = new Predator(predTexture, new Rectangle(width / 2, height / 2,
                 35, 35),
-                windowHeight, windowWidth, Color.Blue, 35, 35, ControlScheme.Arrows);
+                windowHeight, windowWidth, Color.Lime, 35, 35, ControlScheme.Arrows);
 
             // *Debug* set center marker
             centerMarker = new Rectangle(width / 2 - 5, 0, 10, 1000);
