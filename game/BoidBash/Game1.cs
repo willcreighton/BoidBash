@@ -31,6 +31,9 @@ namespace BoidBash
         private GameState currentState;
         private MouseState mouseState;
 
+        // Content Scaling
+        private float resRat;
+
         // Total addition print lists
         private List<long> totalScoreIncrementPrint = new List<long>();
         private List<float> totalScoreIncrementTimer = new List<float>();
@@ -299,12 +302,147 @@ namespace BoidBash
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resRat"></param>
+        public void InitializeWithScaling(float resRat)
+        {
+            // Rectangles to draw
+            singlePlayerBashers = new Rectangle[4]
+                { new Rectangle((int)(200 * resRat), (int)(100* resRat), (int)(150* resRat), (int)(100* resRat)), new Rectangle((int)(1000 * resRat), (int)(200 * resRat), (int)(100 * resRat), (int)(150 * resRat)),
+             new Rectangle((int)(850 * resRat), (int)(700 * resRat), (int)(150 * resRat), (int)(100 * resRat)), new Rectangle((int)(100 * resRat), (int)(550 * resRat), (int)(100 * resRat), (int)(150 * resRat))};
+
+            singlePlayerBorders = new Rectangle[12]
+                { new Rectangle((int)(200 * resRat), (int)(95 * resRat), (int)(150 * resRat), (int)(5 * resRat)),
+              new Rectangle((int)(195 * resRat), (int)(95 * resRat), (int)(5 * resRat), (int)(455 * resRat)),
+              new Rectangle((int)(350 * resRat), (int)(95 * resRat), (int)(5 * resRat), (int)(105 * resRat)),
+              new Rectangle((int)(350 * resRat), (int)(195 * resRat), (int)(750 * resRat), (int)(5 * resRat)),
+              new Rectangle((int)(1100 * resRat), (int)(195 * resRat), (int)(5 * resRat), (int)(160 * resRat)),
+              new Rectangle((int)(1000 * resRat), (int)(350 * resRat), (int)(100 * resRat), (int)(5 * resRat)),
+              new Rectangle((int)(1000 * resRat), (int)(350 * resRat), (int)(5 * resRat), (int)(450 * resRat)),
+              new Rectangle((int)(850 * resRat), (int)(800 * resRat), (int)(155 * resRat), (int)(5 * resRat)),
+              new Rectangle((int)(845 * resRat), (int)(700 * resRat), (int)(5 * resRat), (int)(105 * resRat)),
+              new Rectangle((int)(95 * resRat), (int)(700 * resRat), (int)(750 * resRat), (int)(5 * resRat)),
+              new Rectangle((int)(95 * resRat), (int)(550 * resRat), (int)(5 * resRat), (int)(150 * resRat)),
+              new Rectangle((int)(95 * resRat), (int)(550 * resRat), (int)(105 * resRat), (int)(5 * resRat))};
+
+            versusLeftBorders = new Rectangle[]
+                { new Rectangle ((int)(100 * resRat), (int)(95 * resRat), (int)(150 * resRat), (int)(5 * resRat)),
+              new Rectangle ((int)(250 * resRat), (int)(95 * resRat), (int)(5 * resRat), (int)(100 * resRat)),
+              new Rectangle ((int)(95 * resRat), (int)(95 * resRat), (int)(5 * resRat), (int)(705 * resRat)),
+              new Rectangle ((int)(95 * resRat), (int)(800 * resRat), (int)(155 * resRat), (int)(5 * resRat)),
+              new Rectangle ((int)(250 * resRat), (int)(700 * resRat), (int)(5 * resRat), (int)(105 * resRat)),
+              new Rectangle ((int)(250 * resRat), (int)(700 * resRat), (int)(350 * resRat), (int)(5 * resRat)),
+              new Rectangle ((int)(250 * resRat), (int)(195 * resRat), (int)(350 * resRat), (int)(5 * resRat))};
+
+            versusRightBorders = new Rectangle[]
+                {
+              new Rectangle ((int)(945 * resRat), (int)(95 * resRat), (int)(5 * resRat), (int)(100 * resRat)),
+              new Rectangle ((int)(945 * resRat), (int)(95 * resRat), (int)(155 * resRat), (int)(5 * resRat)),
+              new Rectangle ((int)(1100 * resRat), (int)(95 * resRat), (int)(5 * resRat), (int)(705 * resRat)),
+              new Rectangle ((int)(945 * resRat), (int)(700 * resRat), (int)(5 * resRat), (int)(100 * resRat)),
+              new Rectangle ((int)(945 * resRat), (int)(800 * resRat), (int)(160 * resRat), (int)(5 * resRat)),
+              new Rectangle ((int)(600 * resRat), (int)(195 * resRat), (int)(350 * resRat), (int)(5 * resRat)),
+              new Rectangle ((int)(600 * resRat), (int)(700 * resRat), (int)(345 * resRat), (int)(5 * resRat))};
+
+            instructionsBashers = new Rectangle[2]
+                { new Rectangle((int)(100 * resRat), (int)(550 * resRat), (int)(100 * resRat), (int)(200 * resRat)),
+                new Rectangle((int)(1000 * resRat), (int)(550 * resRat), (int)(100 * resRat), (int)(200 * resRat)) };
+
+            versusBashers = new Rectangle[4]
+                { new Rectangle((int)(100 * resRat), (int)(100 * resRat), (int)(150 * resRat), (int)(100 * resRat)),
+              new Rectangle((int)(950 * resRat), (int)(100 * resRat), (int)(150 * resRat), (int)(100 * resRat)),
+              new Rectangle((int)(100 * resRat), (int)(700 * resRat), (int)(150 * resRat), (int)(100 * resRat)),
+              new Rectangle((int)(950 * resRat), (int)(700 * resRat), (int)(150 * resRat), (int)(100 * resRat))};
+
+            instructionsBarriers = new Rectangle[8]
+            { new Rectangle((int)(100 * resRat), (int)(400 * resRat), (int)(100 * resRat), (int)(150 * resRat)),
+            new Rectangle((int)(100 * resRat), (int)(400 * resRat), (int)(1000 * resRat), (int)(100 * resRat)),
+            new Rectangle((int)(1000 * resRat), (int)(400 * resRat), (int)(100 * resRat), (int)(150 * resRat)),
+            new Rectangle((int)(1000 * resRat), (int)(750 * resRat), (int)(100 * resRat), (int)(150 * resRat)),
+            new Rectangle((int)(100 * resRat), (int)(750 * resRat), (int)(100 * resRat), (int)(150 * resRat)),
+            new Rectangle((int)(100 * resRat), (int)(800 * resRat), (int)(1000 * resRat), (int)(100 * resRat)),
+            new Rectangle((int)(0 * resRat), (int)(400 * resRat), (int)(100 * resRat), (int)(700 * resRat)),
+            new Rectangle((int)(1100 * resRat), (int)(400 * resRat), (int)(100 * resRat), (int)(700 * resRat))};
+
+            singlePlayerPlayArea = new Rectangle((int)(200 * resRat), (int)(200 * resRat), (int)(800 * resRat), (int)(500 * resRat));
+
+            instructionsPlayArea = new Rectangle((int)(200 * resRat), (int)(500 * resRat), (int)(800 * resRat), (int)(300 * resRat));
+
+            versusPlayArea = new Rectangle((int)(100 * resRat), (int)(200 * resRat), (int)(1000 * resRat), (int)(500 * resRat));
+
+            displayBoids = new Rectangle[4]
+                { new Rectangle((int)(15 * resRat), (int)(290 * resRat), (int)(46 * resRat), (int)(60 * resRat)),
+                new Rectangle((int)(15 * resRat), (int)(390 * resRat), (int)(46 * resRat), (int)(60 * resRat)),
+                new Rectangle((int)(240 * resRat), (int)(400 * resRat), (int)(46 * resRat), (int)(60 * resRat)),
+                new Rectangle(905, 400, 46, 60)};
+
+            musicSlider = new Rectangle((int)(440 * resRat), (int)(140 * resRat), (int)(320 * resRat), (int)(10 * resRat));
+            soundSlider = new Rectangle((int)(440 * resRat), (int)(240 * resRat), (int)(320 * resRat), (int)(10 * resRat));
+
+            boidColorSelectors = new Rectangle[7]
+            { new Rectangle((int)(280 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+            new Rectangle((int)(380 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+            new Rectangle((int)(480 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+            new Rectangle((int)(580 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+            new Rectangle((int)(680 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+            new Rectangle((int)(780 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+            new Rectangle((int)(880 * resRat), (int)(335 * resRat), (int)(40 * resRat), (int)(40 * resRat)) };
+
+            predatorColorSelectors = new Rectangle[7]
+                {new Rectangle((int)(280 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(380 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(480 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(580 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(680 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(780 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(880 * resRat), (int)(435 * resRat), (int)(40 * resRat), (int)(40 * resRat))};
+
+            buttonColorSelectors = new Rectangle[7]
+                {new Rectangle((int)(280 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(380 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(480 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(580 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(680 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(780 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(880 * resRat), (int)(535 * resRat), (int)(40 * resRat), (int)(40 * resRat))};
+
+            borderColorSelectors = new Rectangle[8]
+                { new Rectangle((int)(335 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(375 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(485 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(525 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(635 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(675 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(785 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat)),
+                new Rectangle((int)(825 * resRat), (int)(635 * resRat), (int)(40 * resRat), (int)(40 * resRat))};
+
+            creationBounds = new Rectangle((int)(300 * resRat), (int)(300 * resRat), (int)(600 * resRat), (int)(300 * resRat));
+        }
 
         protected override void Initialize()
         {
             // Adjust the window size
+
+            
             windowWidth = 1200;
             windowHeight = 900;
+            
+
+            /*
+            windowWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 1.3333333);
+            windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            */
+
+            // Content Scaling **EXPERIMENTAL**
+            resRat = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 900;
+
+            // *** SET RESRAT TO 1 TO TURN OFF SCALING ***
+            resRat = 1;
+
+            InitializeWithScaling(resRat);
+
             _graphics.PreferredBackBufferWidth = windowWidth;
             _graphics.PreferredBackBufferHeight = windowHeight;
             _graphics.ApplyChanges();
@@ -373,16 +511,16 @@ namespace BoidBash
             versusBash2 = Content.Load<Texture2D>("Player2Bash");
 
             // Create flocks
-            flock = new Flock(70, new Rectangle(300, 300, 600, 300),
+            flock = new Flock(70, new Rectangle((int)(300 * resRat), (int)(300 * resRat), (int)(600 * resRat), (int)(300 * resRat)),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
-            versusFlock = new Flock(60, new Rectangle(550, 200, 100, 500),
+            versusFlock = new Flock(60, new Rectangle((int)(550 * resRat), (int)(200 * resRat), (int)(100 * resRat), (int)(500 * resRat)),
                 boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
-            menuFlock = new Flock(100, new Rectangle(300, 300, 600, 300),
+            menuFlock = new Flock(100, new Rectangle((int)(300 * resRat), (int)(300 * resRat), (int)(600 * resRat), (int)(300 * resRat)),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
-            instructionsFlock = new Flock(10, new Rectangle(500, 600, 200, 100),
+            instructionsFlock = new Flock(10, new Rectangle((int)(500 * resRat), (int)(600 * resRat), (int)(200 * resRat), (int)(100 * resRat)),
             boidSprite, new Vector2(10, 12), boidColor, _spriteBatch);
 
             // Set menu flock backgroundColor
